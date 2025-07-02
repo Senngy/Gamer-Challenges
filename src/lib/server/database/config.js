@@ -1,30 +1,34 @@
 // src/lib/server/database/config.js
-import { env } from '$env/dynamic/private';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const dbConfig = {
   development: {
-    username: env.DB_USER || 'root',
-    password: env.DB_PASSWORD || '',
-    database: env.DB_NAME || 'gamer_challenges_dev',
-    host: env.DB_HOST || 'localhost',
-    port: env.DB_PORT || 3306,
-    dialect: 'mysql', // ou 'postgres', 'sqlite'
+    username: process.env.DB_USER || 'gamer_challenges',
+    password: process.env.DB_PASSWORD || 'gamerchallenges',
+    database: process.env.DB_NAME || 'gamer_challenges_db',
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 5432,
+    dialect: 'postgres',
     logging: console.log, // Logs SQL en dev
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
+    define: {
+      timestamps: true,
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
     }
   },
   production: {
-    username: env.DB_USER,
-    password: env.DB_PASSWORD,
-    database: env.DB_NAME,
-    host: env.DB_HOST,
-    port: env.DB_PORT,
-    dialect: 'mysql',
-    logging: false, // Pas de logs en prod
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: 'postgres', // 🛑 tu avais 'mysql', je suppose que tu veux rester en postgres ?
+    logging: false,
+    define: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    },
     pool: {
       max: 10,
       min: 2,

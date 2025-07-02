@@ -1,34 +1,29 @@
 // src/lib/server/database/models/Game.js
-import { DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';              // Import des outils Sequelize
+import { sequelize } from '../connection.js';             // Connexion à la BDD
 
-export default function(sequelize) {
-  const Game = sequelize.define('Game', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    name: {
-      type: DataTypes.STRING(100),
-      allowNull: false
-    },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true
-    },
-    image: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    genre: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    }
-  }, {
-    tableName: 'games',
-    timestamps: true,
-    underscored: true
-  });
+export class Game extends Model {}                         // Déclaration du modèle Game
 
-  return Game;
-}
+Game.init({
+  name: {
+    type: DataTypes.STRING(100),                           // Nom du jeu (max 100 caractères)
+    allowNull: false                                       // Champ obligatoire
+  },
+  description: {
+    type: DataTypes.TEXT,                                  // Description du jeu
+    allowNull: true                                        // Champ optionnel
+  },
+  image: {
+    type: DataTypes.STRING(255),                           // URL ou nom du fichier image
+    allowNull: true                                        // Champ optionnel
+  },
+  genre: {
+    type: DataTypes.STRING(50),                            // Genre du jeu (ex : action, puzzle…)
+    allowNull: true                                        // Champ optionnel
+  }
+}, {
+  tableName: 'games',                                      // Nom explicite de la table SQL
+  sequelize,                                               // Instance Sequelize
+  timestamps: true,                                        // Ajoute created_at / updated_at
+  underscored: true                                        // Utilise snake_case en BDD
+});
