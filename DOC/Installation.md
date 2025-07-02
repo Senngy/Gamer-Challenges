@@ -1,17 +1,9 @@
-# Installation 
+# Installation et lancement du projet 
+ 
+## Installation du projet 
 
-### Instalation de SvelteKit
+` npm i ` ou ` npm install `
 
-` npx sv create "Mon projet" `
+## Lancement du projet 
 
- - Choisir "Svelte minimal"
- - Package additionnel pour TypeScrypt "No"
- - Package additionnel : ESLint, Prettier et Vitest (Vitest choisir "Unit" seulement)
-
- ### Instalation Back 
-
- ` npm install jsonwebtoken joi scrypt `
-
- ### Instalation Base de données 
-
- ` npm install pg pg-hstore sequelize `
+` npm run dev `
