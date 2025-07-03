@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    
     "start": "node src/index.js",
     "dev": "nodemon --ignore client app.js",
     "db:create": "node ./database/migrations/01.createTables.js",
@@ -17,6 +16,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^5.1.0",
     "http-status-codes": "^2.3.0",
