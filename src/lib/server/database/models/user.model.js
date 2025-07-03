@@ -23,7 +23,7 @@ User.init({
     type: DataTypes.STRING(255),     // Mot de passe hashé
     allowNull: false,                // Obligatoire
   },
-  name: {
+  last_name: {
     type: DataTypes.STRING(50),      // Nom (optionnel)
     allowNull: true,
   },
