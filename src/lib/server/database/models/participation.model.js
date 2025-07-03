@@ -4,7 +4,7 @@ import { sequelize } from '../connection.js';
 export class Participation extends Model {}
 
 Participation.init({
-    media_url: {
+    media_link: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
@@ -37,6 +37,7 @@ Participation.init({
     // Contrainte unique : un user ne peut participer qu'une fois par défi
     indexes: [
       {
+        name: 'unique_participation',
         unique: true,
         fields: ['user_id', 'challenge_id']
       }
