@@ -1,12 +1,13 @@
 <script>
   import Navbar from '$lib/components/layout/Navbar.svelte';
-  import Footer from '$lib/components/layout/Footer.svelte';
+
 </script>
 
-<Navbar />
-
+<!-- HEADER -->
+<header class="header">
+  <Navbar />
+</header>
 <main>
   <slot /> <!-- contenu de chaque page -->
 </main>
 
-<Footer />
