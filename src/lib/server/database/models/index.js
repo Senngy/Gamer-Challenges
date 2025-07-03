@@ -1,49 +1,52 @@
 // src/lib/server/database/models/index.js
 import { sequelize } from '../connection.js';
-import UserModel from './User.js';
-import GameModel from './Game.js';
-import ChallengeModel from './Challenge.js';
-import ParticipationModel from './Participation.js';
-import VoteModel from './Vote.js';
-import CommentModel from './Comment.js';
+
+import { Challenge } from './challenge.model.js';
+import { Game } from './game.model.js';
+import { User } from './user.model.js';
+import { Participation } from './participation.model.js';
 
 // Initialisation des modèles
-export const User = UserModel(sequelize);
-export const Game = GameModel(sequelize);
-export const Challenge = ChallengeModel(sequelize);
-export const Participation = ParticipationModel(sequelize);
-export const Vote = VoteModel(sequelize);
-export const Comment = CommentModel(sequelize);
+/*
+const User = UserModel(sequelize);
+const Game = GameModel(sequelize);
+const Challenge = ChallengeModel(sequelize);
+const Participation = ParticipationModel(sequelize);
+*/
 
 // 🔗 ASSOCIATIONS
 // User associations
-User.hasMany(Challenge, { foreignKey: 'createdBy', as: 'createdChallenges' });
-User.hasMany(Participation, { foreignKey: 'userId', as: 'participations' });
-User.hasMany(Vote, { foreignKey: 'userId', as: 'votes' });
-User.hasMany(Comment, { foreignKey: 'userId', as: 'comments' });
+User.hasMany(Challenge, { foreignKey: 'created_by', as: 'challenge_created' });
+User.hasMany(Participation, { foreignKey: 'user_id', as: 'participant' });
+// User.hasMany(Vote, { foreignKey: 'user_id', as: 'votes' });
+// User.hasMany(Comment, { foreignKey: 'user_id', as: 'comments' });
 
 // Game associations
-Game.hasMany(Challenge, { foreignKey: 'gameId', as: 'challenges' });
+Game.hasMany(Challenge, { foreignKey: 'game_id', as: 'challenges' });
 
 // Challenge associations
-Challenge.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
-Challenge.belongsTo(Game, { foreignKey: 'gameId', as: 'game' });
-Challenge.hasMany(Participation, { foreignKey: 'challengeId', as: 'participations' });
-Challenge.hasMany(Vote, { foreignKey: 'challengeId', as: 'votes' });
-Challenge.hasMany(Comment, { foreignKey: 'challengeId', as: 'comments' });
+Challenge.belongsTo(User, { foreignKey: 'created_by', as: 'creator' });
+Challenge.belongsTo(Game, { foreignKey: 'game_id', as: 'game' });
+Challenge.hasMany(Participation, { foreignKey: 'challenge_id', as: 'participations' });
+// Challenge.hasMany(Vote, { foreignKey: 'challenge_id', as: 'votes' });
+// Challenge.hasMany(Comment, { foreignKey: 'challenge_id', as: 'comments' });
 
 // Participation associations
-Participation.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Participation.belongsTo(Challenge, { foreignKey: 'challengeId', as: 'challenge' });
-Participation.hasMany(Vote, { foreignKey: 'participationId', as: 'votes' });
+Participation.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+Participation.belongsTo(Challenge, { foreignKey: 'challenge_id', as: 'challenge' });
+// Participation.hasMany(Vote, { foreignKey: 'participation_id', as: 'votes' });
 
 // Vote associations (polymorphe : vote sur défi OU participation)
-Vote.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Vote.belongsTo(Challenge, { foreignKey: 'challengeId', as: 'challenge' });
-Vote.belongsTo(Participation, { foreignKey: 'participationId', as: 'participation' });
+/* 
+Vote.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+Vote.belongsTo(Challenge, { foreignKey: 'challenge_id', as: 'challenge' });
+Vote.belongsTo(Participation, { foreignKey: 'participation_id', as: 'participation' });
+*/
 
 // Comment associations
-Comment.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-Comment.belongsTo(Challenge, { foreignKey: 'challengeId', as: 'challenge' });
+/*
+Comment.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+Comment.belongsTo(Challenge, { foreignKey: 'challenge_id', as: 'challenge' });
+*/
 
-export { sequelize };
+export { sequelize, User, Game, Challenge, Participation };
