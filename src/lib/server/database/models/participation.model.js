@@ -1,13 +1,10 @@
-import { DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../connection.js';
 
-export default function(sequelize) {
-  const Participation = sequelize.define('Participation', {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    videoUrl: {
+export class Participation extends Model {}
+
+Participation.init({
+    media_url: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
@@ -16,7 +13,7 @@ export default function(sequelize) {
       allowNull: true
     },
     // Clés étrangères
-    userId: {
+    user_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -24,7 +21,7 @@ export default function(sequelize) {
         key: 'id'
       }
     },
-    challengeId: {
+    challenge_id: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
@@ -34,6 +31,7 @@ export default function(sequelize) {
     }
   }, {
     tableName: 'participations',
+    sequelize, // Instance de Sequelize
     timestamps: true,
     underscored: true,
     // Contrainte unique : un user ne peut participer qu'une fois par défi
@@ -44,6 +42,3 @@ export default function(sequelize) {
       }
     ]
   });
-
-  return Participation;
-}
