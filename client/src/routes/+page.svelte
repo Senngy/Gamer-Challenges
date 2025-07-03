@@ -1,9 +1,8 @@
 <script>
   // Tu pourras plus tard gérer les données via une API ou store
   import Navbar from '$lib/components/layout/Navbar.svelte';
+  import Leaderboard from '$lib/components/layout/Leaderboard.svelte';
 </script>
-
-
 
 <!-- CONTENU PRINCIPAL -->
 <main class="main">
@@ -22,25 +21,8 @@
     </div>
   </section>
 
-  <!-- CHALLENGERS -->
-  <aside class="challengers">
-    <h2>Top challengers 🏆<br><span>#Gamerchallenges</span></h2>
-    <ul>
-      <li>
-        <img src="/avatar.png" alt="avatar" />
-        <div>
-          <strong>Babytoto</strong>
-          <span>💖 12</span>
-          <span>🥇</span>
-        </div>
-        <div class="tags">
-          <span class="tag">Stratégie</span>
-          <span class="tag">Battle royale</span>
-        </div>
-      </li>
-      <!-- Répète pour les autres challengers -->
-    </ul>
-  </aside>
+  <!-- LEADERBOARD -->
+  <Leaderboard />
 
   <!-- CATALOGUE -->
   <section class="catalogue">
