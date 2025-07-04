@@ -13,7 +13,7 @@
     <a href="#" class="mobile-link">Accueil</a>
     <a href="#" class="mobile-link">Catalogue</a>
     <a href="#" class="mobile-link">À propos</a>
-    <button class="btn">Connexion</button>
-    <button class="btn">Inscription</button>
+    <a class="btn" href="/auth/login">Connexion</a>
+    <a class="btn" href="/auth/signup">Inscription</a>
   </nav>
 </header>
