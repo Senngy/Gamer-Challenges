@@ -1,190 +1,145 @@
-<script>
-  // Tu pourras plus tard gérer les données via une API ou store
-  import Navbar from '$lib/components/layout/Navbar.svelte';
-  import Leaderboard from '$lib/components/layout/Leaderboard.svelte';
-</script>
+<!-- Hero Section -->
+<section class="popular-games">
+  <div class="popular-games__pattern-overlay"></div>
 
-<!-- CONTENU PRINCIPAL -->
-<main class="main">
-  <!-- SLIDER -->
-  <section class="hero">
-    <div class="badge">🔥 Populaire</div>
-    <h1>VALORANT</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
-    <div class="tags">
-      <span class="tag">FPS</span>
-      <span class="tag">5v5</span>
+  <div class="popular-games__content">
+    <span class="popular-games__tag">🔥 Populaire</span>
+    <h1 class="popular-games__title">VALORANT</h1>
+    <p class="popular-games__description">
+      Valorant est un jeu de tir tactique à la première personne développé par
+      Riot Games. Il combine des mécaniques de précision dignes de
+      Counter-Strike avec des agents dotés de compétences uniques. Stratégie,
+      communication et réflexes y sont essentiels pour dominer.
+    </p>
+    <button class="btn btn--primary popular-games__btn">Voir challenge</button>
+  </div>
+
+  <div class="popular-games__nav">
+    <div class="popular-games__arrows">
+      <button class="popular-games__arrow">‹</button>
+      <button class="popular-games__arrow">›</button>
     </div>
-    <div class="slider-controls">
-      <button>←</button>
-      <button>→</button>
+    <div class="popular-games__pagination">1 / 4</div>
+  </div>
+</section>
+
+<!-- Leaderboard -->
+<aside class="leaderboard">
+  <div>
+    <h2 class="leaderboard__title">Top challengers 🏆</h2>
+    <span class="leaderboard__highlight">#Gamerchallenges</span>
+  </div>
+
+  <div class="leaderboard__item">
+    <div class="leaderboard__player-avatar">B</div>
+    <div class="leaderboard__player-info">
+      <h3 class="leaderboard__player-name">Babyloto</h3>
+      <div class="leaderboard__player-stats">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#000"
+          ><path
+            d="m480-120-58-52q-101-91-167-157T150-447.5Q111-500 95.5-544T80-634q0-94 63-157t157-63q52 0 99 22t81 62q34-40 81-62t99-22q94 0 157 63t63 157q0 46-15.5 90T810-447.5Q771-395 705-329T538-172l-58 52Zm0-108q96-86 158-147.5t98-107q36-45.5 50-81t14-70.5q0-60-40-100t-100-40q-47 0-87 26.5T518-680h-76q-15-41-55-67.5T300-774q-60 0-100 40t-40 100q0 35 14 70.5t50 81q36 45.5 98 107T480-228Zm0-273Z"
+          /></svg
+        > 24 like
+      </div>
     </div>
-  </section>
+    <div class="leaderboard__player-level">🏆 1</div>
+  </div>
 
-  <!-- LEADERBOARD -->
-  <Leaderboard />
+  <div class="leaderboard__item">
+    <div class="leaderboard__player-avatar">B</div>
+    <div class="leaderboard__player-info">
+      <h3 class="leaderboard__player-name">Babyloto</h3>
+      <div class="leaderboard__player-stats">❤️ 12</div>
+    </div>
+    <div class="leaderboard__player-level">🥈 2</div>
+  </div>
 
-  <!-- CATALOGUE -->
-  <section class="catalogue">
-    <h2>Également sur notre catalogue</h2>
-    <div class="cards">
-      <div class="card">
-        <img src="/apex.jpg" alt="Apex Legends" />
-        <div class="info">
-          <h3>Apex Legends</h3>
-          <p>Saison 5</p>
-          <div class="tags">
-            <span class="tag">Stratégie</span>
-            <span class="tag">Battle royale</span>
-          </div>
-          <div class="likes">Nombre de like ❤️</div>
+  <div class="leaderboard__item">
+    <div class="leaderboard__player-avatar">B</div>
+    <div class="leaderboard__player-info">
+      <h3 class="leaderboard__player-name">Babyloto</h3>
+      <div class="leaderboard__player-stats">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#000"
+          ><path
+            d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"
+          /></svg
+        > 6
+      </div>
+    </div>
+    <div class="leaderboard__player-level">🥉 3</div>
+  </div>
+</aside>
+
+<!-- Catalog Section -->
+<section class="catalog">
+  <h2 class="catalog__title">Également sur notre catalogue</h2>
+  <div class="catalog__grid">
+    <div class="catalog__item">
+      <div class="catalog__image">
+        <div class="catalog__like-count">Nombre de like</div>
+      </div>
+      <div class="catalog__content">
+        <h3 class="catalog__game-name">Apex Legends</h3>
+        <p class="catalog__season">Saison 5</p>
+        <div class="catalog__tags">
+          <span class="catalog__tag">Stratégie</span>
+          <span class="catalog__tag">Battle royale</span>
         </div>
       </div>
-      <!-- Autres cartes -->
     </div>
-  </section>
-</main>
 
-<!-- FOOTER -->
-<footer class="footer">
-  <div>
-    <img src="/logo.png" alt="logo" class="logo-small" />
-    <p>Gamer challenge<br />2025, Tous droits réservés.</p>
+    <div class="catalog__item">
+      <div class="catalog__image">
+        <div class="catalog__like-count">Nombre de like</div>
+      </div>
+      <div class="catalog__content">
+        <h3 class="catalog__game-name">Apex Legends</h3>
+        <p class="catalog__season">Saison 5</p>
+        <div class="catalog__tags">
+          <span class="catalog__tag">Stratégie</span>
+          <span class="catalog__tag">Battle royale</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog__item">
+      <div class="catalog__image">
+        <span class="catalog__game-title">APEX LEGENDS</span>
+        <div class="catalog__like-count">Nombre de like</div>
+      </div>
+      <div class="catalog__content">
+        <h3 class="catalog__game-name">Apex Legends</h3>
+        <p class="catalog__season">Saison 5</p>
+        <div class="catalog__tags">
+          <span class="catalog__tag">Stratégie</span>
+          <span class="catalog__tag">Battle royale</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="catalog__item">
+      <div class="catalog__image">
+        <span class="catalog__game-title">APEX LEGENDS</span>
+        <div class="catalog__like-count">Nombre de like</div>
+      </div>
+      <div class="catalog__content">
+        <h3 class="catalog__game-name">Apex Legends</h3>
+        <p class="catalog__season">Saison 5</p>
+        <div class="catalog__tags">
+          <span class="catalog__tag">Stratégie</span>
+          <span class="catalog__tag">Battle royale</span>
+        </div>
+      </div>
+    </div>
   </div>
-  <nav>
-    <a href="/">Accueil</a>
-    <a href="/about">À propos</a>
-    <a href="/contact">Contact</a>
-    <a href="/legals">Mentions légales</a>
-  </nav>
-  <div>
-    <p>Email: GameChallenge@gmail.com</p>
-    <p>Téléphone: +33 1 23 45 67 89</p>
-    <p>Adresse: 42 rue de l’Innovation, 75000 Paris</p>
-  </div>
-</footer>
-
-<style>
-  :global(body) {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(#220202, #121212);
-    color: #fff;
-  }
-
-  .header {
-   
-  }
-
-  
-
-  
-
-  .buttons .btn {
-    margin-left: 1rem;
-    background: #e54747;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    color: white;
-    cursor: pointer;
-  }
-
-  .btn-secondary {
-    background: transparent;
-    border: 1px solid #e54747;
-  }
-
-  .main {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    gap: 2rem;
-    padding: 2rem;
-  }
-
-  .hero {
-    background: #1c1c1c;
-    border-radius: 20px;
-    padding: 2rem;
-  }
-
-  .badge {
-    background: #e54747;
-    padding: 0.2rem 1rem;
-    border-radius: 15px;
-    display: inline-block;
-    margin-bottom: 1rem;
-  }
-
-  .challengers {
-    background: #2e2e2e;
-    border-radius: 20px;
-    padding: 1rem;
-  }
-
-  .challengers ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .challengers li {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .challengers img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-
-  .tag {
-    background: #444;
-    padding: 0.2rem 0.5rem;
-    border-radius: 10px;
-    font-size: 0.75rem;
-  }
-
-  .catalogue {
-    grid-column: span 2;
-    margin-top: 2rem;
-  }
-
-  .catalogue .cards {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .card {
-    background: #1f1f1f;
-    border-radius: 20px;
-    overflow: hidden;
-    width: 200px;
-  }
-
-  .card img {
-    width: 100%;
-    display: block;
-  }
-
-  .card .info {
-    padding: 1rem;
-  }
-
-  .footer {
-    background: #1a1a1a;
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    font-size: 0.9rem;
-  }
-
-  .logo-small {
-    width: 40px;
-    border-radius: 50%;
-  }
-</style>
+</section>
