@@ -5,8 +5,8 @@
   <img src="/favicon.svg" alt="Logo GamerChallenge" class="logo" />
   <input type="text" class="search" placeholder="Rechercher votre jeux 🔍" />
   <div class="buttons">
-    <button class="btn">Inscription</button>
-    <button class="btn btn-secondary">Connexion</button>
+    <a class="btn" href="/auth/signup">Inscription</a>
+    <a class="btn btn-secondary" href="/auth/login">Connexion</a>
   </div>
 </nav>
 <style>
