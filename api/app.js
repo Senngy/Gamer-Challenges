@@ -3,6 +3,10 @@ import "dotenv/config";
 import cors from "cors";
 import express from "express";
 
+import usersRoutes from "./routes/users.routes.js";
+import gamesRoutes from "./routes/games.routes.js";
+import challengesRoutes from "./routes/challenges.routes.js";
+
 const PORT = process.env.PORT || 3000; // Default port if not specified in .env
 
 const app = express();
@@ -15,13 +19,9 @@ const corsOptions = { // Configure CORS options
 app.use(cors(corsOptions)); // Use CORS middleware with the specified options
 app.use(express.json());    // Parse JSON request bodies
 
-/*
-
-app.use("/user",);
-app.use("/game",);
-app.use("/challenge",);
-app.use("/challenges",);
-*/
+app.use("/users", usersRoutes);
+app.use("/games", gamesRoutes);
+app.use("/challenges", challengesRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port at http://localhost:${PORT}`);
