@@ -1,8 +1,15 @@
 <script>
-
+  import Header from '$lib/components/layout/Header.svelte';
+  import Footer from '$lib/components/layout/Footer.svelte';
 </script>
 
-<main>
-  <slot /> <!-- contenu de chaque page -->
+<!-- HEADER -->
+<Header />
+
+<main class="main-content">
+  <slot />
+  <!-- contenu de chaque page -->
 </main>
 
+<!-- FOOTER -->
+<Footer />

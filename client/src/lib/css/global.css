@@ -1,0 +1,561 @@
+/* ===========================
+   ✅ VARIABLES CSS GLOBALES
+   =========================== */
+   :root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --background-color: #1A1C1F;
+    --btn-color: #8b1e1e;
+    --text-color:#FFFFFF;
+  }
+
+  /* ===========================
+     ✅ STYLES GÉNÉRAUX
+     =========================== */
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
+    color: var(--text-color);
+    min-height: 100vh;
+  }
+  
+  /* ===========================
+     ✅ HEADER + BURGER MENU
+     =========================== */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0.4em 0.6em;
+  padding: 0.6em 1em;
+  border-radius: 20px;
+
+  /* Glass UI */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+}
+
+/* --------------------
+   Logo
+-------------------- */
+.header__logo {
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+  background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --------------------
+   Search Bar (visible en mobile)
+-------------------- */
+.header__search-bar {
+  flex: 1;
+  margin: 0 1em;
+  max-width: 250px;
+}
+
+.header__search-bar input {
+  width: 100%;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 14px;
+}
+
+.header__search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* --------------------
+   Auth Buttons (masqués en mobile)
+-------------------- */
+.header__auth-buttons {
+  display: none;
+  gap: 10px;
+}
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  background: var(--btn-color);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* --------------------
+   Burger Icon
+-------------------- */
+.burger {
+  display: block;
+  font-size: 36px;
+  cursor: pointer;
+  color: white;
+  z-index: 1101;
+}
+
+/* --------------------
+   Mobile Menu (caché par défaut)
+-------------------- */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 100vh;
+  width: 70%;
+  padding: 2em 1em;
+
+  /* Glass UI Effect */
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: -8px 0 20px rgba(0, 0, 0, 0.3);
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1.5em;
+
+  z-index: 9999; /* S'assurer qu'elle est au-dessus de tout */
+  transition: right 0.4s ease;
+}
+.mobile-menu::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.8); /* noir semi-transparent */
+  z-index: -1;
+}
+.mobile-menu.show {
+  right: -10px; /* Décalage pour l'effet de glissement */
+}
+
+.mobile-link,
+.mobile-menu .btn {
+  padding: 12px;
+  text-align: center;
+  border-radius: 10px;
+  background: var(--btn-color);
+  color: white;
+  text-decoration: none;
+}
+
+.mobile-link:hover {
+  background: var(--secondary-color);
+}
+
+  
+  /* ===========================
+     ✅ CONTENU PRINCIPAL
+     =========================== */
+  .main-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin: 7em 0.6em;
+  }
+  
+/* ===========================
+   ✅ POPULAR GAMES (HERO)
+   =========================== */
+   .popular-games {
+    position: relative;
+    border-radius: 20px;
+    padding: 0.6em 1em;
+  }
+  
+  /* Image de fond floutée */
+  .popular-games::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: url('/images/background-valorant.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 0;
+    border-radius: 20px;
+  }
+  
+  /* Overlay noir semi-transparent */
+  .popular-games::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    border-radius: 20px;
+  }
+  .popular-games__content {
+    position: relative;
+    z-index: 3;
+  }
+  
+  .popular-games__tag {
+    display: inline-block;
+    background: var(--background-color);
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-bottom: 3em;
+    border: solid 1px rgba(255, 255, 255, 0.5);
+  }
+  
+  .popular-games__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 0.2em;
+  }
+  .popular-games__description {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 2em;
+  }
+  
+  .popular-games__nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8em;
+    z-index: 3;
+  }
+  
+  .popular-games__arrows {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .popular-games__arrow {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+  
+  .popular-games__pagination {
+    color: var(--text-color);
+    font-size: 14px;
+  }
+  
+    
+  /* ===========================
+     ✅ LEADERBOARD
+     =========================== */
+  .leaderboard {
+    margin-top: 2em;
+    padding: 1em;
+    border-radius: 20px;
+  
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .leaderboard__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  
+  .leaderboard__highlight {
+    display: inline-block;
+    background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+    background-origin: border-box;
+    background-clip: border-box;
+    -webkit-background-clip: text, border-box;
+    -webkit-text-fill-color: transparent;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2em;
+  }
+  .leaderboard__trophy {
+    font-size: 20px;
+  }
+  .leaderboard__item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding: 1.4em 0.4em;
+  }
+
+  .leaderboard__player-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(45deg, #ff6b6b, #ffd700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .leaderboard__player-info {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    margin: auto;
+  }
+  .leaderboard__player-name {
+    font-size: 22px;
+    text-transform: uppercase;
+    margin-bottom: 0.2em;
+  }
+  .leaderboard__player-stats {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .leaderboard__player-level {
+    margin-left: auto;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* ===========================
+     ✅ CATALOGUE
+     =========================== */
+     .catalog {
+    margin-top: 2em;
+
+     }
+  .catalog__title {
+    font-size: 24px;
+    margin-bottom: 1.4em;
+  }
+  .catalog__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+  }
+  .catalog__item {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  .catalog__item:hover {
+    transform: translateY(-6px);
+  }
+  .catalog__image {
+    height: 200px;
+    background-image: url(/images/background-valorant.webp);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .catalog__like-count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--text-color);
+    color: #000;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+  }
+  .catalog__content {
+    padding: 20px;
+  }
+  .catalog__game-name{
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+  .catalog__season {
+    font-size: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 1em;
+  }
+  .catalog__tags {
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .catalog__tag {
+    background: rgba(255, 255, 255, 0.2);
+    padding:0.4em 1em;
+    border-radius: 10px;
+  }
+  
+  /* ===========================
+     ✅ FOOTER
+     =========================== */
+     .footer {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px) saturate(160%);
+      -webkit-backdrop-filter: blur(20px) saturate(160%);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 2rem 1rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 5rem;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Bloc marque */
+    .footer__brand {
+      display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 0.5em;
+    }
+    .footer__logo {
+      background: linear-gradient(135deg, #ffd700, #ffa500);
+      color: #000;
+      font-weight: bold;
+      font-size: 1.6rem;
+      padding: 0.6rem 1rem;
+      border-radius: 14px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    }
+    .footer__title {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    .footer__copyright {
+      display: flex;
+      align-items: center;
+      margin-top: 0.2em;
+      font-size: 0.9rem;
+      opacity: 0.75;
+    }
+    
+    /* Contact */
+    .footer__contact p {
+      margin: 0.8rem 0;
+      font-size: 12px;
+    }
+    
+    /* Lien navigation */
+    .footer__nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .footer__nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+    .footer__nav a:hover {
+      color: #ffd700;
+    }
+    
+    /* Réseaux sociaux */
+    .footer__socials {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 2em;
+      gap: 3rem;
+    }
+    .social-icon img {
+      width: 32px;
+      height: 32px;
+      opacity: 0.85;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .social-icon:hover img {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    
+    /* Responsive */
+    @media (min-width: 768px) {
+      .footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+      }
+    
+      .footer__contact,
+      .footer__nav,
+      .footer__socials {
+        align-items: flex-start;
+      }
+    }
+    
+    
+    /* Responsive layout */
+    @media (min-width: 768px) {
+      .footer {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        text-align: left;
+      }
+    
+      .footer-contact {
+        text-align: right;
+      }
+    }
+    
+  /* ===========================
+     ✅ RESPONSIVE
+     =========================== */
+  @media (max-width: 768px) {
+    .main-content {
+      grid-template-columns: 1fr;
+    }
+    .hero__title {
+      font-size: 32px;
+    }
+    .footer {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 20px;
+    }
+    .footer__contact {
+      text-align: center;
+    }
+  }
+  
