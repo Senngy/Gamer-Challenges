@@ -27,34 +27,38 @@
   <form on:submit|preventDefault={handleSubmit}>
     <div>
       <label for="username">Nom d'utilisateur</label>
-      <input id="username" type="text" bind:value={username} required />
+      <input id="username" type="text" bind:value={username} required placeholder="Nom d'utilisateur" />
     </div>    
     <div>
       <label for="first_name">Prénom</label>
-      <input id="first_name" type="text" bind:value={first_name} required />
+      <input id="first_name" type="text" bind:value={first_name} required placeholder="Prénom" />
     </div>    
     <div>
       <label for="last_name">Nom</label>
-      <input id="last_name" type="text" bind:value={last_name} required />
+      <input id="last_name" type="text" bind:value={last_name} required placeholder="Nom" />
     </div>
     <div>
       <label for="email">Email</label>
-      <input id="email" type="email" bind:value={email} required maxlength="320" />
+      <input id="email" type="email" bind:value={email} required maxlength="320" placeholder="exemple@gmail.com" />
     </div>
     <div>
-        <label for="birth_date">Date de naissance</label>
-        <input id="birth_date" type="date" bind:value={birth_date} required />
+      <label for="birth_date">Date de naissance</label>
+      <input id="birth_date" type="date" bind:value={birth_date} required placeholder="JJ/MM/AAAA" />
     </div>
     <div>
       <label for="password">Mot de passe</label>
-      <input id="password" type="password" bind:value={password} required minlength="8"  maxlength="50"/>
+      <input id="password" type="password" bind:value={password} required minlength="8" maxlength="50" placeholder="Mot de passe" />
     </div>
     <div>
       <label for="confirmPassword">Confirmer le mot de passe</label>
-      <input id="confirmPassword" type="password" bind:value={confirmPassword} required minlength="8"  maxlength="50"/>
+      <input id="confirmPassword" type="password" bind:value={confirmPassword} required minlength="8" maxlength="50" placeholder="Confirmer le mot de passe" />
     </div>
-    <a class="btn" type="submit" href="/me">S'inscrire</a>
+    <button class="btn" type="submit">S'inscrire</button>
   </form>
+  <div class="already-account">
+    <span>Vous avez déjà un compte ?</span>
+    <a href="/auth/login">Cliquez ici</a>
+  </div>
 </div>
 
 <style>
@@ -103,5 +107,20 @@
     color: #ff6b6b;
     text-align: center;
     margin-bottom: 1rem;
+  }
+  .already-account {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .already-account a {
+    color: #4f8cff;
+    text-decoration: underline;
+    margin-left: 0.3rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .already-account a:hover {
+    color: #2563eb;
   }
 </style>
