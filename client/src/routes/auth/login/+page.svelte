@@ -1,4 +1,7 @@
 <script>
+  import AuthForm from "$lib/components/auth/AuthForm.svelte"
+  import Input from "$lib/components/auth/Input.svelte"
+  import BtnAuth from "$lib/components/auth/BtnAuth.svelte"
   let username = '';
   let email = '';
   let password = '';
@@ -30,7 +33,7 @@
       <label for="password">Mot de passe</label>
       <input id="password" type="password" bind:value={password} required minlength="8"  maxlength="50"/>
     </div>
-    <button type="submit">Se connecter</button>
+    <BtnAuth>Se connecter</BtnAuth>
   </form>
 </div>
 
@@ -62,19 +65,6 @@
     border: none;
     border-radius: 5px;
     font-size: 1rem;
-  }
-  button {
-    padding: 0.8rem;
-    background: #4f8cff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  button:hover {
-    background: #2563eb;
   }
   .error {
     color: #ff6b6b;

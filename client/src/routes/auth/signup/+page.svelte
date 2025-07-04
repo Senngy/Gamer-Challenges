@@ -53,7 +53,7 @@
       <label for="confirmPassword">Confirmer le mot de passe</label>
       <input id="confirmPassword" type="password" bind:value={confirmPassword} required minlength="8"  maxlength="50"/>
     </div>
-    <button type="submit">S'inscrire</button>
+    <a class="btn" type="submit" href="/me">S'inscrire</a>
   </form>
 </div>
 
@@ -86,7 +86,7 @@
     border-radius: 5px;
     font-size: 1rem;
   }
-  button {
+  .btn {
     padding: 0.8rem;
     background: #4f8cff;
     color: #fff;
@@ -96,7 +96,7 @@
     cursor: pointer;
     transition: background 0.2s;
   }
-  button:hover {
+  .btn:hover {
     background: #2563eb;
   }
   .error {
