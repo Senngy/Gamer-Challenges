@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
+
+	<link rel="stylesheet" href="/src/lib/css/reset.css">
+	<link rel="stylesheet" href="/src/lib/css/global.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	%sveltekit.head%
+</head>
+
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
+
+<script>
+	const burger = document.getElementById('burger');
+	const mobileMenu = document.getElementById('mobileMenu');
+
+	// Ouvrir/Fermer le menu en cliquant sur le burger
+	burger.addEventListener('click', (e) => {
+		e.stopPropagation(); // Empêche la propagation du clic
+		mobileMenu.classList.toggle('show');
+	});
+
+	// Empêche le clic à l’intérieur du menu de le fermer
+	mobileMenu.addEventListener('click', (e) => {
+		e.stopPropagation();
+	});
+
+	// Fermer le menu si on clique n’importe où ailleurs
+	document.addEventListener('click', () => {
+		mobileMenu.classList.remove('show');
+	});
+</script>
+
+
+</html>
