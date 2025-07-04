@@ -1,4 +1,7 @@
 <script>
+  import AuthForm from "$lib/components/auth/AuthForm.svelte";
+  import Input from "$lib/components/auth/Input.svelte";  
+  import BtnAuth from "$lib/components/auth/BtnAuth.svelte";
   let username = '';
   let email = '';
   let password = '';
@@ -24,37 +27,17 @@
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  <form on:submit|preventDefault={handleSubmit}>
-    <div>
-      <label for="username">Nom d'utilisateur</label>
-      <input id="username" type="text" bind:value={username} required />
-    </div>    
-    <div>
-      <label for="first_name">Prénom</label>
-      <input id="first_name" type="text" bind:value={first_name} required />
-    </div>    
-    <div>
-      <label for="last_name">Nom</label>
-      <input id="last_name" type="text" bind:value={last_name} required />
-    </div>
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="email" bind:value={email} required maxlength="320" />
-    </div>
-    <div>
-        <label for="birth_date">Date de naissance</label>
-        <input id="birth_date" type="date" bind:value={birth_date} required />
-    </div>
-    <div>
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" bind:value={password} required minlength="8"  maxlength="50"/>
-    </div>
-    <div>
-      <label for="confirmPassword">Confirmer le mot de passe</label>
-      <input id="confirmPassword" type="password" bind:value={confirmPassword} required minlength="8"  maxlength="50"/>
-    </div>
-    <a class="btn" type="submit" href="/me">S'inscrire</a>
-  </form>
+  <AuthForm onSubmit={handleSubmit}>
+    <Input id="username" type="text" label="Nom d'utilisateur" bind:value={username} required />
+    <Input id="first_name" type="text" label="Prénom" bind:value={first_name} required />
+    <Input id="last_name" type="text" label="Nom" bind:value={last_name} required />
+    <Input id="birth_date" type="date" label="Date de naissance" bind:value={birth_date} required />
+    <Input id="email" type="email" label="Email" bind:value={email} required /> 
+    <Input id="password" type="password" label="Mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
+    <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
+    
+    <BtnAuth>S'inscrire</BtnAuth>
+  </AuthForm>
 </div>
 
 <style>
@@ -70,34 +53,6 @@
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  label {
-    font-weight: bold;
-    margin-bottom: 0.3rem;
-  }
-  input {
-    padding: 0.7rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-  .btn {
-    padding: 0.8rem;
-    background: #4f8cff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  .btn:hover {
-    background: #2563eb;
   }
   .error {
     color: #ff6b6b;

@@ -18,23 +18,19 @@
     alert('Inscription réussie !');
   }
 </script>
-
+²
 <div class="signup-container">
   <h2>Connexion</h2>
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  <form on:submit|preventDefault={handleSubmit}>
-    <div>
-      <label for="email">Email</label>
-      <input id="email" type="email" bind:value={email} required />
-    </div>
-    <div>
-      <label for="password">Mot de passe</label>
-      <input id="password" type="password" bind:value={password} required minlength="8"  maxlength="50"/>
-    </div>
+  <AuthForm onSubmit={handleSubmit}>
+    <Input id="email" type="email" label="Email" bind:value={email} required /> 
+    <Input id="password" type="password" label="Mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
+    <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
+    
     <BtnAuth>Se connecter</BtnAuth>
-  </form>
+  </AuthForm>
 </div>
 
 <style>
@@ -50,21 +46,6 @@
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  label {
-    font-weight: bold;
-    margin-bottom: 0.3rem;
-  }
-  input {
-    padding: 0.7rem;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
   }
   .error {
     color: #ff6b6b;
