@@ -9,13 +9,16 @@
   let error = '';
 
   function handleSubmit() {
-    if (password !== confirmPassword) {
-      error = "Les mots de passe ne correspondent pas.";
+    if (!email.includes('@')) {
+      error = "Veuillez saisir une adresse email valide.";
       return;
     }
-    // Ajoute ici la logique d'inscription (API, etc.)
+    if (password.length < 8) {
+      error = "Le mot de passe doit contenir au moins 8 caractères.";
+      return;
+    }
     error = '';
-    alert('Inscription réussie !');
+    alert('Connexion réussie !');
   }
 </script>
 ²
@@ -31,6 +34,10 @@
     
     <BtnAuth>Se connecter</BtnAuth>
   </AuthForm>
+  <div class="no-account">
+    <span>Pas encore de compte ?</span>
+    <a href="/auth/signup">Rejoindre la communauté</a>
+  </div>
 </div>
 
 <style>
@@ -51,5 +58,20 @@
     color: #ff6b6b;
     text-align: center;
     margin-bottom: 1rem;
+  }
+  .no-account {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .no-account a {
+    color: #4f8cff;
+    text-decoration: underline;
+    margin-left: 0.3rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .no-account a:hover {
+    color: #2563eb;
   }
 </style>

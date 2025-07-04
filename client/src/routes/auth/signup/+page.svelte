@@ -38,6 +38,11 @@
     
     <BtnAuth>S'inscrire</BtnAuth>
   </AuthForm>
+  <div class="already-account">
+    <span>Vous avez déjà un compte ?</span>
+    <a href="/auth/login">Cliquez ici</a>
+  </div>
+
 </div>
 
 <style>
@@ -58,5 +63,20 @@
     color: #ff6b6b;
     text-align: center;
     margin-bottom: 1rem;
+  }
+  .already-account {
+    margin-top: 1.5rem;
+    text-align: center;
+    font-size: 1rem;
+  }
+  .already-account a {
+    color: #4f8cff;
+    text-decoration: underline;
+    margin-left: 0.3rem;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+  .already-account a:hover {
+    color: #2563eb;
   }
 </style>
