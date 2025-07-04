@@ -2,7 +2,7 @@
   // Tu pourras plus tard gérer les données via une API ou store
 </script>
 <nav>
-      <img src="/logo.png" alt="Logo GamerChallenge" class="logo" />
+  <img src="/favicon.svg" alt="Logo GamerChallenge" class="logo" />
   <input type="text" class="search" placeholder="Rechercher votre jeux 🔍" />
   <div class="buttons">
     <button class="btn">Inscription</button>

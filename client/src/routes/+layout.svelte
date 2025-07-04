@@ -1,6 +1,7 @@
 <script>
   import Navbar from '$lib/components/layout/Navbar.svelte';
-
+  import '../reset.css';
+  import '../global.css';
 </script>
 
 <!-- HEADER -->
