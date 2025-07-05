@@ -46,9 +46,9 @@
   }
   
   let activeModal = null; // Pour gérer l'état des popups
-  function open(modal) { activeModal = modal; } // Ouvre une popup
+  function open(modal) { activeModal = modal; console.log("Which popup is active:", activeModal); } // Ouvre une popup
   function close() { activeModal = null; } // Ferme la popup active
-  console.log("Which popup is active:", activeModal);
+  
 </script>
 
 <AuthContainer title="Mon profil">
@@ -149,14 +149,6 @@
    background: rgba(255, 255, 255, 0.2);
    color: white;
    font-size: 14px;
-}
-
-.container a {
-  margin-top: 0.3rem;
-  color: #4f8cff;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  align-self: flex-start;
 }
 .container.delete-account {
   display: flex;
