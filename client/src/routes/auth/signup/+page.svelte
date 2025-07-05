@@ -46,19 +46,6 @@
 </AuthContainer>
 
 <style>
-  .signup-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 2rem;
-    background: #222;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    color: #fff;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
   .error {
     color: #ff6b6b;
     text-align: center;

@@ -1,5 +1,15 @@
 <script>
   // Exemple de données utilisateur (à remplacer par des données réelles)
+  import { onMount } from 'svelte';
+  import AuthContainer from '$lib/components/auth/AuthContainer.svelte';
+  import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
+  import DeletePopUp from '$lib/components/me/PopUp/DeletePopUp.svelte';
+  import ModifyPasswordPopUp from '$lib/components/me/PopUp/ModifyPasswordPopUp.svelte';
+  import Btn from '$lib/components/me/Btn.svelte';
+  // import { deleteAccount } from '$lib/api/user'; // Assurez-vous d'avoir une fonction pour supprimer le compte
+  // import { getUserData } from '$lib/api/user'; // Fonction pour récupérer les données utilisateur
+  // import { getChallenges } from '$lib/api/challenges'; // Fonction pour récupérer les challenges
+  
   let user = {
     username: " ",
     first_name: " ",
@@ -34,17 +44,21 @@
       reader.readAsDataURL(file);
     }
   }
+  
+  let activeModal = null; // Pour gérer l'état des popups
+  function open(modal) { activeModal = modal; } // Ouvre une popup
+  function close() { activeModal = null; } // Ferme la popup active
+  console.log("Which popup is active:", activeModal);
 </script>
 
-<div class="profile-container">
-  <h2>Mon profil</h2>
+<AuthContainer title="Mon profil">
     <div class="user-info">
-  <div class="container">
+  <div class="container email">
     <label for="email">Email :</label>
     <div>{user.email}</div>
   </div>
 
-  <div class="container">
+  <div class="container birth_date">
     <label for="birth_date">Date de naissance :</label>
     <div>{user.birth_date}</div>
   </div>
@@ -52,13 +66,13 @@
   <div class="container pseudo">
     <label for="pseudo" class="pseudo">Pseudo :</label>
     <div>{user.username}</div>
-    <a href="/auth/change-password">Modifier le pseudo</a>
+    <button class="modify">Modifier le pseudo</button>
   </div>
 
   <div class="container password">
     <label for="password">Mot de passe :</label>
     <div>••••••••</div>
-    <a href="/auth/change-password">Modifier le mot de passe</a>
+    <button class="modify" style="cursor:pointer" on:click={() => open('modifyPassword')}>Modifier le mot de passe</button>
   </div>
 
   <div class="container avatar-container">
@@ -69,43 +83,45 @@
 
   <div class="container delete-account">
     <label for="delete">Suppression de compte :</label>
-    <button class="btn delete" on:click={deleteAccount}>Supprimer mon compte</button>
+    <Btn on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
+    
   </div>
-</div>
 
-<button class="btn logout" on:click={logout}>Se déconnecter</button>
-
-  <h3>Mes challenges</h3>
-  <ul class="challenges-list">
-    {#each challenges as challenge}
-      <li>
-        <span>{challenge.title}</span>
-        <span class="status">{challenge.status}</span>
-      </li>
-    {/each}
-  </ul>
 </div>
+  {#if activeModal}
+    <!-- Wrapper qui gère l’ouverture/fermeture générale -->
+    <ProfilePopUp bind:open={activeModal} on:close={close}> <!-- Utilisation de la popup -->
+      {#if activeModal=== 'deletePassword'} <!-- Popup de suppression de compte -->
+        <DeletePopUp  on:close={close} /> 
+      {:else if activeModal === 'modifyPassword'} <!-- Popup de modification de mot de passe -->
+        <ModifyPasswordPopUp  
+          on:submit={(data) => {console.log("Nouveau mot de passe :", data.newPassword); close(); }}
+          on:close:{close}
+        />
+      {/if}  
+    </ProfilePopUp>  
+  {/if}    
+
+  <!-- Bouton de déconnexion -->
+  <Btn class="btn logout" on:click={logout}>Se déconnecter</Btn>
+
+  <!--Challenges de l'utilisateur-->
+  <div class="challenges">
+   <h3>Mes challenges</h3>
+   <ul class="challenges-list">
+      {#each challenges as challenge}
+        <li>
+          <span>{challenge.title}</span>
+          <span class="status">{challenge.status}</span>
+        </li>
+      {/each}
+    </ul>
+  </div>
+</AuthContainer>
 
 <style>
-.profile-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 2rem;
-  background: #222;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-h2 {
-  text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
-}
-
 .user-info {
-  background: #2b0a0a;
+  background: none;
   padding: 1.5rem;
   border-radius: 8px;
   display: flex;
@@ -126,12 +142,13 @@ h2 {
 
 .container div, 
 .container input {
-  background: #444;
-  border: none;
-  padding: 0.6rem;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 1rem;
+  width: 100%;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 25px;
+   background: rgba(255, 255, 255, 0.2);
+   color: white;
+   font-size: 14px;
 }
 
 .container a {
@@ -141,32 +158,22 @@ h2 {
   text-decoration: underline;
   align-self: flex-start;
 }
-
-.btn.logout,
-.btn.delete {
-  display: inline-block;
-  background: #e54747;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 1.2rem;
-}
-
-.btn.logout:hover,
-.btn.delete:hover {
-  background: #b91c1c;
-}
-
 .container.delete-account {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   gap: 0.5rem;
   margin-top: 2rem;
   align-items: flex-start;
+}
+.modify {
+  background: none;
+  color: #4f8cff;
+  text-decoration: underline;
+  border: none;
+}
+.challenges {
+  margin-top: 2rem;
 }
 
 
