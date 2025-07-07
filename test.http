@@ -1,3 +1,26 @@
+
+### User login OK
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "jules@example.com",
+    "password" : "hashedpass1"
+}
+
+# # token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+# ### Cards list
+# GET http://localhost:3000/cards
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+# ### Cards by list_id
+# GET http://localhost:3000/cards?list_id=1
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+# ### Lists list
+# GET http://localhost:3000/lists
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+=======
 ### Games list
 GET http://localhost:3000/games
 
@@ -16,11 +39,71 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpY
 GET http://localhost:3000/lists
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
 
+
 ### User registration
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
+    "email": "user@exemple.com",
+    "pseudo": "user",
+    "password": "useruser",
+    "birth_date": "1990-01-01",
+    "first_name": "user",
+    "last_name": "user"   
+}
+
+# ### User login OK
+# POST http://localhost:3000/auth/login
+# Content-Type: application/json
+
+# {
+#     "username": "user3",
+#     "password": "user3"
+# }
+
+# ### User login ko
+# POST http://localhost:3000/auth/login
+# Content-Type: application/json
+
+# {
+#     "username": "admin",
+#     "password": "a"
+# }
+
+# ### me
+# GET http://localhost:3000/auth/me
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+
+# ### list creation
+# POST http://localhost:3000/lists
+# Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+# {
+#     "title": "youhou",
+#     "position": 2
+# }
+
+
+# ### send prompt mistral
+# POST http://localhost:3000/ai 
+# Content-Type: application/json
+
+# {
+#     "prompt": "Quel est le pays le plus grand d'Afrique ?"
+# }
+
+
+# ### send correction prompt mistral
+# POST http://localhost:3000/ai/correction
+# Content-Type: application/json
+
+# {
+#     "prompt": "Quelles et le pays le plu grand d'Afryique"
+# }
+=======
     "username": "user2",
     "password": "user2"
 }
@@ -59,3 +142,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpY
 }
 
 -->
+
