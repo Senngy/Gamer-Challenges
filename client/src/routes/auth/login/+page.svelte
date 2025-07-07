@@ -2,36 +2,55 @@
   import AuthForm from "$lib/components/auth/AuthForm.svelte"
   import Input from "$lib/components/auth/Input.svelte"
   import BtnAuth from "$lib/components/auth/BtnAuth.svelte"
+  import Btn from "$lib/components/auth/Btn.svelte"
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
-  let username = '';
-  let email = '';
-  let password = '';
-  let confirmPassword = '';
-  let error = '';
+  import { login } from "$lib/services/auth.service.js" // Importation de la fonction de connexion
+  let email =  $state(''); // Variable pour stocker l'email
+  let password = $state(''); // Variable pour stocker le mot de passe
+  let error = $state(''); // Variable pour stocker les messages d'erreur
 
-  function handleSubmit() {
-    if (!email.includes('@')) {
+  const handleSubmitLogin = async (e) => { // Fonction pour gérer la soumission du formulaire et la connexion
+    console.log('handleSubmitLogin called'); // Affichage d'un message de débogage dans la console
+    e.preventDefault(); // Empêche le rechargement de la page
+    if (!email.includes('@')) { // Vérification de la validité de l'email
       error = "Veuillez saisir une adresse email valide.";
       return;
     }
-    if (password.length < 8) {
+    if (password.length < 8) {  // Vérification de la longueur du mot de passe
       error = "Le mot de passe doit contenir au moins 8 caractères.";
       return;
+    } 
+    if (email === '' || password === '') {  // Vérification que les champs ne sont pas vides
+      error = "Veuillez remplir tous les champs.";
+      return;
     }
+    /*
+    const formData = new FormData(e.target);  // Récupération des données du formulaire
+    const email = formData.get("email");  // Récupération du nom d'utilisateur
+    const password = formData.get("password");   // Récupération du mot de passe
+  */
+    try {
+      const { user } = await login(email, password); // Appel de la fonction de connexion
+      console.log('Utilisateur connecté:', user); // Affichage de l'utilisateur connecté dans la console
+      // setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store ou le cookie
+    } catch (e) {
+      error = "Une erreur est survenue lors de la connexion.";
+    }  
     error = '';
     alert('Connexion réussie !');
+    console.log('Connexion réussie !'); // Affichage d'un message de succès dans la console
   }
 </script>
+
 <AuthContainer title="Connexion">
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  <AuthForm onSubmit={handleSubmit}>
-    <Input id="email" type="email" label="Email" placeholder="Entrez votre email" bind:value={email} required /> 
-    <Input id="password" type="password" label="Mot de passe" placeholder="Entrez votre mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
-    <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" placeholder="Confirmez votre mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
-    
-    <BtnAuth>Se connecter</BtnAuth>
+  <AuthForm onSubmit={handleSubmitLogin}>
+    <Input id="email" type="email" name="email" label="Email" placeholder="Entrez votre email" bind:value={email} required /> 
+    <Input id="password" type="password" name="password" label="Mot de passe" placeholder="Entrez votre mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
+      
+    <Btn>Se connecter</Btn>
   </AuthForm>
   <div class="no-account">
     <span>Pas encore de compte ?</span>

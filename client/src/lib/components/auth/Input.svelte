@@ -4,6 +4,7 @@
   export let label = '';
   export let value;
   export let placeholder = '';
+  export let name = '';
 </script>
 
 <div>
@@ -11,6 +12,7 @@
   <input
     id={id}
     type={type}
+    name={name}
     bind:value
     required
     placeholder={placeholder}
@@ -27,15 +29,15 @@
 
   }
   input {
-   width: 100%;
-   padding: 10px 20px;
-   border: none;
-   border-radius: 25px;
-   background: rgba(255, 255, 255, 0.2);
-   color: white;
-   font-size: 14px;
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 14px;
   }
   input::placeholder {
-   color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.6);
   }
 </style>

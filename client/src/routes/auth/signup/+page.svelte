@@ -3,14 +3,14 @@
   import Input from "$lib/components/auth/Input.svelte";  
   import BtnAuth from "$lib/components/auth/BtnAuth.svelte";
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
-  let username = '';
-  let email = '';
-  let password = '';
-  let confirmPassword = '';
-  let error = '';
-  let birth_date = '';
-  let first_name = '';
-  let last_name = '';
+  let username = $state('');
+  let email = $state('');
+  let password =$state('');
+  let confirmPassword =$state('');
+  let error =$state('');
+  let birth_date =$state('');
+  let first_name =$state('');
+  let last_name =$state('');
 
   function handleSubmit() {
     if (password !== confirmPassword) {
