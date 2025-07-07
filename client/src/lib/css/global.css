@@ -212,129 +212,144 @@ body {
 /* ===========================
    ✅ POPULAR GAMES (HERO)
    =========================== */
-   .popular-games {
-    position: relative;
-    width: 100%;
-    height: 100%; /* Ou une hauteur fixe si nécessaire (ex: 400px) */
-    border-radius: 20px;
-    overflow: hidden;
-    padding: 0;
-  }
-  
-  /* Image de fond (par balise <img>) */
-  .slide__image {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  /* Overlay sombre pour lisibilité du texte */
-  .popular-games::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.4); /* Ajuste l'opacité ici */
-    z-index: 1;
-  }
-  
-  /* Contenu au-dessus de l’image */
-  .popular-games__content {
-    position: relative;
-    z-index: 2;
-    height: 100%;
-    padding: 2em;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    color: white;
-  }
-  
-  /* Tag "🔥 Populaires" */
-  .popular-games__tag {
-    background: var(--background-color, rgba(255, 255, 255, 0.15));
-    padding: 8px 15px;
-    border-radius: 15px;
-    font-size: 12px;
-    margin-bottom: 2em;
-    border: 1px solid #fff;
-    text-transform: uppercase;
-    align-self: flex-start;
-  }
-  
-  /* Titre du jeu */
-  .popular-games__title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 34px;
-    font-weight: bold;
-    margin-bottom: 0.4em;
-  }
-  
-  /* Description */
-  .popular-games__description {
-    font-size: 12px;
-    line-height: 1.5;
-    margin-bottom: 2em;
-  }
-  
-  /* Bouton */
-  .popular-games__btn {
-    font-size: 12px;
-    padding: 0.6em 1.2em;
-    border-radius: 25px 60px 25px 60px;
-    background: var(--primary-color, #007bff);
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  /* Navigation (flèches & pagination) */
-  .popular-games__nav {
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1em;
-    margin-top: 1em;
-  }
-  
-  .popular-games__arrows {
-    display: flex;
-    gap: 0.6em;
-  }
-  
-  .popular-games__arrow {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    color: var(--text-color, #fff);
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-  }
-  
-  .popular-games__pagination-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  
-  
+ /* === SLIDER CONTAINER === */
+.popular-games {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  border-radius: 20px;
+}
 
-/* Cercle de progression animé */
+/* === SLIDE === */
+.slide {
+  display: none;
+}
+
+.slide.active {
+  display: flex;
+}
+
+/* === IMAGE DE SLIDE === */
+.slide__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* === OVERLAY SOMBRE === */
+.popular-games::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+  z-index: 1;
+  border-radius: 20px;
+}
+/* === CONTENU TEXTE SUR L'IMAGE === */
+.popular-games__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 1em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: white;
+}
+.popular-games__text {
+  z-index: 2;
+}
+/* === TAG === */
+.popular-games__tag {
+  background: var(--background-color, #222);
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 6px;
+  border: 1px solid #fff;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+/* === TITRE === */
+.popular-games__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 34px;
+  font-weight: bold;
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+}
+
+/* === DESCRIPTION === */
+.popular-games__description {
+  font-size: 10px;
+  line-height: 1.5;
+  margin-bottom: 2em;
+}
+/* === BOUTON === */
+.popular-games__btn {
+  font-size: 12px;
+  padding: 0.6em 1.2em;
+  margin-bottom: 8em;
+  border-radius: 25px 60px 25px 60px;
+  background: var(--btn-color, #ff5252);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/* === NAVIGATION & FLÈCHES === */
+.popular-games__nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  pointer-events: none; /* empêche clic sauf sur enfants */
+}
+.popular-games__arrows {
+  display: flex;
+  gap: 0.6em;
+  pointer-events: auto;
+}
+.popular-games__arrow {
+  width: 30px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  border: none;
+  color: var(--text-color, #fff);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+/* === PAGINATION === */
+.popular-games__pagination-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+.popular-games__pagination {
+  font-size: 12px;
+  color: white;
+}
+
+/* === CERCLE DE PROGRESSION === */
 .progress-circle {
   width: 36px;
   height: 36px;
-  transform: rotate(-90deg); /* commence à 12h */
+  transform: rotate(-90deg); /* commence en haut */
 }
 .circle-bg {
   fill: none;
@@ -345,8 +360,8 @@ body {
   fill: none;
   stroke: #ff5252;
   stroke-width: 4;
-  stroke-dasharray: 100.53; /* 2 * π * r (r=16) */
-  stroke-dashoffset: 100.53; /* caché au départ */
+  stroke-dasharray: 100.53; /* valeur initiale (r = 16) */
+  stroke-dashoffset: 100.53;
   transition: stroke-dashoffset 5s linear;
 }
 
@@ -612,4 +627,3 @@ body {
       opacity: 1;
       outline: none;
     }
-    
