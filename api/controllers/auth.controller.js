@@ -25,22 +25,59 @@ export async function login(req, res) {
     }
 }
 
+export async function register(req, res) {
+    console.log("REQ BODY :", req.body);
+    // récupération du email et du mdp 
+    // et du nom du role
+    const { email, pseudo, password, birth_date, first_name, last_name } = req.body;
+    try {
+       // const hashedPassword = scrypt.hash(password);
+        
+
+        //création du user en BDD
+        const user = await User.create({
+            pseudo, 
+            email,
+            password,
+            birth_date,
+            first_name,
+            last_name,
+        });
+        // on renvoit les infos au client
+        return res.status(StatusCodes.CREATED).json(user);
+    } catch (error) {
+        if (error.name === 'SequelizeUniqueConstraintError') {
+
+            let errorMsg = 'Duplicate entry';
+            if (error.errors.length > 0) {
+                errorMsg = error.errors[0].message;
+            }
+            return res.status(StatusCodes.CONFLICT).json({ 
+                error: errorMsg
+            });
+        }
+        console.log(error);
+        throw new Error("Internal Server Error !");
+    }
+}
+
+
 /*
 export async function login(req, res) {
-    // récupération du username et du mdp 
-    const usernameFromRequest = req.body.username;
+    // récupération du email et du mdp 
+    const emailFromRequest = req.body.email;
     const passwordFromRequest = req.body.password;
-    // const { usernameFromRequest: username, passwordFromRequest: password } = req.body;
+    // const { emailFromRequest: email, passwordFromRequest: password } = req.body;
 
     try {
         // si plus de 3 essais en 5 minutes => authent KO
 
-        // récupérer l'utilisateur avec le bon username
+        // récupérer l'utilisateur avec le bon email
         // let toto = 'une valeur'
         // { toto: toto } => { toto }
-        const user = await User.findOne({ where : {username: usernameFromRequest}});
+        const user = await User.findOne({ where : {email: emailFromRequest}});
 
-        // SELECT * FROM "user" WHERE username = 'admin' LIMIT 1;
+        // SELECT * FROM "user" WHERE email = 'admin' LIMIT 1;
         // Si trouvé
         // cf falsy : https://developer.mozilla.org/en-US/docs/Glossary/Falsy
         if (user)

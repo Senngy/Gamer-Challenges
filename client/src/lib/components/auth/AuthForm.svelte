@@ -14,7 +14,7 @@
       return;
     }
     try {
-      await register({ username, email, password, birth_date, first_name, last_name });
+      await register( username, email, password, birth_date, first_name, last_name );
       error = '';
       // Redirection vers la page de connexion
       goto('/auth/login');

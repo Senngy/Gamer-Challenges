@@ -13,6 +13,16 @@ export const login = async (email, password) => {
   }
 }
 
+export async function register(pseudo, email, password, birth_date, first_name, last_name) {
+  try {
+    const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date, first_name, last_name });
+    console.log('Login auth.service.js successful:', userRegister);
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
+  }
+  return userRegister; 
+}
 
 /*
 export const loginUser = async (credentials) => {

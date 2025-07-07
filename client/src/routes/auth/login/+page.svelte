@@ -5,6 +5,7 @@
   import Btn from "$lib/components/auth/Btn.svelte"
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
   import { login } from "$lib/services/auth.service.js" // Importation de la fonction de connexion
+  import { goto } from "$app/navigation"; // Importation de la fonction de navigation
   let email =  $state(''); // Variable pour stocker l'email
   let password = $state(''); // Variable pour stocker le mot de passe
   let error = $state(''); // Variable pour stocker les messages d'erreur
@@ -38,7 +39,7 @@
     }  
     error = '';
     alert('Connexion réussie !');
-    console.log('Connexion réussie !'); // Affichage d'un message de succès dans la console
+    goto('/'); // Redirection vers la page d'accueil après une connexion réussie
   }
 </script>
 
