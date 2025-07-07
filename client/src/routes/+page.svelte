@@ -1,10 +1,23 @@
 <script>
-    import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
-</script>
+  import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+  let games = [];
 
-<head>
-  <title>GamerChallenges - Accueil</title>
-</head>
+  // Récupère tous les jeux au chargement de la page
+  import { onMount } from 'svelte';
+  onMount(async () => {
+    const res = await fetch('http://localhost:3000/games');
+    games = await res.json();
+  });
+
+  // Fonction pour obtenir 4 jeux aléatoires
+  $: randomGames =
+    games.length >= 4
+      ? games
+          .slice()
+          .sort(() => Math.random() - 0.5)
+          .slice(0, 4)
+      : games;
+</script>
 
 <!-- ========================== -->
 <!-- Hero Section -->
@@ -153,12 +166,9 @@
   <h2 class="catalog__title" id="catalog-title">
     Également sur notre catalogue
   </h2>
-
   <div class="catalog__grid" role="list">
-    <CatalogItem />
-    <CatalogItem />
-    <CatalogItem />
-    <CatalogItem />
+    {#each randomGames as game}
+      <CatalogItem {game} />
+    {/each}
   </div>
-
 </section>
