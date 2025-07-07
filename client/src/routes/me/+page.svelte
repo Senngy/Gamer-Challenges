@@ -5,7 +5,10 @@
   import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
   import DeletePopUp from '$lib/components/me/PopUp/DeletePopUp.svelte';
   import ModifyPasswordPopUp from '$lib/components/me/PopUp/ModifyPasswordPopUp.svelte';
+  import ModifyPseudoPopUp from '$lib/components/me/PopUp/ModifyPseudoPopUp.svelte'; // Si vous avez besoin de modifier le pseudo
   import Btn from '$lib/components/me/Btn.svelte';
+	import { goto } from '$app/navigation'; // Pour la navigation
+
   // import { deleteAccount } from '$lib/api/user'; // Assurez-vous d'avoir une fonction pour supprimer le compte
   // import { getUserData } from '$lib/api/user'; // Fonction pour récupérer les données utilisateur
   // import { getChallenges } from '$lib/api/challenges'; // Fonction pour récupérer les challenges
@@ -24,7 +27,7 @@
     { title: " ", status: " " },
   ];
 
-  function logout() {
+  function logout() { // Fonction de déconnexion
     // Logique de déconnexion ici
     alert("Déconnexion !");
   }
@@ -34,7 +37,7 @@
 
   let previewUrl = imageUrl;
 
-  function handleFileChange(event) {
+  function handleFileChange(event) { // Fonction pour gérer le changement de fichier pour l'avatar
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -46,8 +49,13 @@
   }
   
   let activeModal = null; // Pour gérer l'état des popups
-  function open(modal) { activeModal = modal; console.log("Which popup is active:", activeModal); } // Ouvre une popup
+  function open(modal) { // Ouvre la popup
+    activeModal = modal; console.log("Which popup is active:", activeModal);
+  } 
   function close() { activeModal = null; } // Ferme la popup active
+  function redirect(url) { // Redirige vers une autre page
+    goto(url);
+  }
   
 </script>
 
@@ -66,7 +74,7 @@
   <div class="container pseudo">
     <label for="pseudo" class="pseudo">Pseudo :</label>
     <div>{user.username}</div>
-    <button class="modify">Modifier le pseudo</button>
+    <button class="modify" on:click={() => open('modifyPseudo')}>Modifier le pseudo</button>
   </div>
 
   <div class="container password">
@@ -98,12 +106,17 @@
           on:submit={(data) => {console.log("Nouveau mot de passe :", data.newPassword); close(); }}
           on:close:{close}
         />
+      {:else if activeModal === 'modifyPseudo'} <!-- Popup de modification de pseudo -->
+        <ModifyPseudoPopUp  
+          on:submit={(data) => {console.log("Nouveau pseudo :", data.newPseudo); close(); }}
+          on:close={close}
+        />
       {/if}  
     </ProfilePopUp>  
   {/if}    
 
   <!-- Bouton de déconnexion -->
-  <Btn class="btn logout" on:click={logout}>Se déconnecter</Btn>
+  <Btn class="btn logout" on:click={() => {logout; redirect('/');}}>Se déconnecter</Btn>
 
   <!--Challenges de l'utilisateur-->
   <div class="challenges">
