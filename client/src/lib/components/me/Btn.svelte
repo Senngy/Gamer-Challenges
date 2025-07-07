@@ -2,9 +2,9 @@
 
 </script>
  
- <a type="submit" class="btn" href="/me">
+ <button type="submit" class="btn" on:click>
    <slot></slot> 
- </a>
+ </button>
 
  <style>
   .btn {

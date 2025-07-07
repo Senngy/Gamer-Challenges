@@ -24,7 +24,6 @@
   >
     &#9776;
   </button>
-
   <!-- Menu de navigation mobile -->
   <nav
     class="mobile-menu"

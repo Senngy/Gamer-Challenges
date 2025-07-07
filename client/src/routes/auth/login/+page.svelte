@@ -2,6 +2,7 @@
   import AuthForm from "$lib/components/auth/AuthForm.svelte"
   import Input from "$lib/components/auth/Input.svelte"
   import BtnAuth from "$lib/components/auth/BtnAuth.svelte"
+  import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
   let username = '';
   let email = '';
   let password = '';
@@ -21,16 +22,14 @@
     alert('Connexion réussie !');
   }
 </script>
-²
-<div class="signup-container">
-  <h2>Connexion</h2>
+<AuthContainer title="Connexion">
   {#if error}
     <div class="error">{error}</div>
   {/if}
   <AuthForm onSubmit={handleSubmit}>
-    <Input id="email" type="email" label="Email" bind:value={email} required /> 
-    <Input id="password" type="password" label="Mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
-    <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
+    <Input id="email" type="email" label="Email" placeholder="Entrez votre email" bind:value={email} required /> 
+    <Input id="password" type="password" label="Mot de passe" placeholder="Entrez votre mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
+    <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" placeholder="Confirmez votre mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
     
     <BtnAuth>Se connecter</BtnAuth>
   </AuthForm>
@@ -38,22 +37,9 @@
     <span>Pas encore de compte ?</span>
     <a href="/auth/signup">Rejoindre la communauté</a>
   </div>
-</div>
+</AuthContainer>
 
 <style>
-  .signup-container {
-    max-width: 400px;
-    margin: 40px auto;
-    padding: 2rem;
-    background: #222;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    color: #fff;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
   .error {
     color: #ff6b6b;
     text-align: center;
