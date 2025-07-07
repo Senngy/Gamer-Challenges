@@ -21,7 +21,8 @@
   </div>
   <div class="catalog__content">
     <div class="catalog__tags">
+      <span class="catalog__game__title">{game.title}</span>
       <span class="catalog__tag">{game.platform}</span>
     </div>
-    </div>  
+  </div>
 </div>
