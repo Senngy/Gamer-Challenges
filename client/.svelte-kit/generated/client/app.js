@@ -26,7 +26,7 @@ export const dictionary = {
 		"/challenges": [6],
 		"/challenges/[challengeId]": [7],
 		"/error404": [8],
-		"/games": [9],
+		"/games": [~9],
 		"/games/[gameId]": [10],
 		"/legal notices": [11],
 		"/me": [12]
