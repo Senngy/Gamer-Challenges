@@ -14,10 +14,9 @@
 
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">%sveltekit.body%</div>
-</body>
 
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
 		// === BURGER MENU (Mobile) ===
 		const burger = document.getElementById('burger');
 		const mobileMenu = document.getElementById('mobileMenu');
@@ -48,7 +47,6 @@
 		}
 
 		// === SLIDER ===
-
 		const slides = document.querySelectorAll('.slide');
 		const prevBtn = document.querySelector('.popular-games__arrow.prev');
 		const nextBtn = document.querySelector('.popular-games__arrow.next');
@@ -57,27 +55,33 @@
 
 		let currentIndex = 0;
 		let autoSlideInterval = null;
-		const slideDuration = 5000; // Durée en ms (5s)
+		const slideDuration = 5000; // 5s
 
 		function animateProgressCircle() {
 			if (!progressCircle) return;
 
-			// On stoppe toute animation en supprimant la transition
-			progressCircle.style.transition = 'none';
-			progressCircle.style.strokeDasharray = '100.53'; // Important !
-			progressCircle.style.strokeDashoffset = '100.53';
+			// Calculer le périmètre du cercle dynamiquement
+			const radius = progressCircle.r.baseVal.value;
+			const circumference = 2 * Math.PI * radius;
 
-			// Force le reflow pour appliquer le reset (indispensable)
+			progressCircle.style.strokeDasharray = `${circumference}`;
+			progressCircle.style.strokeDashoffset = `${circumference}`;
+			progressCircle.style.transition = 'none';
+
+			// Force reflow
 			void progressCircle.getBoundingClientRect();
 
-			// Puis on applique la transition + anim vers 0
 			progressCircle.style.transition = `stroke-dashoffset ${slideDuration}ms linear`;
 			progressCircle.style.strokeDashoffset = '0';
 		}
 
 		function updateSlide(index) {
 			slides.forEach((slide, i) => {
-				slide.hidden = i !== index;
+				if (i === index) {
+					slide.classList.add('active');
+				} else {
+					slide.classList.remove('active');
+				}
 			});
 
 			if (pagination) {
@@ -86,6 +90,8 @@
 
 			animateProgressCircle();
 		}
+
+
 
 		function nextSlide() {
 			currentIndex = (currentIndex + 1) % slides.length;
@@ -100,9 +106,7 @@
 		}
 
 		function startAutoSlide() {
-			autoSlideInterval = setInterval(() => {
-				nextSlide();
-			}, slideDuration);
+			autoSlideInterval = setInterval(nextSlide, slideDuration);
 		}
 
 		function resetAutoSlide() {
@@ -115,6 +119,7 @@
 				console.warn('Slider: One or more required elements are missing in the DOM.');
 				return;
 			}
+			slides[0].classList.add('active');
 			updateSlide(currentIndex);
 			startAutoSlide();
 
@@ -122,8 +127,9 @@
 			prevBtn.addEventListener('click', prevSlide);
 		}
 
+
 		initSlider();
 	});
-</script>
-
+	</script>
+</body>
 </html>
