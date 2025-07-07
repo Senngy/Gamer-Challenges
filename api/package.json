@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
+    "start": "node app.js",
     "dev": "nodemon --ignore client app.js",
     "db:create": "node ./database/migrations/01.createTables.js",
     "db:seed": "node ./database/migrations/02.seedTables.js",

@@ -1,6 +1,6 @@
 /* ===========================
-   ✅ VARIABLES CSS GLOBALES
-   =========================== */
+✅ VARIABLES CSS GLOBALES
+=========================== */
    :root {
     --primary-color: #330000;
     --secondary-color: #0C0E0F;
@@ -13,9 +13,6 @@
   /* ===========================
      ✅ STYLES GÉNÉRAUX
      =========================== */
-  /* ===========================
-   ✅ BASE
-   =========================== */
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
@@ -35,16 +32,31 @@ body {
   border: 0;
 }
 
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-size: 34px;
+  margin: 0 1em 1em 1em;
+}
+h2 {
+  font-size: 24px;
+  margin: 0 1em 1em 1em;
+}
 
 /* ===========================
-   ✅ HEADER + BURGER MENU
-   =========================== */
+✅ HEADER + BURGER MENU
+=========================== */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  margin: 0.4em 0.6em;
+  margin: 1.4em 0.6em;
   padding: 0.6em;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.1);
@@ -101,8 +113,8 @@ body {
 }
 
 /* ===========================
-   ✅ MOBILE MENU
-   =========================== */
+✅ MOBILE MENU
+=========================== */
    .mobile-menu {
     position: fixed;
     top: -5px;
@@ -148,7 +160,6 @@ body {
     background: rgba(255, 255, 255, 0.1);
   }
   
-  
   .mobile-menu ul li {
     margin: 3em 1em;
   }
@@ -175,13 +186,12 @@ body {
   
 
 /* ===========================
-   ✅ BOUTONS AUTH (mobile hidden par défaut)
-   =========================== */
+✅ BOUTONS AUTH (mobile hidden par défaut)
+=========================== */
 .header__auth-buttons {
   display: none;
   gap: 10px;
 }
-
 .btn {
   padding: 10px 20px;
   border: none;
@@ -192,16 +202,14 @@ body {
   color: white;
   transition: all 0.3s ease;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* ===========================
-   ✅ CONTENU PRINCIPAL
-   =========================== */
-
+✅ CONTENU PRINCIPAL
+=========================== */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -210,22 +218,143 @@ body {
 }
 
 /* ===========================
-   ✅ POPULAR GAMES (HERO)
-   =========================== */
- /* === SLIDER CONTAINER === */
+✅ POPULAR GAMES (HERO)
+=========================== */
+   .popular-games {
+    position: relative;
+    width: 100%;
+    height: 100%; /* Ou une hauteur fixe si nécessaire (ex: 400px) */
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  /* Overlay sombre pour lisibilité du texte */
+  .popular-games::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4); /* Ajuste l'opacité ici */
+    z-index: 1;
+  }
+  
+  /* Contenu au-dessus de l’image */
+  .popular-games__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: white;
+  }
+  
+  /* Tag "🔥 Populaires" */
+  .popular-games__tag {
+    background: var(--background-color, rgba(255, 255, 255, 0.15));
+    padding: 8px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    margin-bottom: 2em;
+    border: 1px solid #fff;
+    text-transform: uppercase;
+    align-self: flex-start;
+  }
+  
+  /* Titre du jeu */
+  .popular-games__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 0.4em;
+  }
+  
+  /* Description */
+  .popular-games__description {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 2em;
+  }
+  
+  /* Bouton */
+  .popular-games__btn {
+    font-size: 12px;
+    padding: 0.6em 1.2em;
+    border-radius: 25px 60px 25px 60px;
+    background: var(--primary-color, #007bff);
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Navigation (flèches & pagination) */
+  .popular-games__nav {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    margin-top: 1em;
+  }
+  
+  .popular-games__arrows {
+    display: flex;
+    gap: 0.6em;
+  }
+  
+  .popular-games__arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: var(--text-color, #fff);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .popular-games__pagination-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  
+/* ===========================
+✅ POPULAR GAMES (HERO)
+=========================== */
+
+/* === SLIDER CONTAINER === */
 .popular-games {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 400px; /* ou 100% si contenu auto */
   overflow: hidden;
   border-radius: 20px;
+  padding: 0;
 }
 
 /* === SLIDE === */
 .slide {
   display: none;
 }
-
 .slide.active {
   display: flex;
 }
@@ -250,59 +379,58 @@ body {
   z-index: 1;
   border-radius: 20px;
 }
-/* === CONTENU TEXTE SUR L'IMAGE === */
+
+/* === CONTENU AU-DESSUS DE L’IMAGE === */
 .popular-games__content {
   position: relative;
   z-index: 2;
   height: 100%;
-  padding: 1em;
+  padding: 0.4em 1em;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   color: white;
 }
 .popular-games__text {
   z-index: 2;
 }
-/* === TAG === */
+
+/* === TAG "🔥 Populaires" === */
 .popular-games__tag {
-  background: var(--background-color, #222);
+  background: var(--background-color, rgba(255, 255, 255, 0.15));
   padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 6px;
+  border-radius: 15px;
+  font-size: 12px;
   border: 1px solid #fff;
   text-transform: uppercase;
   align-self: flex-start;
 }
-/* === TITRE === */
+
+/* === TITRE DU JEU === */
 .popular-games__title {
   font-family: 'Orbitron', sans-serif;
   font-size: 34px;
   font-weight: bold;
-  margin-top: 1.8em;
-  margin-bottom: 0.4em;
+  margin: 1.8em 0 0.4em 0;
 }
-
 /* === DESCRIPTION === */
 .popular-games__description {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   margin-bottom: 2em;
 }
+
 /* === BOUTON === */
 .popular-games__btn {
   font-size: 12px;
   padding: 0.6em 1.2em;
   margin-bottom: 8em;
-  border-radius: 25px 60px 25px 60px;
+  border-radius: 10px 100px 10px 100px;
   background: var(--btn-color, #ff5252);
   color: white;
   border: none;
   cursor: pointer;
 }
 
-/* === NAVIGATION & FLÈCHES === */
+/* === NAVIGATION (Flèches & Pagination) === */
 .popular-games__nav {
   position: absolute;
   bottom: 0;
@@ -323,8 +451,8 @@ body {
 .popular-games__arrow {
   width: 30px;
   height: 30px;
-  background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
   border: none;
   color: var(--text-color, #fff);
   font-size: 18px;
@@ -333,7 +461,6 @@ body {
   justify-content: center;
   cursor: pointer;
 }
-/* === PAGINATION === */
 .popular-games__pagination-wrapper {
   display: flex;
   align-items: center;
@@ -349,7 +476,7 @@ body {
 .progress-circle {
   width: 36px;
   height: 36px;
-  transform: rotate(-90deg); /* commence en haut */
+  transform: rotate(-90deg);
 }
 .circle-bg {
   fill: none;
@@ -360,7 +487,7 @@ body {
   fill: none;
   stroke: #ff5252;
   stroke-width: 4;
-  stroke-dasharray: 100.53; /* valeur initiale (r = 16) */
+  stroke-dasharray: 100.53;
   stroke-dashoffset: 100.53;
   transition: stroke-dashoffset 5s linear;
 }
@@ -368,84 +495,76 @@ body {
 /* ===========================
    ✅ LEADERBOARD
    =========================== */
-   .leaderboard {
-    margin-top: 3em;
-    padding: 1em;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Title & Highlight */
-  .leaderboard__title {
-    font-size: 1.8rem;
-    font-weight: 700;
-  }
-  
-  .leaderboard__highlight {
-    display: inline-block;
-    background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 2em;
-  }
-  
-  /* Player Item */
-  .leaderboard__item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1em;
-    padding: 1.2em 0.4em;
-  }
-  /* Avatar */
-  .leaderboard__player-avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(45deg, #ff6b6b, #ffd700);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  /* Player Info */
-  .leaderboard__player-info {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-    margin: auto;
-  }
-  .leaderboard__player-name {
-    font-size: 20px;
-    text-transform: uppercase;
-    margin-bottom: 0.2em;
-  }
-  .leaderboard__player-stats {
-    font-size: 16px;
-  }
-  .leaderboard__player-points {
-    font-size: 20px;
-    font-weight: bold;
-  }
-  .leaderboard__player-level {
-    font-size: 24px;
-  }
+.leaderboard {
+  margin-top: 3em;
+  padding: 1em;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+}
 
-  /* Divider */
-  .leaderboard__divider {
-    width: 100%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #ffd700, transparent);
-  }
-  
+.leaderboard__title {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.leaderboard__highlight {
+  display: inline-block;
+  background: linear-gradient(135deg, #FFD700, #FFA500, #FF8C00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 2em;
+}
+
+.leaderboard__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+  padding: 1.2em 0.4em;
+}
+
+.leaderboard__player-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff6b6b, #ffd700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.leaderboard__player-info {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin: auto;
+}
+.leaderboard__player-name {
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 0.2em;
+}
+.leaderboard__player-stats
+ {
+  font-size: 16px;
+}
+.leaderboard__player-level{
+  font-size: 24px;
+}
+.leaderboard__divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ffd700, transparent);
+}
+
 /* ===========================
-   ✅ CATALOGUE
-   =========================== */
+✅ CATALOGUE
+=========================== */
 .catalog {
   margin-top: 3em;
 }
@@ -465,7 +584,6 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease;
 }
-
 .catalog__item:hover {
   transform: translateY(-6px);
 }
@@ -524,10 +642,164 @@ body {
   border-radius: 10px;
 }
 
+/* ===========================
+✅ GAMES
+=========================== */
+   .game-details {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Contenu au-dessus de l’image */
+  .game-details__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: white;
+  }
+
+   /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
   
-  /* ===========================
-     ✅ FOOTER
-     =========================== */
+  /* Overlay sombre pour lisibilité du texte */
+  .game-details::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,       /* Transparent en haut */
+    rgba(0, 0, 0, 0.3) 50%,    /* Début de foncé */
+    rgba(0, 0, 0, 0.6) 100%    /* Foncé en bas */
+    );
+  }
+
+  /* Titre du jeu */
+  .game-details__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0 0 0.4em 0;
+  }
+  
+  /* Description */
+  .game-details__description {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 2em;
+  }
+
+  .game-details__platform {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    margin-bottom: 2em;
+  }
+  
+
+/* ===========================
+✅ CHALLENGES
+=========================== */
+.challenge {
+  margin-top: 3em;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin-bottom: 1.4em;
+}
+.challenge__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+}
+.challenge__item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.challenge__item:hover {
+  transform: translateY(-6px);
+}
+
+.challenge__image {
+  height: 200px;
+  background-image: url(/images/background-valorant.webp);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.challenge__like-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--text-color);
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.challenge__content {
+  padding: 20px;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.challenge__description, .challenge__rules  {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+/* ===========================
+✅ LOAD MORE
+=========================== */
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3em 0.3em;
+}
+
+  
+/* ===========================
+✅ FOOTER
+=========================== */
      .footer {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(1.25em) saturate(1.6);

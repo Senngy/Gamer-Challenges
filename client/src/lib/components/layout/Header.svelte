@@ -24,7 +24,6 @@
   >
     &#9776;
   </button>
-
   <!-- Menu de navigation mobile -->
   <nav
     class="mobile-menu"
@@ -33,11 +32,11 @@
   >
   <button id="closeMenu" class="mobile-menu__close">×</button>
     <ul>
-      <li><a href="#" class="mobile-link">Accueil</a></li>
-      <li><a href="#" class="mobile-link">Catalogue</a></li>
-      <li><a href="#" class="mobile-link">À propos</a></li>
-      <li><a href="#" class="mobile-link">Inscription</a></li>
-      <li><a href="#" class="mobile-link">Connexion</a></li>
+      <li><a href="/" class="mobile-link">Accueil</a></li>
+      <li><a href="/games" class="mobile-link">Catalogue</a></li>
+      <li><a href="/apropos" class="mobile-link">À propos</a></li>
+      <li><a href="/register" class="mobile-link">Inscription</a></li>
+      <li><a href="/login" class="mobile-link">Connexion</a></li>
     </ul>
   </nav>
 </header>

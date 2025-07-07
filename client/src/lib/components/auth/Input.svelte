@@ -1,0 +1,41 @@
+<script>
+  export let id = '';
+  export let type = 'text';
+  export let label = '';
+  export let value;
+  export let placeholder = '';
+</script>
+
+<div>
+  <label for={id}>{label}</label>
+  <input
+    id={id}
+    type={type}
+    bind:value
+    required
+    placeholder={placeholder}
+  />
+</div>
+
+<style>
+  label {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    display: block;
+    padding-left: 2rem;
+    /* or text-align: center; */
+
+  }
+  input {
+   width: 100%;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 25px;
+   background: rgba(255, 255, 255, 0.2);
+   color: white;
+   font-size: 14px;
+  }
+  input::placeholder {
+   color: rgba(255, 255, 255, 0.6);
+  }
+</style>
