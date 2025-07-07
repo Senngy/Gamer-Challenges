@@ -15,7 +15,7 @@
         </div>
         <h1 class="game-details__title">VALORANT</h1>
         <p class="game-details__description">
-        Valorant est un jeu de tir tactique...
+        Valorant est un jeu de tir tactique à la première personne développé par Riot Games, où deux équipes de cinq joueurs s’affrontent dans des parties stratégiques mêlant précision, coordination et compétences spéciales. Chaque joueur incarne un “agent” doté de capacités uniques, ajoutant une dimension héroïque au gameplay classique du genre.
         </p>
         <button class="btn btn--primary">Lancer un nouveau défi maintenant</button>
     </div>
