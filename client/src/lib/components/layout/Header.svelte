@@ -1,19 +1,43 @@
-<header class="header">
-  <div class="header__logo">GC</div>
+<header class="header" aria-label="En-tête du site Gamer Challenge">
+  <!-- Logo du site -->
+  <div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
 
-  <div class="header__search-bar">
-    <input type="text" placeholder="Rechercher votre jeu... 🔍" />
+  <!-- Barre de recherche -->
+  <div class="header__search-bar" aria-label="Barre de recherche">
+    <label for="search" class="visually-hidden">Rechercher un jeu</label>
+    <input
+      type="search"
+      id="search"
+      name="search"
+      placeholder="Rechercher votre jeu... 🔍"
+      aria-label="Rechercher un jeu"
+    />
   </div>
 
-  <!-- Menu burger icône -->
-  <div class="burger" id="burger">&#9776;</div>
+  <!-- Bouton menu burger -->
+  <button
+    class="burger"
+    id="burger"
+    aria-label="Ouvrir le menu"
+    aria-controls="mobileMenu"
+    aria-expanded="false"
+  >
+    &#9776;
+  </button>
 
-  <!-- Menu latéral mobile -->
-  <nav class="mobile-menu" id="mobileMenu">
-    <a href="#" class="mobile-link">Accueil</a>
-    <a href="#" class="mobile-link">Catalogue</a>
-    <a href="#" class="mobile-link">À propos</a>
-    <button class="btn">Connexion</button>
-    <button class="btn">Inscription</button>
+  <!-- Menu de navigation mobile -->
+  <nav
+    class="mobile-menu"
+    id="mobileMenu"
+    aria-label="Menu mobile"
+  >
+  <button id="closeMenu" class="mobile-menu__close">×</button>
+    <ul>
+      <li><a href="#" class="mobile-link">Accueil</a></li>
+      <li><a href="#" class="mobile-link">Catalogue</a></li>
+      <li><a href="#" class="mobile-link">À propos</a></li>
+      <li><a href="#" class="mobile-link">Inscription</a></li>
+      <li><a href="#" class="mobile-link">Connexion</a></li>
+    </ul>
   </nav>
 </header>

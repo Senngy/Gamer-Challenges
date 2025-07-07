@@ -1,48 +1,60 @@
-<footer class="footer">
+<footer class="footer" aria-label="Pied de page du site Gamer Challenge">
   <!-- Bloc Logo + Infos -->
   <div class="footer__brand">
-    <div class="footer__logo">GC</div>
+    <div class="footer__logo" aria-hidden="true">GC</div>
     <div class="footer__info">
-      <h3 class="footer__title">Gamer Challenge</h3>
+      <h2 class="footer__title">Gamer Challenge</h2>
       <p class="footer__copyright">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#FFF"
-          ><path
-            d="M400-320h160q17 0 28.5-11.5T600-360v-80h-80v40h-80v-160h80v40h80v-80q0-17-11.5-28.5T560-640H400q-17 0-28.5 11.5T360-600v240q0 17 11.5 28.5T400-320Zm80 240q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
-          /></svg
-        >2025, Tous droits réservés.
+        <span class="visually-hidden"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            height="16"
+            viewBox="0 0 960 960"
+            width="16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              d="M400 640h160q17 0 28.5-11.5T600 600v-80h-80v40h-80V400h80v40h80v-80q0-17-11.5-28.5T560 320H400q-17 0-28.5 11.5T360 360v240q0 17 11.5 28.5T400 640zm80 240q-83 0-156-31.5T197 853q-54-54-85.5-127T80 480q0-83 31.5-156T197 197q54-54 127-85.5T480 80q83 0 156 31.5T763 197q54 54 85.5 127T880 480q0 83-31.5 156T763 763q-54 54-127 85.5T480 880z"
+            />
+          </svg>Droits d’auteur</span
+        > 2025, Tous droits réservés.
       </p>
     </div>
   </div>
 
   <!-- Bloc Contact -->
-  <div class="footer__contact">
-    <p>Téléphone : +33 1 23 45 67 89</p>
-    <p>Email : GameChallenge@gmail.com</p>
-    <p>Adresse : 42 rue de l'Innovation, 75000 Paris</p>
-  </div>
+  <address class="footer__contact" aria-label="Informations de contact">
+    <p>
+      <strong>Téléphone :</strong>
+      <a href="tel:+33123456789">+33 1 23 45 67 89</a>
+    </p>
+    <p>
+      <strong>Email :</strong>
+      <a href="mailto:GameChallenge@gmail.com">GameChallenge@gmail.com</a>
+    </p>
+    <p><strong>Adresse :</strong> 42 rue de l'Innovation, 75000 Paris</p>
+  </address>
 
   <!-- Bloc Navigation Légale -->
-  <nav class="footer__nav">
-    <a href="#">Mentions légales</a>
-    <a href="#">Conditions d’utilisation</a>
-    <a href="#">Politique de confidentialité</a>
+  <nav class="footer__nav" aria-label="Navigation légale">
+    <ul>
+      <li><a href="#">Mentions <br> légales</a></li>
+      <li><a href="#">Conditions <br> d’utilisation</a></li>
+      <li><a href="#">Politique de <br> confidentialité</a></li>
+    </ul>
   </nav>
 
   <!-- Bloc Réseaux sociaux -->
-  <div class="footer__socials">
-    <a href="#" aria-label="github" class="social-icon">
-      <img src="/icone/github.png" alt="GitHub Icon" />
+  <div class="footer__socials" aria-label="Réseaux sociaux">
+    <a href="#" class="social-icon" aria-label="GitHub">
+      <img src="/icone/github copie.png" alt="" role="presentation" />
     </a>
-    <a href="#" aria-label="Discord" class="social-icon">
-      <img src="/icone/discord.png" alt="Discord Icon" />
+    <a href="#" class="social-icon" aria-label="Discord">
+      <img src="/icone/discord.png" alt="" role="presentation" />
     </a>
-    <a href="#" aria-label="LinkedIn" class="social-icon">
-      <img src="/icone/linkedin.png" alt="LinkedIn Icon" />
+    <a href="#" class="social-icon" aria-label="LinkedIn">
+      <img src="/icone/linkedin.png" alt="" role="presentation" />
     </a>
   </div>
 </footer>
