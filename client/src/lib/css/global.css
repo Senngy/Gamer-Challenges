@@ -1,6 +1,6 @@
 /* ===========================
-   ✅ VARIABLES CSS GLOBALES
-   =========================== */
+✅ VARIABLES CSS GLOBALES
+=========================== */
    :root {
     --primary-color: #330000;
     --secondary-color: #0C0E0F;
@@ -10,12 +10,12 @@
     --text-color: #FFFFFF;
   }
 
-  /* ===========================
-     ✅ STYLES GÉNÉRAUX
-     =========================== */
-  /* ===========================
-   ✅ BASE
-   =========================== */
+/* ===========================
+✅ STYLES GÉNÉRAUX
+=========================== */
+/* ===========================
+✅ BASE
+=========================== */
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
@@ -35,10 +35,28 @@ body {
   border: 0;
 }
 
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 34px;
+  margin: 0 1em 1em 1em;
+}
+
+h2 {
+  font-size: 24px;
+  margin: 0 1em 1em 1em;
+}
+
 
 /* ===========================
-   ✅ HEADER + BURGER MENU
-   =========================== */
+✅ HEADER + BURGER MENU
+=========================== */
 .header {
   position: fixed;
   top: 0;
@@ -101,8 +119,8 @@ body {
 }
 
 /* ===========================
-   ✅ MOBILE MENU
-   =========================== */
+✅ MOBILE MENU
+=========================== */
    .mobile-menu {
     position: fixed;
     top: -5px;
@@ -175,8 +193,8 @@ body {
   
 
 /* ===========================
-   ✅ BOUTONS AUTH (mobile hidden par défaut)
-   =========================== */
+✅ BOUTONS AUTH (mobile hidden par défaut)
+=========================== */
 .header__auth-buttons {
   display: none;
   gap: 10px;
@@ -199,8 +217,8 @@ body {
 }
 
 /* ===========================
-   ✅ CONTENU PRINCIPAL
-   =========================== */
+✅ CONTENU PRINCIPAL
+=========================== */
 
 .main-content {
   display: flex;
@@ -210,8 +228,8 @@ body {
 }
 
 /* ===========================
-   ✅ POPULAR GAMES (HERO)
-   =========================== */
+✅ POPULAR GAMES (HERO)
+=========================== */
    .popular-games {
     position: relative;
     width: 100%;
@@ -351,8 +369,8 @@ body {
 }
 
 /* ===========================
-   ✅ LEADERBOARD
-   =========================== */
+✅ LEADERBOARD
+=========================== */
 .leaderboard {
   margin-top: 3em;
   padding: 1em;
@@ -421,8 +439,8 @@ body {
 }
 
 /* ===========================
-   ✅ CATALOGUE
-   =========================== */
+✅ CATALOGUE
+=========================== */
 .catalog {
   margin-top: 3em;
 }
@@ -501,10 +519,165 @@ body {
   border-radius: 10px;
 }
 
+/* ===========================
+✅ GAMES
+=========================== */
+   .game-details {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Contenu au-dessus de l’image */
+  .game-details__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: white;
+  }
+
+   /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
   
-  /* ===========================
-     ✅ FOOTER
-     =========================== */
+  /* Overlay sombre pour lisibilité du texte */
+  .game-details::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,       /* Transparent en haut */
+    rgba(0, 0, 0, 0.3) 50%,    /* Début de foncé */
+    rgba(0, 0, 0, 0.6) 100%    /* Foncé en bas */
+    );
+  }
+  
+  
+  /* Titre du jeu */
+  .game-details__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0 0 0.4em 0;
+  }
+  
+  /* Description */
+  .game-details__description {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 2em;
+  }
+
+  .game-details__platform {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    margin-bottom: 2em;
+  }
+  
+
+/* ===========================
+✅ CHALLENGES
+=========================== */
+.challenge {
+  margin-top: 3em;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin-bottom: 1.4em;
+}
+.challenge__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+}
+.challenge__item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.challenge__item:hover {
+  transform: translateY(-6px);
+}
+
+.challenge__image {
+  height: 200px;
+  background-image: url(/images/background-valorant.webp);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.challenge__like-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--text-color);
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.challenge__content {
+  padding: 20px;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.challenge__description, .challenge__rules  {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+/* ===========================
+✅ LOAD MORE
+=========================== */
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3em 0.3em;
+}
+
+  
+/* ===========================
+✅ FOOTER
+=========================== */
      .footer {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(1.25em) saturate(1.6);
