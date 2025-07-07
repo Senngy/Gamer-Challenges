@@ -1,34 +1,57 @@
 <script>
   import AuthForm from "$lib/components/auth/AuthForm.svelte";
   import Input from "$lib/components/auth/Input.svelte";  
-  import BtnAuth from "$lib/components/auth/BtnAuth.svelte";
+  import Btn from "$lib/components/auth/Btn.svelte";
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
-  let username = '';
-  let email = '';
-  let password = '';
-  let confirmPassword = '';
-  let error = '';
-  let birth_date = '';
-  let first_name = '';
-  let last_name = '';
+  import { register } from "$lib/services/auth.service.js";
+  import { goto } from "$app/navigation";
+  let pseudo = $state('');
+  let email = $state('');
+  let password =$state('');
+  let confirmPassword =$state('');
+  let error =$state('');
+  let birth_date =$state('');
+  let first_name =$state('');
+  let last_name =$state('');
 
-  function handleSubmit() {
+const handleSubmitRegister = async (e) => {
+  e.preventDefault();
     if (password !== confirmPassword) {
       error = "Les mots de passe ne correspondent pas.";
       return;
     }
+    if (!email.includes('@')) {
+      error = "Adresse email invalide.";
+      return;
+    }
     // Ajoute ici la logique d'inscription (API, etc.)
+    if (pseudo === '' || email === '' || password === '' || birth_date === '' || first_name === '' || last_name === '') {
+      error = "Veuillez remplir tous les champs."; 
+      return;
+    }
+    console.log('pseudo:', pseudo);
+    console.log('email:', email);  
+  
+      try {
+      // Call your API to register the user
+      await register(pseudo, email, password, birth_date, first_name, last_name);
+
+    } catch (e) {
+      error = "Une erreur est survenue lors de l'inscription.";
+    }
+
     error = '';
-    alert('Inscription réussie !');
-  }
+    alert('Inscription réussie ! Vous allez être rediriger vers la page de connexion...');
+    goto('/auth/login');
+  };
 </script>
 
 <AuthContainer title="Inscription">
   {#if error}
     <div class="error">{error}</div>
   {/if}
-  <AuthForm onSubmit={handleSubmit}>
-    <Input id="username" type="text" label="Nom d'utilisateur" placeholder="Entrez votre nom d'utilisateur" bind:value={username} required />
+  <AuthForm onSubmit={handleSubmitRegister}>
+    <Input id="pseudo" type="text" label="Nom d'utilisateur" placeholder="Entrez votre nom d'utilisateur" bind:value={pseudo} required />
     <Input id="first_name" type="text" label="Prénom" placeholder="Entrez votre prénom" bind:value={first_name} required />
     <Input id="last_name" type="text" label="Nom" placeholder="Entrez votre nom" bind:value={last_name} required />
     <Input id="birth_date" type="date" label="Date de naissance" bind:value={birth_date} required />
@@ -36,7 +59,7 @@
     <Input id="password" type="password" label="Mot de passe" placeholder="Entrez votre mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
     <Input id="confirmPassword" type="password" label="Confirmer le mot de passe" placeholder="Confirmez votre mot de passe" bind:value={confirmPassword} required minlength="8" maxlength="50"/>
     
-    <BtnAuth>S'inscrire</BtnAuth>
+    <Btn>S'inscrire</Btn>
   </AuthForm>
   <div class="already-account">
     <span>Vous avez déjà un compte ?</span>

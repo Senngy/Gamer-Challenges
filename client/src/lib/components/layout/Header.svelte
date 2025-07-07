@@ -30,18 +30,16 @@
     <ul>
       <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
       <li>
-        <a href="http://localhost:5173/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
+        <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
       </li>
       <li>
         <a href="/apropos" class="mobile-link" sveltekit:prefetch>À propos</a>
       </li>
       <li>
-        <a href="/register" class="mobile-link" sveltekit:prefetch
-          >Inscription</a
-        >
+        <a href="/auth/signup" class="mobile-link" sveltekit:prefetch>Inscription</a>
       </li>
       <li>
-        <a href="/login" class="mobile-link" sveltekit:prefetch>Connexion</a>
+        <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Connexion</a>
       </li>
     </ul>
   </nav>
