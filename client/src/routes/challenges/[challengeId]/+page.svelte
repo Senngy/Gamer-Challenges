@@ -12,6 +12,12 @@
         <p class="challenge-details__description">#challengeDescription</p>
         <p class="challenge-details__rules">#challengeRules...</p>
 
+        <div class="challenge_created-by">
+            <p>Challenge created by</p>
+            <div class="challenge__user-avatar" aria-hidden="true">B</div>
+            <p class="challenge__user-name">#user</p>
+        </div>
+
         <button class="btn btn--primary">Participer au défi maintenant</button>
     </div>
 

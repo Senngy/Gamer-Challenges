@@ -11,4 +11,9 @@
         <CatalogItem {game} />
       {/each}
     </div>
+    <div class="load-more-container">
+        <button class="btn" id="load-more">
+            Voir plus de jeux
+        </button>
+    </div>
   </section>
