@@ -25,18 +25,22 @@
     &#9776;
   </button>
   <!-- Menu de navigation mobile -->
-  <nav
-    class="mobile-menu"
-    id="mobileMenu"
-    aria-label="Menu mobile"
-  >
-  <button id="closeMenu" class="mobile-menu__close">×</button>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
+    <button id="closeMenu" class="mobile-menu__close">×</button>
     <ul>
-      <li><a href="#" class="mobile-link">Accueil</a></li>
-      <li><a href="#" class="mobile-link">Catalogue</a></li>
-      <li><a href="#" class="mobile-link">À propos</a></li>
-      <li><a href="/auth/signup" class="mobile-link">Inscription</a></li>
-      <li><a href="/auth/login" class="mobile-link">Connexion</a></li>
+      <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
+      <li>
+        <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
+      </li>
+      <li>
+        <a href="/apropos" class="mobile-link" sveltekit:prefetch>À propos</a>
+      </li>
+      <li>
+        <a href="/auth/signup" class="mobile-link" sveltekit:prefetch>Inscription</a>
+      </li>
+      <li>
+        <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Connexion</a>
+      </li>
     </ul>
   </nav>
 </header>

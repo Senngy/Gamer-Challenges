@@ -1,11 +1,11 @@
 // games.routes.js
-import express from "express";
-
-import { getAll, getById } from '../controllers/games.controller.js';
-
+import { Game } from '../database/models/game.model.js';
+import express from 'express';
 const router = express.Router();
 
-router.get('/', getAll) // All the games
-router.get('/:id', getById) // Game details
+router.get('/', async (req, res) => {
+  const games = await Game.findAll();
+  res.json(games);
+});
 
 export default router;

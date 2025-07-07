@@ -1,21 +1,18 @@
 /* ===========================
-   ✅ VARIABLES CSS GLOBALES
-   =========================== */
+✅ VARIABLES CSS GLOBALES
+=========================== */
    :root {
     --primary-color: #330000;
     --secondary-color: #0C0E0F;
     --background-color: #1A1C1F;
     --btn-color: #8b1e1e;
     --text-color-red: #C62828;
-    --text-color: #FFFFFF;
+    --text-color: #EEEEEE;
   }
 
   /* ===========================
      ✅ STYLES GÉNÉRAUX
      =========================== */
-  /* ===========================
-   ✅ BASE
-   =========================== */
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
@@ -35,16 +32,35 @@ body {
   border: 0;
 }
 
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-size: 34px;
+  margin: 0 1em 1em 1em;
+}
+h2 {
+  font-size: 24px;
+  margin: 0 1em 1em 1em;
+}
+h3 {
+  font-size: 20px;
+  margin: 0 1em 1em 1em;
+}
 
 /* ===========================
-   ✅ HEADER + BURGER MENU
-   =========================== */
+✅ HEADER + BURGER MENU
+=========================== */
 .header {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  margin: 0.4em 0.6em;
+  margin: 1.4em 0.6em;
   padding: 0.6em;
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.1);
@@ -68,7 +84,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #eee;
 }
 
 .header__search-bar {
@@ -83,7 +99,7 @@ body {
   border: none;
   border-radius: 25px;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: #EEEEEE;
   font-size: 14px;
 }
 .header__search-bar input::placeholder {
@@ -94,15 +110,15 @@ body {
   display: block;
   font-size: 36px;
   cursor: pointer;
-  color: white;
+  color: #EEEEEE;
   background: none;
   border: none;
   z-index: 1101;
 }
 
 /* ===========================
-   ✅ MOBILE MENU
-   =========================== */
+✅ MOBILE MENU
+=========================== */
    .mobile-menu {
     position: fixed;
     top: -5px;
@@ -148,7 +164,6 @@ body {
     background: rgba(255, 255, 255, 0.1);
   }
   
-  
   .mobile-menu ul li {
     margin: 3em 1em;
   }
@@ -175,13 +190,12 @@ body {
   
 
 /* ===========================
-   ✅ BOUTONS AUTH (mobile hidden par défaut)
-   =========================== */
+✅ BOUTONS AUTH (mobile hidden par défaut)
+=========================== */
 .header__auth-buttons {
   display: none;
   gap: 10px;
 }
-
 .btn {
   padding: 10px 20px;
   border: none;
@@ -189,19 +203,17 @@ body {
   font-size: 14px;
   cursor: pointer;
   background: var(--btn-color);
-  color: white;
+  color: #EEEEEE;
   transition: all 0.3s ease;
 }
-
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* ===========================
-   ✅ CONTENU PRINCIPAL
-   =========================== */
-
+✅ CONTENU PRINCIPAL
+=========================== */
 .main-content {
   display: flex;
   flex-direction: column;
@@ -210,8 +222,8 @@ body {
 }
 
 /* ===========================
-   ✅ POPULAR GAMES (HERO)
-   =========================== */
+✅ POPULAR GAMES (HERO)
+=========================== */
    .popular-games {
     position: relative;
     width: 100%;
@@ -251,7 +263,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    color: white;
+    color: #EEEEEE;
   }
   
   /* Tag "🔥 Populaires" */
@@ -261,7 +273,7 @@ body {
     border-radius: 15px;
     font-size: 12px;
     margin-bottom: 2em;
-    border: 1px solid #fff;
+    border: 1px solid #eee;
     text-transform: uppercase;
     align-self: flex-start;
   }
@@ -287,7 +299,7 @@ body {
     padding: 0.6em 1.2em;
     border-radius: 25px 60px 25px 60px;
     background: var(--primary-color, #007bff);
-    color: white;
+    color: #EEEEEE;
     border: none;
     cursor: pointer;
   }
@@ -314,7 +326,7 @@ body {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: var(--text-color, #fff);
+    color: var(--text-color, #eee);
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -329,12 +341,149 @@ body {
   }
   
   
+/* ===========================
+✅ POPULAR GAMES (HERO)
+=========================== */
 
-/* Cercle de progression animé */
+/* === SLIDER CONTAINER === */
+.popular-games {
+  position: relative;
+  width: 100%;
+  height: 400px; /* ou 100% si contenu auto */
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 0;
+}
+
+/* === SLIDE === */
+.slide {
+  display: none;
+}
+.slide.active {
+  display: flex;
+}
+
+/* === IMAGE DE SLIDE === */
+.slide__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* === OVERLAY SOMBRE === */
+.popular-games::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+  z-index: 1;
+  border-radius: 20px;
+}
+
+/* === CONTENU AU-DESSUS DE L’IMAGE === */
+.popular-games__content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  padding: 0.4em 1em;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #EEEEEE;
+}
+.popular-games__text {
+  z-index: 2;
+}
+
+/* === TAG "🔥 Populaires" === */
+.popular-games__tag {
+  background: var(--background-color, rgba(255, 255, 255, 0.15));
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 6px;
+  border: 1px solid #eee;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
+/* === TITRE DU JEU === */
+.popular-games__title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 34px;
+  font-weight: bold;
+  margin: 1.8em 0 0.4em 0;
+}
+/* === DESCRIPTION === */
+.popular-games__description {
+  font-size: 12px;
+  line-height: 1.5;
+  margin-bottom: 2em;
+}
+
+/* === BOUTON === */
+.popular-games__btn {
+  font-size: 12px;
+  padding: 0.6em 1.2em;
+  margin-bottom: 8em;
+  border-radius: 10px 100px 10px 100px;
+  background: var(--btn-color, #ff5252);
+  color: #EEEEEE;
+  border: none;
+  cursor: pointer;
+}
+
+/* === NAVIGATION (Flèches & Pagination) === */
+.popular-games__nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  pointer-events: none; /* empêche clic sauf sur enfants */
+}
+.popular-games__arrows {
+  display: flex;
+  gap: 0.6em;
+  pointer-events: auto;
+}
+.popular-games__arrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--text-color, #eee);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.popular-games__pagination-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+.popular-games__pagination {
+  font-size: 12px;
+  color: #EEEEEE;
+}
+
+/* === CERCLE DE PROGRESSION === */
 .progress-circle {
   width: 36px;
   height: 36px;
-  transform: rotate(-90deg); /* commence à 12h */
+  transform: rotate(-90deg);
 }
 .circle-bg {
   fill: none;
@@ -345,8 +494,8 @@ body {
   fill: none;
   stroke: #ff5252;
   stroke-width: 4;
-  stroke-dasharray: 100.53; /* 2 * π * r (r=16) */
-  stroke-dashoffset: 100.53; /* caché au départ */
+  stroke-dasharray: 100.53;
+  stroke-dashoffset: 100.53;
   transition: stroke-dashoffset 5s linear;
 }
 
@@ -421,10 +570,10 @@ body {
 }
 
 /* ===========================
-   ✅ CATALOGUE
-   =========================== */
+✅ CATALOGUE
+=========================== */
 .catalog {
-  margin-top: 3em;
+  padding: 1em;
 }
 
 .catalog__title {
@@ -442,7 +591,6 @@ body {
   overflow: hidden;
   transition: transform 0.3s ease;
 }
-
 .catalog__item:hover {
   transform: translateY(-6px);
 }
@@ -457,7 +605,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #EEEEEE;
   font-weight: bold;
   font-size: 18px;
 }
@@ -479,7 +627,7 @@ body {
 
 .catalog__game-name {
   font-size: 20px;
-  margin-bottom: 5px;
+  margin: 0 0 0.5em 0;
 }
 
 .catalog__season {
@@ -493,6 +641,7 @@ body {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 12px;
+  margin-bottom: 1em;
 }
 
 .catalog__tag {
@@ -501,10 +650,368 @@ body {
   border-radius: 10px;
 }
 
+/* ===========================
+✅ GAMES
+=========================== */
+   .game-details {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Contenu au-dessus de l’image */
+  .game-details__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #EEEEEE;
+  }
+
+   /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
   
-  /* ===========================
-     ✅ FOOTER
-     =========================== */
+  /* Overlay sombre pour lisibilité du texte */
+  .game-details::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,       /* Transparent en haut */
+    rgba(0, 0, 0, 0.3) 50%,    /* Début de foncé */
+    rgba(0, 0, 0, 0.6) 100%    /* Foncé en bas */
+    );
+  }
+
+  /* Titre du jeu */
+  .game-details__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+  }
+  
+  /* Description */
+  .game-details__description {
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 2em;
+  }
+
+  .game-details__platform {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 10px;
+    margin-bottom: 1.5em;
+  }
+
+  .game-details__platform-item {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.4em 1em;
+  }
+  
+
+/* ===========================
+✅ CHALLENGES
+=========================== */
+.challenge {
+  margin-top: 3em;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin-bottom: 1.4em;
+}
+.challenge__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+}
+.challenge__item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.challenge__item:hover {
+  transform: translateY(-6px);
+}
+
+.challenge__image {
+  height: 200px;
+  background-image: url(/images/logo-valorant.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EEEEEE;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.challenge__participation-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--text-color);
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.challenge__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.challenge__title {
+  font-size: 20px;
+  margin: 0 0 0.5em 0;
+}
+
+.challenge__description, .challenge__rules  {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+.challenge__user-name  {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.challenge__user-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #ff6b6b, #ffd700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.challenge_created-by {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+/* === DETAILS === */
+
+.challenge-details {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Contenu au-dessus de l’image */
+  .challenge-details__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #EEEEEE;
+  }
+
+   /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  /* Overlay sombre pour lisibilité du texte */
+  .challenge-details::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,       /* Transparent en haut */
+    rgba(0, 0, 0, 0.3) 50%,    /* Début de foncé */
+    rgba(0, 0, 0, 0.6) 100%    /* Foncé en bas */
+    );
+  }
+  
+  
+  /* Titre du jeu */
+  .challenge-details__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+  }
+  
+  /* Description */
+  .challenge-details__description, .challenge-details__rules {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 1em;
+  }
+
+  .challenge-details__platform {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 10px;
+    margin-bottom: 1.5em;
+  }
+
+  .challenge-details__platform-item {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.4em 1em;
+  }
+
+  .challenge__like-count {
+    background: transparent;
+    border: 1px solid #EEEEEE;
+    color: #EEEEEE;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+    align-self: flex-start;
+  }
+
+/* ===========================
+✅ PARTICIPATIONS
+=========================== */
+.participation {
+  margin-top: 3em;
+}
+
+.participation__title {
+  font-size: 20px;
+  margin-bottom: 1.4em;
+}
+.participation__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+}
+.participation__item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.participation__item:hover {
+  transform: translateY(-6px);
+}
+
+.participation__image {
+  height: 200px;
+  background-image: url(/images/logo-valorant.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EEEEEE;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.participation__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.participation__user{
+  font-size: 20px;
+  margin: 0;
+}
+
+.participation__description  {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+.participation__like-count {
+  background: transparent;
+  border: 1px solid #EEEEEE;
+  color: #EEEEEE;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+  align-self: flex-start;
+}
+
+/* ===========================
+✅ LOAD MORE
+=========================== */
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3em 0.3em;
+}
+
+.secundary {
+  padding: 10px 20px;
+  border: 1px solid #EEEEEE;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  color: #EEEEEE;
+  transition: all 0.3s ease;
+}
+
+  
+/* ===========================
+✅ FOOTER
+=========================== */
      .footer {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(1.25em) saturate(1.6);
@@ -516,7 +1023,7 @@ body {
       gap: 2em;
       margin-top: 5em;
       box-shadow: 0 -0.625em 1.875em rgba(0, 0, 0, 0.3);
-      color: #fff;
+      color: #eee;
     }
     
     /* Bloc Logo + Infos */
@@ -549,7 +1056,7 @@ body {
       gap: 0.4em;
       font-size: 0.9em;
       opacity: 0.75;
-      color: #fff !important;
+      color: #eee !important;
     }
     span.visually-hidden {
       display: flex
@@ -565,7 +1072,7 @@ body {
     }
     
     .footer__contact a {
-      color: #fff;
+      color: #eee;
       text-decoration: underline;
     }
     
@@ -578,7 +1085,7 @@ body {
     }
     
     .footer__nav a {
-      color: #fff;
+      color: #eee;
       text-decoration: none;
       transition: color 0.2s ease;
     }
@@ -612,4 +1119,3 @@ body {
       opacity: 1;
       outline: none;
     }
-    
