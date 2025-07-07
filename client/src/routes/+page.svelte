@@ -1,5 +1,6 @@
 <script>
   import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+  import { goto } from '$app/navigation';
   let games = [];
 
   // Récupère tous les jeux au chargement de la page
@@ -17,6 +18,11 @@
           .sort(() => Math.random() - 0.5)
           .slice(0, 4)
       : games;
+
+  const testRedirectChallengesById = (id) => {
+    // Redirige vers la page des challenges du jeu avec l'ID spécifié
+    goto(`/challenges/${id}`);
+  };     
 </script>
 
 <!-- ========================== -->
@@ -33,7 +39,7 @@
         joueurs s'affrontent dans des parties intenses, avec des agents dotés de
         compétences uniques.
       </p>
-      <button class="btn btn--primary popular-games__btn"
+      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(10)}
         >Voir les challenges</button
       >
     </div>
@@ -55,7 +61,7 @@
         Apex Legends est un jeu de tir en équipe où des légendes s'affrontent
         dans des batailles épiques, chacune avec des compétences uniques.
       </p>
-      <button class="btn btn--primary popular-games__btn"
+      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(2)}  
         >Voir les challenges</button
       >
     </div>
