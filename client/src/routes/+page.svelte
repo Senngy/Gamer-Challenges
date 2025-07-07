@@ -21,7 +21,7 @@
 
   const testRedirectChallengesById = (id) => {
     // Redirige vers la page des challenges du jeu avec l'ID spécifié
-    goto(`/challenges/${id}`);
+    goto(`/games/${id}`);
   };     
 </script>
 
