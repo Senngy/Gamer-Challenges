@@ -28,7 +28,9 @@
   <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
     <button id="closeMenu" class="mobile-menu__close">×</button>
     <ul>
-      <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
+      <li><a href="/" class="mobile-link-lite" sveltekit:prefetch>Accueil</a></li>
+      <li><a href="/games" class="mobile-link-lite" sveltekit:prefetch>Catalogue</a></li>
+      <li><a href="/apropos" class="mobile-link-lite" sveltekit:prefetch>À propos</a></li>
       <li>
         <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
       </li>
@@ -42,8 +44,7 @@
       </li>
       <li>
         <a href="/auth/login" class="mobile-link" sveltekit:prefetch
-          >Connexion</a
-        >
+          >Connexion</a>
       </li>
     </ul>
   </nav>

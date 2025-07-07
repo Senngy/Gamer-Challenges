@@ -125,7 +125,9 @@ h3 {
     right: -10px;
     height: 100vh;
     width: 85%;
+    /*
     padding: 1em 2em;
+    */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -145,7 +147,7 @@ h3 {
   .mobile-menu__close {
     position: absolute;
     top: 1em;
-    right: 0.2em;
+    right: 1em;
     font-size: 36px;
     font-weight: bold;
     line-height: 1;
@@ -161,9 +163,6 @@ h3 {
   }
   .mobile-menu__close:hover {
     background: rgba(255, 255, 255, 0.1);
-  }
-  .mobile-menu ul li {
-    margin: 3em 1em;
   }
 
   /* STYLE DES LIENS */
@@ -181,9 +180,48 @@ h3 {
     transition: background 0.3s ease, transform 0.2s ease;
     width: 100%;
   }
+
+  .login {
+    background: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+  }
+
+  .singup {
+    width: ;
+  }
+
+  .mobile-link-lite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-bottom: 1px solid #EEEEEE;
+    padding: 16px 20px;
+    font-size: 18px;
+    color: var(--text-color);
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%;
+  }
+
   .mobile-link:hover {
     background: var(--secondary-color);
     transform: translateY(-2px);
+  }
+
+  /* === AUTH === */
+  .mobile-menu-auth {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1em;
+    gap: 1em;
+  }
+
+  .mobile-menu-auth li {
+    display: contents;
   }
   
 

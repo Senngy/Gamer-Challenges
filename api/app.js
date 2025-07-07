@@ -24,7 +24,7 @@ app.use(express.json());    // Parse JSON request bodies
 // app.use('/auth', authRoutes);
 app.use("/auth", authRouter)
 // app.use("/users", usersRouter);
-// app.use("/games", gamesRouter);
+app.use("/games", gamesRouter);
 // app.use("/challenges", challengesRouter);
 
 app.listen(PORT, () => {
