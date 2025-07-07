@@ -17,25 +17,113 @@
 </body>
 
 <script>
-	const burger = document.getElementById('burger');
-	const mobileMenu = document.getElementById('mobileMenu');
+	document.addEventListener('DOMContentLoaded', function () {
+		// === BURGER MENU (Mobile) ===
+		const burger = document.getElementById('burger');
+		const mobileMenu = document.getElementById('mobileMenu');
+		const closeMenu = document.getElementById('closeMenu');
 
-	// Ouvrir/Fermer le menu en cliquant sur le burger
-	burger.addEventListener('click', (e) => {
-		e.stopPropagation(); // Empêche la propagation du clic
-		mobileMenu.classList.toggle('show');
-	});
+		if (burger && mobileMenu && closeMenu) {
+			// Ouvrir le menu mobile
+			burger.addEventListener('click', (e) => {
+				e.stopPropagation();
+				mobileMenu.classList.toggle('show');
+			});
 
-	// Empêche le clic à l’intérieur du menu de le fermer
-	mobileMenu.addEventListener('click', (e) => {
-		e.stopPropagation();
-	});
+			// Fermer le menu avec la croix
+			closeMenu.addEventListener('click', (e) => {
+				e.stopPropagation();
+				mobileMenu.classList.remove('show');
+			});
 
-	// Fermer le menu si on clique n’importe où ailleurs
-	document.addEventListener('click', () => {
-		mobileMenu.classList.remove('show');
+			// Empêcher la fermeture en cliquant dans le menu
+			mobileMenu.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+
+			// Fermer le menu si clic en dehors
+			document.addEventListener('click', () => {
+				mobileMenu.classList.remove('show');
+			});
+		}
+
+		// === SLIDER ===
+
+		const slides = document.querySelectorAll('.slide');
+		const prevBtn = document.querySelector('.popular-games__arrow.prev');
+		const nextBtn = document.querySelector('.popular-games__arrow.next');
+		const pagination = document.querySelector('.popular-games__pagination');
+		const progressCircle = document.querySelector('.circle-fill');
+
+		let currentIndex = 0;
+		let autoSlideInterval = null;
+		const slideDuration = 5000; // Durée en ms (5s)
+
+		function animateProgressCircle() {
+			if (!progressCircle) return;
+
+			// On stoppe toute animation en supprimant la transition
+			progressCircle.style.transition = 'none';
+			progressCircle.style.strokeDasharray = '100.53'; // Important !
+			progressCircle.style.strokeDashoffset = '100.53';
+
+			// Force le reflow pour appliquer le reset (indispensable)
+			void progressCircle.getBoundingClientRect();
+
+			// Puis on applique la transition + anim vers 0
+			progressCircle.style.transition = `stroke-dashoffset ${slideDuration}ms linear`;
+			progressCircle.style.strokeDashoffset = '0';
+		}
+
+		function updateSlide(index) {
+			slides.forEach((slide, i) => {
+				slide.hidden = i !== index;
+			});
+
+			if (pagination) {
+				pagination.textContent = `${index + 1} / ${slides.length}`;
+			}
+
+			animateProgressCircle();
+		}
+
+		function nextSlide() {
+			currentIndex = (currentIndex + 1) % slides.length;
+			updateSlide(currentIndex);
+			resetAutoSlide();
+		}
+
+		function prevSlide() {
+			currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+			updateSlide(currentIndex);
+			resetAutoSlide();
+		}
+
+		function startAutoSlide() {
+			autoSlideInterval = setInterval(() => {
+				nextSlide();
+			}, slideDuration);
+		}
+
+		function resetAutoSlide() {
+			clearInterval(autoSlideInterval);
+			startAutoSlide();
+		}
+
+		function initSlider() {
+			if (!slides.length || !prevBtn || !nextBtn || !pagination || !progressCircle) {
+				console.warn('Slider: One or more required elements are missing in the DOM.');
+				return;
+			}
+			updateSlide(currentIndex);
+			startAutoSlide();
+
+			nextBtn.addEventListener('click', nextSlide);
+			prevBtn.addEventListener('click', prevSlide);
+		}
+
+		initSlider();
 	});
 </script>
-
 
 </html>
