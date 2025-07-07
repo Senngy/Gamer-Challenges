@@ -4,7 +4,7 @@
 
 <!-- Catalog Section -->
 <section class="catalog" aria-labelledby="catalog-title">
-    <h1>Choisissez le jeu et lancez vous dans un défi !</h1>
+    <h1>Choisissez un jeu et lancez vous dans un défi !</h1>
     <div class="catalog__grid" role="list">   
 
         <CatalogItem />

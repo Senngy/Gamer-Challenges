@@ -7,7 +7,7 @@
     --background-color: #1A1C1F;
     --btn-color: #8b1e1e;
     --text-color-red: #C62828;
-    --text-color: #FFFFFF;
+    --text-color: #EEEEEE;
   }
 
 /* ===========================
@@ -31,7 +31,7 @@ body {
   margin: -1px;
   overflow: hidden;
   clip: rect(0 0 0 0);
-  white-space: nowrap;
+  #EEEEEE-space: nowrap;
   border: 0;
 }
 
@@ -50,6 +50,11 @@ h1 {
 
 h2 {
   font-size: 24px;
+  margin: 0 1em 1em 1em;
+}
+
+h3 {
+  font-size: 20px;
   margin: 0 1em 1em 1em;
 }
 
@@ -86,7 +91,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #eee;
 }
 
 .header__search-bar {
@@ -101,7 +106,7 @@ h2 {
   border: none;
   border-radius: 25px;
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: #EEEEEE;
   font-size: 14px;
 }
 .header__search-bar input::placeholder {
@@ -112,7 +117,7 @@ h2 {
   display: block;
   font-size: 36px;
   cursor: pointer;
-  color: white;
+  color: #EEEEEE;
   background: none;
   border: none;
   z-index: 1101;
@@ -207,7 +212,7 @@ h2 {
   font-size: 14px;
   cursor: pointer;
   background: var(--btn-color);
-  color: white;
+  color: #EEEEEE;
   transition: all 0.3s ease;
 }
 
@@ -269,7 +274,7 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    color: white;
+    color: #EEEEEE;
   }
   
   /* Tag "🔥 Populaires" */
@@ -279,7 +284,7 @@ h2 {
     border-radius: 15px;
     font-size: 12px;
     margin-bottom: 2em;
-    border: 1px solid #fff;
+    border: 1px solid #eee;
     text-transform: uppercase;
     align-self: flex-start;
   }
@@ -305,7 +310,7 @@ h2 {
     padding: 0.6em 1.2em;
     border-radius: 25px 60px 25px 60px;
     background: var(--primary-color, #007bff);
-    color: white;
+    color: #EEEEEE;
     border: none;
     cursor: pointer;
   }
@@ -332,7 +337,7 @@ h2 {
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: var(--text-color, #fff);
+    color: var(--text-color, #eee);
     font-size: 18px;
     display: flex;
     align-items: center;
@@ -399,7 +404,7 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  color: white;
+  color: #EEEEEE;
 }
 .popular-games__text {
   z-index: 2;
@@ -410,7 +415,7 @@ h2 {
   padding: 8px 15px;
   border-radius: 20px;
   font-size: 6px;
-  border: 1px solid #fff;
+  border: 1px solid #eee;
   text-transform: uppercase;
   align-self: flex-start;
 }
@@ -436,7 +441,7 @@ h2 {
   margin-bottom: 8em;
   border-radius: 25px 60px 25px 60px;
   background: var(--btn-color, #ff5252);
-  color: white;
+  color: #EEEEEE;
   border: none;
   cursor: pointer;
 }
@@ -465,7 +470,7 @@ h2 {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   border: none;
-  color: var(--text-color, #fff);
+  color: var(--text-color, #eee);
   font-size: 18px;
   display: flex;
   align-items: center;
@@ -481,7 +486,7 @@ h2 {
 }
 .popular-games__pagination {
   font-size: 12px;
-  color: white;
+  color: #EEEEEE;
 }
 
 /* === CERCLE DE PROGRESSION === */
@@ -578,7 +583,7 @@ h2 {
 ✅ CATALOGUE
 =========================== */
 .catalog {
-  margin-top: 3em;
+  padding: 1em;
 }
 
 .catalog__title {
@@ -611,7 +616,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #EEEEEE;
   font-weight: bold;
   font-size: 18px;
 }
@@ -633,7 +638,7 @@ h2 {
 
 .catalog__game-name {
   font-size: 20px;
-  margin-bottom: 5px;
+  margin: 0 0 0.5em 0;
 }
 
 .catalog__season {
@@ -647,6 +652,7 @@ h2 {
   flex-wrap: wrap;
   gap: 10px;
   font-size: 12px;
+  margin-bottom: 1em;
 }
 
 .catalog__tag {
@@ -677,7 +683,7 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    color: white;
+    color: #EEEEEE;
   }
 
    /* Image de fond (par balise <img>) */
@@ -712,7 +718,7 @@ h2 {
     font-family: 'Orbitron', sans-serif;
     font-size: 34px;
     font-weight: bold;
-    margin: 0 0 0.4em 0;
+    margin: 0 0 0.5em 0;
   }
   
   /* Description */
@@ -726,8 +732,14 @@ h2 {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    font-size: 12px;
-    margin-bottom: 2em;
+    font-size: 10px;
+    margin-bottom: 1.5em;
+  }
+
+  .game-details__platform-item {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.4em 1em;
   }
   
 
@@ -760,7 +772,7 @@ h2 {
 
 .challenge__image {
   height: 200px;
-  background-image: url(/images/background-valorant.webp);
+  background-image: url(/images/logo-valorant.png);
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -768,7 +780,7 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #EEEEEE;
   font-weight: bold;
   font-size: 18px;
 }
@@ -790,10 +802,165 @@ h2 {
 
 .challenge__title {
   font-size: 20px;
-  margin-bottom: 5px;
+  margin: 0 0 0.5em 0;
 }
 
 .challenge__description, .challenge__rules  {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+.challenge__user  {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1em;
+}
+
+/* === DETAILS === */
+
+.challenge-details {
+    position: relative;
+    width: 100%;
+    height: 360px;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* Contenu au-dessus de l’image */
+  .challenge-details__content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    padding: 2em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    color: #EEEEEE;
+  }
+
+   /* Image de fond (par balise <img>) */
+  .slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  /* Overlay sombre pour lisibilité du texte */
+  .challenge-details::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,       /* Transparent en haut */
+    rgba(0, 0, 0, 0.3) 50%,    /* Début de foncé */
+    rgba(0, 0, 0, 0.6) 100%    /* Foncé en bas */
+    );
+  }
+  
+  
+  /* Titre du jeu */
+  .challenge-details__title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 34px;
+    font-weight: bold;
+    margin: 0 0 0.5em 0;
+  }
+  
+  /* Description */
+  .challenge-details__description, .challenge-details__rules {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 1em;
+  }
+
+  .challenge-details__platform {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 10px;
+    margin-bottom: 1.5em;
+  }
+
+  .challenge-details__platform-item {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.4em 1em;
+  }
+
+/* ===========================
+✅ PARTICIPATIONS
+=========================== */
+.participation {
+  margin-top: 3em;
+}
+
+.participation__title {
+  font-size: 20px;
+  margin-bottom: 1.4em;
+}
+.participation__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3em;
+}
+.participation__item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.participation__item:hover {
+  transform: translateY(-6px);
+}
+
+.participation__image {
+  height: 200px;
+  background-image: url(/images/logo-valorant.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EEEEEE;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.participation__like-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--text-color);
+  color: #000;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 14px;
+}
+
+.participation__content {
+  padding: 20px;
+}
+
+.participation__user{
+  font-size: 20px;
+  margin: 0 0 0.5em 0;
+}
+
+.participation__description  {
   font-size: 16px;
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1em;
@@ -808,6 +975,17 @@ h2 {
   justify-content: center;
   align-items: center;
   margin: 3em 0.3em;
+}
+
+.secundary {
+  padding: 10px 20px;
+  border: 1px solid #EEEEEE;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  background: transparent;
+  color: #EEEEEE;
+  transition: all 0.3s ease;
 }
 
   
@@ -825,7 +1003,7 @@ h2 {
       gap: 2em;
       margin-top: 5em;
       box-shadow: 0 -0.625em 1.875em rgba(0, 0, 0, 0.3);
-      color: #fff;
+      color: #eee;
     }
     
     /* Bloc Logo + Infos */
@@ -858,7 +1036,7 @@ h2 {
       gap: 0.4em;
       font-size: 0.9em;
       opacity: 0.75;
-      color: #fff !important;
+      color: #eee !important;
     }
     span.visually-hidden {
       display: flex
@@ -874,7 +1052,7 @@ h2 {
     }
     
     .footer__contact a {
-      color: #fff;
+      color: #eee;
       text-decoration: underline;
     }
     
@@ -887,7 +1065,7 @@ h2 {
     }
     
     .footer__nav a {
-      color: #fff;
+      color: #eee;
       text-decoration: none;
       transition: color 0.2s ease;
     }
