@@ -1,0 +1,61 @@
+### Games list
+GET http://localhost:3000/games
+
+
+<!-- >
+# token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+### Cards list
+GET http://localhost:3000/cards
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+### Cards by list_id
+GET http://localhost:3000/cards?list_id=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+### Lists list
+GET http://localhost:3000/lists
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+### User registration
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "username": "user2",
+    "password": "user2"
+}
+
+### User login OK
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+### User login ko
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "a"
+}
+
+### me
+GET http://localhost:3000/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+
+### list creation
+POST http://localhost:3000/lists
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
+
+{
+    "title": "youhou",
+    "position": 2
+}
+
+-->
