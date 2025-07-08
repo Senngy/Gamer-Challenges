@@ -6,29 +6,34 @@ export class Game extends Model {} // Déclaration du modèle Game
 
 Game.init(
   {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     title: {
-      type: DataTypes.STRING(100), // Nom du jeu (max 100 caractères)
-      allowNull: false, // Champ obligatoire
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
     description: {
-      type: DataTypes.TEXT, // Description du jeu
-      allowNull: true, // Champ optionnel
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(255), // URL ou nom du fichier image
-      allowNull: true, // Champ optionnel
+      type: DataTypes.STRING(255),
+      allowNull: true,
     },
     platform: {
-      type: DataTypes.STRING(50), // Plateforme du jeu (ex : PC, PS5…)
-      allowNull: true, // Champ optionnel
+      type: DataTypes.STRING(50),
+      allowNull: true,
     },
     genre: {
-      type: DataTypes.STRING(50), // Genre du jeu (ex : Action, RPG…)
-      allowNull: true, // Champ optionnel
+      type: DataTypes.STRING(50),
+      allowNull: true,
     },
   },
   {
-    tableName: 'games', // Nom explicite de la table SQL
-    sequelize, // Instance Sequelize                                  // Utilise snake_case en BDD
+    tableName: 'games',
+    sequelize,
   }
 );
