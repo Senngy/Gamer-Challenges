@@ -9,7 +9,9 @@
 
     import Btn from '$lib/components/auth/Btn.svelte';
     import Input from "$lib/components/auth/Input.svelte";
-    import AuthContainer from '$lib/components/auth/AuthContainer.svelte';
+
+    import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
+
     import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
 
     import { challengeCreation } from "$lib/services/challenge.service.js";
@@ -107,7 +109,9 @@
 
 <!-- Challenge Creation Form -->
 
-<AuthContainer title="Créer un challenge">
+<ProfilePopUp>
+
+    <h2>Créer un challenge</h2>
 
     {#if error}
         <div class="error">{error}</div>
@@ -126,7 +130,7 @@
         <a href="/auth/signup">Cliquez ici</a>
     </div>
 
-</AuthContainer>
+</ProfilePopUp>
 
 
 <style>
