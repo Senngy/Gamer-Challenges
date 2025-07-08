@@ -49,17 +49,27 @@ export const getCurrentUser = async () => {
   return await user;
 };
 
-/*
-export const loginUser = async (credentials) => {
-  const { token } = await api("/auth/login", "POST", credentials);
-  const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }).then((res) => res.json());
-  return { token, user };
-
-  // return { token };
+// Fonction pour déconnecter l'utilisateur
+export const logout = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    
+    if (token) {
+      // Appel à l'API de déconnexion
+      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+    }
+    console.log('Déconnexion API réussie');
+  } catch (error) {
+    console.error('Erreur lors de l\'appel API de déconnexion:', error);
+    // On continue même si l'API échoue, car on veut nettoyer le localStorage
+  }
 };
-*/
+
+
+
