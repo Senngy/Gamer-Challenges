@@ -3,7 +3,7 @@
 </script>
 
 <a
-  href={'/games/' + game.id}
+  href={`/games/${game.id}`}
   class="catalog__item"
   role="listitem"
   aria-label={game.title}
