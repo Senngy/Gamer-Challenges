@@ -6,6 +6,7 @@ import { Game } from './game.model.js';
 import { User } from './user.model.js';
 import { Participation } from './participation.model.js';
 
+console.log('⚙️  Models and associations initialized');
 // Initialisation des modèles
 /*
 const User = UserModel(sequelize);
