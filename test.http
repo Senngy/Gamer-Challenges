@@ -24,6 +24,9 @@ Content-Type: application/json
 ### Games list
 GET http://localhost:3000/games
 
+### Challenges list
+GET http://localhost:3000/challenges
+
 
 <!-- >
 # token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
