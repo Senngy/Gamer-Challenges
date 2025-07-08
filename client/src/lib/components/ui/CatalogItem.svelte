@@ -2,7 +2,12 @@
   export let game;
 </script>
 
-<div class="catalog__item" role="listitem" aria-label={game.title}>
+<a
+  href={'/games/' + game.id}
+  class="catalog__item"
+  role="listitem"
+  aria-label={game.title}
+>
   <div
     class="catalog__image"
     role="img"
@@ -25,4 +30,4 @@
       <span class="catalog__tag">{game.platform}</span>
     </div>
   </div>
-</div>
+</a>
