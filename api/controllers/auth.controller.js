@@ -5,6 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 // import { Challenge } from '../database/models/challenge.model.js';
 import { User, Challenge } from '../database/models/index.js'; // Assurez-vous que cette importation est correcte
 import { scrypt } from '../utils/scrypt.js'; // Assurez-vous que cette importation est correcte
+import { goto } from '$app/navigation';
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
     console.log("REQ BODY :", req.body);
@@ -97,4 +98,9 @@ export async function me (req, res) {
         console.error("Erreur dans me auth api:", error); // Ajoute ce log
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: "Erreur interne"})
     }
+}
+
+export async function logout (req, res) {
+    localStorage.removeItem("token"); // Supprimer le token
+    goto("/"); // Rediriger vers la page de connexion
 }

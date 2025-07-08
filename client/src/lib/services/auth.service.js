@@ -2,11 +2,19 @@
 import api from '../api.js';
 
 
-export const login = async (email, password) => {
+export const login = async (credentials) => {
   try {
-    const user = await api('/auth/login', "POST", { email, password });
-    console.log('Login auth.service.js successful:', user);
-    return user;
+    const { token } = await api('/auth/login', "POST", credentials);
+    console.log(' Login auth.service.js successful credientials:', credentials);
+    console.log('Login auth.service.js successful token:', token);
+    const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, { // Récupération des infos de l'utilisateur connecté
+      method: "GET",
+      headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json()); //
+    console.log('Login auth.service.js successful user:', user);
+  return { token, user };
   } catch (error) {
     console.error('Login failed:', error);
     throw error;

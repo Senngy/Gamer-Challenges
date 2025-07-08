@@ -4,6 +4,12 @@
   import BtnAuth from "$lib/components/auth/BtnAuth.svelte"
   import Btn from "$lib/components/auth/Btn.svelte"
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
+  import {
+    authStore,
+    clearAuth,
+    isAuthenticated,
+    setAuth,
+  } from "$lib/store/authStore.svelte.js"; // Importation du store d'authentification
   import { login } from "$lib/services/auth.service.js" // Importation de la fonction de connexion
   import { goto } from "$app/navigation"; // Importation de la fonction de navigation
   let email =  $state(''); // Variable pour stocker l'email
@@ -31,9 +37,9 @@
     const password = formData.get("password");   // Récupération du mot de passe
   */
     try {
-      const { user } = await login(email, password); // Appel de la fonction de connexion
+      const { token, user } = await login({email, password}); // Appel de la fonction de connexion
       console.log('Utilisateur connecté:', user); // Affichage de l'utilisateur connecté dans la console
-      // setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store ou le cookie
+      setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store ou le cookie
     } catch (e) {
       error = "Une erreur est survenue lors de la connexion.";
     }  
