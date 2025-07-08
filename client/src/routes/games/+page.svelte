@@ -2,18 +2,21 @@
     import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
     export let data;
     let games = data.games;
+    let visibleCount = 6;
   </script>
   
   <section class="catalog" aria-labelledby="catalog-title">
-    <h1>Choisissez un jeu et lancez vous dans un défi !</h1>
+    <h1 class="catalog__title">Choisissez un jeu et lancez vous dans un défi !</h1>
     <div class="catalog__grid" role="list">
-      {#each games as game}
+      {#each games.slice(0, visibleCount) as game}
         <CatalogItem {game} />
       {/each}
     </div>
-    <div class="load-more-container">
-        <button class="btn" id="load-more">
-            Voir plus de jeux
+    {#if visibleCount < games.length}
+      <div class="load-more-container">
+        <button class="btn" id="load-more" on:click={() => visibleCount += 6}>
+          Voir plus de jeux
         </button>
-    </div>
+      </div>
+    {/if}
   </section>
