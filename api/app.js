@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000; // Default port if not specified in .env
 const app = express();
 
 const corsOptions = { // Configure CORS options
-  origin: 'http://localhost:5174', // Adjust this to your frontend's URL
+  origin: 'http://localhost:5173', // Adjust this to your frontend's URL
   credentials: true, // Allow credentials if needed
 };
 

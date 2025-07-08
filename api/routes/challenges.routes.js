@@ -1,22 +1,13 @@
 // challenges.routes.js
 import express from 'express';
 
-import { getAll, getById } from '../controllers/challenges.controller.js';
+import { addChallenge, getAll, getById } from '../controllers/challenges.controller.js';
 
 const router = express.Router();
 
 router.get('/', getAll) // All of the challenges
 
-router.post('/', (req, res) => {
-  const { title, description, rules } = req.body;
-
-  if (!title || !description || !rules) {
-    return res.status(400).json({ success: false, message: 'Champs manquants' });
-  }
-
-  // Tu peux ajouter la logique pour insérer en base ici
-  res.status(201).json({ success: true, message: 'Challenge créé' });
-});
+router.post('/', addChallenge) // Add challenges
 
 router.get('/:id', getById) // Details of a challenge
 //router.get('/:id/likes',) // Get & See the likes of challenges

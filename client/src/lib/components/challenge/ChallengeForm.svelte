@@ -1,5 +1,5 @@
 <script>
-  import { challengeCreation } from '$lib/services/challengeCreation.service.js';
+  import { challengeCreation } from '$lib/services/challenge.service.js';
   let title = '';
   let description = '';
   let rules = '';
