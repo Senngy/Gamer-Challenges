@@ -33,7 +33,7 @@ export function authenticate(req, res, next){
     try {
         const dataDecoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log(dataDecoded);
-        req.userId = dataDecoded.user_id;
+        req.user_id = dataDecoded.user_id;
 
         next();
     }

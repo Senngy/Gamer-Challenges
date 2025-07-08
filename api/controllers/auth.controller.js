@@ -1,10 +1,10 @@
 // api/controllers/auth.controller.js
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import { User } from '../database/models/user.model.js';
+// import { User } from '../database/models/user.model.js';
+// import { Challenge } from '../database/models/challenge.model.js';
+import { User, Challenge } from '../database/models/index.js'; // Assurez-vous que cette importation est correcte
 import { scrypt } from '../utils/scrypt.js'; // Assurez-vous que cette importation est correcte
-
-
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
     console.log("REQ BODY :", req.body);
@@ -76,5 +76,25 @@ export async function register(req, res) { // Fonction pour gérer l'inscription
         }
         console.log(error);
         throw new Error("Internal Server Error !");
+    }
+}
+
+export async function me (req, res) {
+    try {
+        console.log("req.user_id:", req.user_id);
+
+        const user = await User.findByPk(req.user_id, { 
+            attributes : ["id", "pseudo", "email"],
+            include: { model: Challenge, as: "challenge_created", attributes: ['id', 'title']}
+        })
+        // obtenir les infos du user connecté
+        if (!user) {
+            res.status(StatusCodes.NOT_FOUND).json({error: "Utilisateur non trouvé"})
+        }
+        
+        res.status(StatusCodes.OK).json(user);
+    } catch (error) {
+        console.error("Erreur dans me auth api:", error); // Ajoute ce log
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: "Erreur interne"})
     }
 }

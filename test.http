@@ -1,4 +1,4 @@
-
+#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5NzM4NDYsImV4cCI6MTc1MTk4MTA0Nn0.xexfNANRG23tcuNfCSUcyapV-zgn08NdVsvevcAx3uU
 
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
@@ -11,7 +11,11 @@ Content-Type: application/json
 
 ### 🚀 Requête protégée avec le token
 GET http://localhost:3000/auth/me
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5NzM4NDYsImV4cCI6MTc1MTk4MTA0Nn0.xexfNANRG23tcuNfCSUcyapV-zgn08NdVsvevcAx3uU
+
+### Games list
+
+
 # # token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
 # ### Cards list
 # GET http://localhost:3000/cards
