@@ -8,34 +8,58 @@
   import ModifyPseudoPopUp from '$lib/components/me/PopUp/ModifyPseudoPopUp.svelte'; // Si vous avez besoin de modifier le pseudo
   import Btn from '$lib/components/me/Btn.svelte';
 	import { goto } from '$app/navigation'; // Pour la navigation
+  import { authStore } from '$lib/store/authStore.svelte.js'; // Importation du store d'authentification
+  import { getCurrentUser } from '$lib/services/auth.service.js'; // Fonction pour récupérer
+	import { get } from 'svelte/store';
 
   // import { deleteAccount } from '$lib/api/user'; // Assurez-vous d'avoir une fonction pour supprimer le compte
   // import { getUserData } from '$lib/api/user'; // Fonction pour récupérer les données utilisateur
   // import { getChallenges } from '$lib/api/challenges'; // Fonction pour récupérer les challenges
   
-  let user = {
-    username: " ",
-    first_name: " ",
-    last_name: " ",
-    email: " ",
+  let user = $state({
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
     birth_date: ""
+  });
+
+  let challenges = $state([
+    { title: " ", status: " " },
+    { title: " ", status: " " },
+    { title: " ", status: " " },
+  ]);
+  const getUserInfos = async () => { // Fonction pour récupérer les informations de l'utilisateur
+    // Remplacez cette logique par un appel API réel pour récupérer les données utilisateur
+    try {
+      const userInfos = await getCurrentUser();
+     // const storedUser = localStorage.getItem('user');
+     //if (!storedUser) throw new Error('Aucune donnée utilisateur en localStorage');
+     // const userInfos = JSON.parse(storedUser); // 🔥 Parse la string en objet
+    
+      console.log("User Infos:", userInfos);
+      user = {
+        pseudo: userInfos.pseudo,
+        email: userInfos.email,
+        avatar: userInfos.avatar
+      };
+      challenges = userInfos.challenge_created || []; // Assurez-vous que les challenges sont récupérés correctement
+      // Attention, challenges est un tableau d'objet [{},{},{}]
+      console.log("Challenges:", challenges);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des informations utilisateur :", error);
+    }
   };
-
-  let challenges = [
-    { title: " ", status: " " },
-    { title: " ", status: " " },
-    { title: " ", status: " " },
-  ];
-
   function logout() { // Fonction de déconnexion
     // Logique de déconnexion ici
     alert("Déconnexion !");
   }
-  export let label = "Photo de profil / Avatar";
-  export let imageUrl = ""; // L'URL actuelle de l'avatar
-  export let id = "avatar-upload";
+  
+  let label = "Photo de profil / Avatar";
+  let imageUrl = ""; // L'URL actuelle de l'avatar
+  let id = "avatar-upload";
 
-  let previewUrl = imageUrl;
+  let previewUrl = $state(imageUrl);
 
   function handleFileChange(event) { // Fonction pour gérer le changement de fichier pour l'avatar
     const file = event.target.files[0];
@@ -48,17 +72,20 @@
     }
   }
   
-  let activeModal = null; // Pour gérer l'état des popups
+  let activeModal = $state(null); // Pour gérer l'état des popups
+
   function open(modal) { // Ouvre la popup
     activeModal = modal; console.log("Which popup is active:", activeModal);
   } 
   function close() { activeModal = null; } // Ferme la popup active
+
   function redirect(url) { // Redirige vers une autre page
     goto(url);
   }
-  
-</script>
 
+getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
+
+</script>
 <AuthContainer title="Mon profil">
     <div class="user-info">
   <div class="container email">
@@ -66,14 +93,9 @@
     <div>{user.email}</div>
   </div>
 
-  <div class="container birth_date">
-    <label for="birth_date">Date de naissance :</label>
-    <div>{user.birth_date}</div>
-  </div>
-
   <div class="container pseudo">
     <label for="pseudo" class="pseudo">Pseudo :</label>
-    <div>{user.username}</div>
+    <div>{user.pseudo}</div>
     <button class="modify" on:click={() => open('modifyPseudo')}>Modifier le pseudo</button>
   </div>
 

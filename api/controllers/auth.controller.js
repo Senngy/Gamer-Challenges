@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes';
 // import { Challenge } from '../database/models/challenge.model.js';
 import { User, Challenge } from '../database/models/index.js'; // Assurez-vous que cette importation est correcte
 import { scrypt } from '../utils/scrypt.js'; // Assurez-vous que cette importation est correcte
-import { goto } from '$app/navigation';
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
     console.log("REQ BODY :", req.body);
@@ -85,7 +84,7 @@ export async function me (req, res) {
         console.log("req.user_id:", req.user_id);
 
         const user = await User.findByPk(req.user_id, { 
-            attributes : ["id", "pseudo", "email"],
+            attributes : ["id", "pseudo", "email", "avatar"],
             include: { model: Challenge, as: "challenge_created", attributes: ['id', 'title']}
         })
         // obtenir les infos du user connecté
@@ -101,6 +100,15 @@ export async function me (req, res) {
 }
 
 export async function logout (req, res) {
-    localStorage.removeItem("token"); // Supprimer le token
-    goto("/"); // Rediriger vers la page de connexion
+    // La suppression du token localStorage doit être faite côté client
+    try {
+        return res.status(StatusCodes.OK).json({ 
+            message: "Déconnexion réussie" 
+        });
+    } catch (error) {
+        console.error("Erreur dans logout auth api:", error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+            error: "Erreur lors de la déconnexion" 
+        });
+    }
 }

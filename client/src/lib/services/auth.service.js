@@ -32,6 +32,23 @@ export async function register(pseudo, email, password, birth_date, first_name, 
   return userRegister; 
 }
 
+// Fonction pour récupérer les informations de l'utilisateur connecté
+export const getCurrentUser = async () => {
+   const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`, // ou ton système de stockage
+    },
+    credentials: 'include',
+  });
+
+  if (!res.ok) throw new Error('Échec de récupération de l’utilisateur');
+   console.log('getCurrentUser res:', res);
+   
+   const user = await res.json();
+   console.log('getCurrentUser user:', user);
+  return await user;
+};
+
 /*
 export const loginUser = async (credentials) => {
   const { token } = await api("/auth/login", "POST", credentials);
