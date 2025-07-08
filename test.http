@@ -9,7 +9,10 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
+### me
+
 ### 🚀 Requête protégée avec le token
+
 GET http://localhost:3000/auth/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
 
