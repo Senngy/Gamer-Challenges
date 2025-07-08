@@ -1,28 +1,35 @@
 import gamesData from './03.seedgame.js'; // Import des données de jeux
 import { User, Game, Challenge, Participation } from '../models/index.js';
 import { sequelize } from '../models/index.js';
+import { scrypt } from '../../utils/scrypt.js';
+
 
 console.log('🔄 Réinitialisation de la base...');
 await sequelize.sync({ force: true }); // ⚠️ Supprime toutes les données (à ne pas faire en prod)
 
 // 📦 Création des utilisateurs
 console.log('👤 Création des utilisateurs...');
+
+const password1 = scrypt.hash('motdepasse1');
+const password2 = scrypt.hash('motdepasse2');
+const password3 = scrypt.hash('motdepasse3');
+
 const user1 = await User.create({
   pseudo: 'Jules95',
   email: 'jules@example.com',
-  password: 'hashedpass1',
+  password: password1,
 });
 
 const user2 = await User.create({
   pseudo: 'LaraCroft',
   email: 'lara@example.com',
-  password: 'hashedpass2',
+  password: password2,
 });
 
 const user3 = await User.create({
   pseudo: 'AlexDev',
   email: 'alex@example.com',
-  password: 'hashedpass3',
+  password: password3,
 });
 
 // 🕹️ Insertion des jeux du catalogue

@@ -2,43 +2,61 @@
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 import { User } from '../database/models/user.model.js';
+import { scrypt } from '../utils/scrypt.js'; // Assurez-vous que cette importation est correcte
 
 
 
-export async function login(req, res) {
+export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
     console.log("REQ BODY :", req.body);
     
     const emailFromRequest = req.body.email;
     const passwordFromRequest = req.body.password;
+    console.log("emailFromRequest :", emailFromRequest);
+    console.log("passwordFromRequest :", passwordFromRequest);
 
     try {
-        const user = await User.findOne({ where: { email: emailFromRequest } });
+        const user = await User.findOne({ where: { email: emailFromRequest } }); // Récupération de l'utilisateur par email
 
         if (user) {
-            return res.status(StatusCodes.OK).json({ message: "Login réussi", user: { id: user.id, email: user.email } });
+            // Vérification du mot de passe
+            if (scrypt.compare(passwordFromRequest, user.password)) { // Si le mot de passe correspond
+                // Création du token JWT
+                
+                const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h'  });
+
+
+                // Renvoi du token et des informations de l'utilisateur
+                return res.status(StatusCodes.OK).json({
+                    message: "check token : Login réussi",
+                    token: token, // Envoi du token
+                    user: { id: user.id, email: user.email, pseudo: user.pseudo } // Envoi des informations de l'utilisateur   
+                });
+            } else { // Si le mot de passe ne correspond pas echec authentification
+                return res.status(StatusCodes.BAD_REQUEST).json({ error: "email et/ou mot de passe incorrect" });   
+            }
         } else {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "couple email / mot de passe incorrect" });
-        }
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "email et/ou mot de passe incorrect" }); // Si l'utilisateur n'existe pas
+        }    
     } catch (error) {
-        console.error("Erreur dans login:", error); // Ajoute ce log
+        console.error("Erreur dans login auth api:", error); // Ajoute ce log
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "merci de réessayer ultérieurement" });
     }
 }
 
-export async function register(req, res) {
+export async function register(req, res) { // Fonction pour gérer l'inscription des utilisateurs
     console.log("REQ BODY :", req.body);
     // récupération du email et du mdp 
     // et du nom du role
     const { email, pseudo, password, birth_date, first_name, last_name } = req.body;
     try {
-       // const hashedPassword = scrypt.hash(password);
+        const hashedPassword = scrypt.hash(password); // Hash du mot de passe
         
 
         //création du user en BDD
         const user = await User.create({
             pseudo, 
             email,
-            password,
+            password: hashedPassword, // Utilisation du mot de passe haché
             birth_date,
             first_name,
             last_name,
@@ -60,48 +78,3 @@ export async function register(req, res) {
         throw new Error("Internal Server Error !");
     }
 }
-
-
-/*
-export async function login(req, res) {
-    // récupération du email et du mdp 
-    const emailFromRequest = req.body.email;
-    const passwordFromRequest = req.body.password;
-    // const { emailFromRequest: email, passwordFromRequest: password } = req.body;
-
-    try {
-        // si plus de 3 essais en 5 minutes => authent KO
-
-        // récupérer l'utilisateur avec le bon email
-        // let toto = 'une valeur'
-        // { toto: toto } => { toto }
-        const user = await User.findOne({ where : {email: emailFromRequest}});
-
-        // SELECT * FROM "user" WHERE email = 'admin' LIMIT 1;
-        // Si trouvé
-        // cf falsy : https://developer.mozilla.org/en-US/docs/Glossary/Falsy
-        if (user)
-        {
-            //    Si mdp correspond au hash 
-            if (scrypt.compare(passwordFromRequest, user.password)) {
-                //    => authent ok
-                // créer un token jwt
-                const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET, { expiresIn: 60 * 15 });
-                // renvoyer le token à l'utilisateur
-                return res.status(StatusCodes.OK).json({token: token});
-
-            } else {
-                //    Sinon => authent KO
-                return res.status(StatusCodes.BAD_REQUEST).json({error: "couple login / mdp incorrect"});
-            }
-        } else 
-        {
-            // Sinon => authent KO
-            return res.status(StatusCodes.BAD_REQUEST).json({error: "couple login / mdp incorrect"});
-        }
-
-    } catch (error) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({error: "merci de réessayer ultérieurement"});
-    }
-}
-    */

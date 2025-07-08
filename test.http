@@ -1,13 +1,17 @@
 
-### User login OK
+
+### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "jules@example.com",
-    "password" : "hashedpass1"
+  "email": "jules@example.com",
+  "password": "motdepasse1"
 }
 
+### 🚀 Requête protégée avec le token
+GET http://localhost:3000/auth/me
+Authorization: Bearer {{token}}
 # # token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTAyNDAyNTAsImV4cCI6MTc1MDI0MTE1MH0.WE6yvHeClnjeXt3HJgpeNhklIFCkfOardkYheyMwqaY
 # ### Cards list
 # GET http://localhost:3000/cards
