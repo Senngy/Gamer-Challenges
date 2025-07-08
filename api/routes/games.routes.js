@@ -8,7 +8,6 @@ router.get('/', async (req, res) => {
   res.json(games);
 });
 
-// Route pour récupérer un jeu par son id
 router.get('/:id', async (req, res) => {
   const game = await Game.findByPk(req.params.id);
   if (!game) {

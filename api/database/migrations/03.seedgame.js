@@ -109,8 +109,8 @@ const gamesData = [
     genre: 'RPG',
   },
   {
-    title: 'Assassin\u2019s Creed Valhalla',
-    image: 'assassin\u2019s_creed_valhalla.jpg',
+    title: 'Assassin\'s Creed Valhalla',
+    image: 'assassins_creed_valhalla.jpg',
     description:
       'Assassin\u2019s Creed Valhalla est un jeu populaire de type Adventure.',
     platform: 'Xbox One',
