@@ -18,7 +18,7 @@
     </div>
     {#if game.image}
       <img
-        src={'/images/' + game.image}
+        src={game.image}
         alt={game.title}
         style="width:100%;height:100%;object-fit:cover;"
       />

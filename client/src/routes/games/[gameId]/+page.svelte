@@ -61,17 +61,20 @@
     };
 
 
-
+  /*
   export let data;
   const { game } = data;
   console.log(game);
+  */
+  const { data } = $props();
+  const { game } = data;
 
 </script>
 
 <!-- Game details -->
 {#if game}
   <section class="game-details" aria-labelledby="game-details">
-    <img src={`/images/${game.image}`} alt={game.title} class="slide__image" />
+    <img src={game.image} alt={game.title} class="slide__image" />
 
     <div class="game-details__content">
       <div class="game-details__platform">

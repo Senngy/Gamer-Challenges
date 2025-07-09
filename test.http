@@ -21,3 +21,9 @@ POST http://localhost:3000/auth/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
 
+
+### 🕹️ Liste des jeux
+GET http://localhost:3000/games
+
+### 🕹️ Détails d'un jeu spécifique
+GET http://localhost:3000/games/1
