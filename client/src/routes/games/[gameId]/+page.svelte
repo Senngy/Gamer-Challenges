@@ -86,8 +86,14 @@
       <h1 class="game-details__title">{game.title}</h1>
 
       <p class="game-details__description">
-        {game.description}
+        {#if game.description}
+          {@html game.description}
+        {:else}
+          Aucune description disponible pour ce jeu.
+        {/if}
       </p>
+       
+      
 
       <button class="btn btn--primary">
         Lancer un nouveau défi maintenant
