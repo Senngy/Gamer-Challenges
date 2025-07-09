@@ -1,6 +1,12 @@
 <script>
     import ChallengeItem from '$lib/components/ui/ChallengeItem.svelte';
 
+    let visibleCount = 4;
+
+    function loadMore() {
+      visibleCount += 4;
+    }
+
     /* Challenge Creation */
 
     import { page } from '$app/stores';
@@ -10,10 +16,10 @@
 
     import Modal from '$lib/components/ui/Modal.svelte';
 
-    let showModal = $state(false); // ✅
+    let showModal = $state(false);
 
     function openModal() {
-    showModal = true; // ✅ direct
+    showModal = true;
 	}
 
     import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
@@ -67,8 +73,13 @@
 
 
   const { data } = $props();
-  const { game } = data;
+
+  /* const { game } = data; */
+  const { game, challenges: challengeList } = data;
+
   console.log(game);
+
+  let challenges = challengeList;
 
 </script>
 
