@@ -1,4 +1,4 @@
-#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5NzM4NDYsImV4cCI6MTc1MTk4MTA0Nn0.xexfNANRG23tcuNfCSUcyapV-zgn08NdVsvevcAx3uU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
 
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
@@ -9,31 +9,28 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
-### me
-
 ### 🚀 Requête protégée avec le token
-
 GET http://localhost:3000/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
+Authorization: Bearer {{token}}
 
 ### 🚪 Logout
 POST http://localhost:3000/auth/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
+Authorization: Bearer {{token}}
 
-### 📝 Mise à jour du mot du pseudo
+### 📝 Mise à jour du pseudo
 PATCH http://localhost:3000/auth/me/pseudo
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTIwNTI2NTYsImV4cCI6MTc1MjA1OTg1Nn0.fE3B1NkM7SsnUG0eWcJ5uBcsUC0YDhauSg7LKGtwv0M
+Authorization: Bearer {{token}}
 
 {
-    "newPseudo": "LamindeDZ75"
+    "newPseudo": "Toto752"
 }
 
 ### 📝 Mise à jour du mot de passe
 PATCH http://localhost:3000/auth/me/password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTIwNTI2NTYsImV4cCI6MTc1MjA1OTg1Nn0.fE3B1NkM7SsnUG0eWcJ5uBcsUC0YDhauSg7LKGtwv0M
+Authorization: Bearer {{token}}
 
 {
     "currentPassword": "motdepasse8",
@@ -43,5 +40,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpY
 ### 🗑️ Suppression du compte
 DELETE http://localhost:3000/auth/me
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTIwNTI2NTYsImV4cCI6MTc1MjA1OTg1Nn0.fE3B1NkM7SsnUG0eWcJ5uBcsUC0YDhauSg7LKGtwv0M
-
+Authorization: Bearer {{token}}

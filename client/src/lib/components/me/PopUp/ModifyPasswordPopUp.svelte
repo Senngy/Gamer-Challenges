@@ -1,13 +1,14 @@
 <script>
   import Input from '$lib/components/auth/Input.svelte';
+  import { updatePassword } from "$lib/services/auth.service.js";
 
+  let currentPassword =  $state(''); // Mot de passe actuel
+  let newPassword =  $state(''); // Nouveau mot de passe
+  let confirmPassword =  $state(''); // Confirmation du nouveau mot de passe
+  let error =  $state(''); // Message d'erreur
+  let success = $state(''); // Message de succès
 
-  let currentPassword = ''; // Mot de passe actuel
-  let newPassword = ''; // Nouveau mot de passe
-  let confirmPassword = ''; // Confirmation du nouveau mot de passe
-  let error = ''; // Message d'erreur
-
-  function handleSubmit() { // Fonction pour gérer la soumission du formulaire
+  async function handleSubmit() { // Fonction pour gérer la soumission du formulaire
     if (newPassword !== confirmPassword) {
       error = "Les nouveaux mots de passe ne correspondent pas.";
       return;
@@ -29,15 +30,17 @@
       return;
     }
     try {
+      await updatePassword(currentPassword, newPassword);
+      console.log('Mot de passe mis à jour avec succès');
       // Ici, vous pouvez appeler une fonction pour mettre à jour le mot de passe
       // Par exemple, onSubmit({ currentPassword, newPassword });
+      success = "Modification du mot de passe réussi ✅"
     } catch (e) {
       console.error('Erreur lors de la mise à jour du mot de passe :', e);
       error = "Une erreur est survenue lors de la mise à jour du mot de passe.";
       return;
     }
     error = '';
-    // onSubmit({ currentPassword, newPassword }); // Appel de la fonction onSubmit avec les données du formulaire
   }
   
 </script>

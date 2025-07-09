@@ -12,10 +12,6 @@
   import { getCurrentUser } from '$lib/services/auth.service.js'; // Fonction pour récupérer
 	import { get } from 'svelte/store';
 
-  // import { deleteAccount } from '$lib/api/user'; // Assurez-vous d'avoir une fonction pour supprimer le compte
-  // import { getUserData } from '$lib/api/user'; // Fonction pour récupérer les données utilisateur
-  // import { getChallenges } from '$lib/api/challenges'; // Fonction pour récupérer les challenges
-  
   let user = $state({
     username: "",
     first_name: "",
@@ -30,27 +26,32 @@
     { title: " ", status: " " },
   ]);
   const getUserInfos = async () => { // Fonction pour récupérer les informations de l'utilisateur
-    // Remplacez cette logique par un appel API réel pour récupérer les données utilisateur
     
     try {
-      const userInfos = await getCurrentUser();
-     // const storedUser = localStorage.getItem('user');
-     //if (!storedUser) throw new Error('Aucune donnée utilisateur en localStorage');
-     // const userInfos = JSON.parse(storedUser); // 🔥 Parse la string en objet
-    
+      const userInfos = await getCurrentUser(); // Appelle ton service
+      console.log("Données utilisateur récupérées :", userInfos);
+      if (!userInfos) {
+        throw new Error("Réponse inattendue : pas de userInfos");
+      }
       console.log("User Infos:", userInfos);
+      const { pseudo, email, avatar, challenge_created } = userInfos;
       user = {
-        pseudo: userInfos.pseudo,
-        email: userInfos.email,
-        avatar: userInfos.avatar
+        pseudo,
+        email, 
+        avatar,
       };
-      challenges = userInfos.challenge_created || []; // Assurez-vous que les challenges sont récupérés correctement
-      // Attention, challenges est un tableau d'objet [{},{},{}]
-      console.log("Challenges:", challenges);
+      if(!challenge_created) {
+        challenges = ["Aucun challenge créé"];
+      } else {
+        challenges = challenge_created || []; // Assurez-vous que les challenges sont récupérés correctement
+        // Attention, challenges est un tableau d'objet [{},{},{}]
+        console.log("Challenges:", challenges);
+      }
     } catch (error) {
       console.error("Erreur lors de la récupération des informations utilisateur :", error);
     }
   };
+
   function logout() { // Fonction de déconnexion
     // Logique de déconnexion ici
     // Nettoyer le localStorage

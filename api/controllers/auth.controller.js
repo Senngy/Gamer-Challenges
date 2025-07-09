@@ -170,6 +170,7 @@ export async function modifyPassword(req, res) {
 }
 
 export async function modifyPseudo(req, res) {
+    console.log("REQ BODY :", req.body);
     const userId = req.user_id; // Récupération de l'ID de l'utilisateur à partir du token JWT
     const { newPseudo } = req.body; // Récupération du nouveau pseudo depuis le corps de la requête
     console.log("userId:", userId);
