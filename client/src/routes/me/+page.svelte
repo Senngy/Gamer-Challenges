@@ -148,8 +148,8 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 
   <!--Challenges de l'utilisateur-->
   <div class="challenges">
-   <h3>Mes challenges</h3>
-   <ul class="challenges-list">
+  <h3>Mes challenges</h3>
+    <ul class="challenges-list">
       {#each challenges as challenge}
         <li>
           <span>{challenge.title}</span>

@@ -1,7 +1,6 @@
 <script>
   import Input from '$lib/components/auth/Input.svelte';
-  export let onClose; // Fonction pour fermer la popup
-  export let onSubmit; // Fonction pour soumettre le nouveau mot de passe
+
 
   let currentPassword = ''; // Mot de passe actuel
   let newPassword = ''; // Nouveau mot de passe
@@ -13,9 +12,34 @@
       error = "Les nouveaux mots de passe ne correspondent pas.";
       return;
     }
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      error = "Veuillez remplir tous les champs.";
+      return;
+    }
+    if (newPassword.length < 8) {
+      error = "Le nouveau mot de passe doit contenir au moins 8 caractères.";
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/\d/.test(newPassword)) {
+      error = "Le nouveau mot de passe doit contenir au moins une majuscule, une minuscule et un chiffre.";
+      return;
+    }
+    if (newPassword === currentPassword) {
+      error = "Le nouveau mot de passe doit être différent de l'ancien.";
+      return;
+    }
+    try {
+      // Ici, vous pouvez appeler une fonction pour mettre à jour le mot de passe
+      // Par exemple, onSubmit({ currentPassword, newPassword });
+    } catch (e) {
+      console.error('Erreur lors de la mise à jour du mot de passe :', e);
+      error = "Une erreur est survenue lors de la mise à jour du mot de passe.";
+      return;
+    }
     error = '';
-    onSubmit({ currentPassword, newPassword }); // Appel de la fonction onSubmit avec les données du formulaire
+    // onSubmit({ currentPassword, newPassword }); // Appel de la fonction onSubmit avec les données du formulaire
   }
+  
 </script>
 
 
@@ -54,7 +78,7 @@
       {/if}
       <div class="buttons">
         <button class="btn confirm" type="submit">Confirmer</button>
-        <button class="btn cancel" type="button" on:click={onClose}>Annuler</button>
+        <button class="btn cancel" type="button" on:click={c}>Annuler</button>
       </div>
     </form>
   </div>

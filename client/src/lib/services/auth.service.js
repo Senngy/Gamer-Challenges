@@ -4,22 +4,24 @@ import api from '../api.js';
 
 export const login = async (credentials) => {
   try {
-    const { token } = await api('/auth/login', "POST", credentials);
+    const { token, user } = await api('/auth/login', "POST", credentials);
     console.log(' Login auth.service.js successful credientials:', credentials);
     console.log('Login auth.service.js successful token:', token);
+    /*
     const user = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, { // Récupération des infos de l'utilisateur connecté
       method: "GET",
       headers: {
       Authorization: `Bearer ${token}`,
     },
-  }).then((res) => res.json()); //
+  }).then((res) => res.json()); 
+  *///
     console.log('Login auth.service.js successful user:', user);
   return { token, user };
   } catch (error) {
     console.error('Login failed:', error);
     throw error;
   }
-}
+};
 
 export async function register(pseudo, email, password, birth_date, first_name, last_name) {
   try {
@@ -30,7 +32,7 @@ export async function register(pseudo, email, password, birth_date, first_name, 
     throw error;
   }
   return userRegister; 
-}
+};
 
 // Fonction pour récupérer les informations de l'utilisateur connecté
 export const getCurrentUser = async () => {
@@ -47,6 +49,30 @@ export const getCurrentUser = async () => {
    const user = await res.json();
    console.log('getCurrentUser user:', user);
   return await user;
+};
+
+// Fonction pour récupérer les informations modifié par l'utilisateur (pseudo)
+export async function updatePseudo(pseudo) {
+  try {
+    const pseudoUser = await api ('/auth/me/pseudo', "PATCH", { pseudo });
+    console.log('Update pseudo auth.service.js successful:', pseudoUser);
+  } catch (error) {
+    console.error('Update pseudo failed:', error);
+    throw error;
+  }
+  return pseudoUser; 
+};
+
+// Fonction pour récupérer les informations modifié par l'utilisateur (mot de passe)
+export async function updatePassword(password) {
+  try {
+    const passwordUser = await api ('/auth/me/password', "PATCH", { password });
+    console.log('Update password auth.service.js successful:', passwordUser);
+  } catch (error) {
+    console.error('Update password failed:', error);
+    throw error;
+  }
+  return passwordUser; 
 };
 
 // Fonction pour déconnecter l'utilisateur
@@ -71,5 +97,22 @@ export const logout = async () => {
   }
 };
 
-
-
+// Fonction pour supprimer le compte utilisateur
+export const deleteAccount = async (credentials) => {
+  try {
+    const { token } = await api('/auth/me', "DELETE", credentials);
+    console.log(' Delete auth.service.js successful credientials:', credentials);
+    console.log('Delete auth.service.js successful token:', token);
+    const deleteAccountUser = await fetch(`${import.meta.env.VITE_API_URL}/auth/me`, { // Suppression des infos de l'utilisateur
+      method: "DELETE",
+      headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json()); //
+    console.log('Delete auth.service.js successful deleteAccountUser:', deleteAccountUser);
+  return { token, deleteAccountUser };
+  } catch (error) {
+    console.error('Delete Account failed:', error);
+    throw error;
+  }
+};
