@@ -10,22 +10,22 @@ import { Challenge } from '../database/models/challenge.model.js';
 
 const router = express.Router();
 
-//📥 GET /challenges Récupérer tous les challenges
+// 📥 GET /challenges - Récupérer tous les challenges
 router.get('/', getAll);
 
-//📥 GET /challenges/:id Récupérer un challenge spécifique par son ID
-router.get('/:id', getById);
-
-//📤 POST /challenges Créer un nouveau challenge
-router.post('/', create);
-
-//📥 GET /challenges/game/:gameId Récupérer tous les challenges liés à un jeu donné
+// 📥 GET /challenges/game/:gameId - Récupérer tous les challenges liés à un jeu donné
 router.get('/game/:gameId', async (req, res) => {
   const { gameId } = req.params;
 
+  // Validation optionnelle
+  const parsedGameId = parseInt(gameId, 10);
+  if (isNaN(parsedGameId)) {
+    return res.status(400).json({ error: 'gameId invalide' });
+  }
+
   try {
     const challenges = await Challenge.findAll({
-      where: { game_by: gameId },
+      where: { game_by: parsedGameId },
     });
 
     res.json(challenges);
@@ -40,5 +40,11 @@ router.get('/game/:gameId', async (req, res) => {
     });
   }
 });
+
+// 📥 GET /challenges/:id Récupérer un challenge spécifique par son ID
+router.get('/:id', getById);
+
+// 📤 POST /challenges Créer un nouveau challenge
+router.post('/', create);
 
 export default router;
