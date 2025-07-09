@@ -20,7 +20,6 @@
 
         <button class="btn btn--primary">Participer au défi maintenant</button>
     </div>
-
 </section>
 
 

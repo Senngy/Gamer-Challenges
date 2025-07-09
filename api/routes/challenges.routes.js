@@ -1,6 +1,20 @@
-// challenges.routes.js
-import express from 'express';
+// src/routes/challenges.routes.js
 
+<<<<<<< HEAD
+import express from 'express';
+import {
+  getAll,
+  getById,
+  create,
+} from '../controllers/challenges.controller.js';
+
+import { Challenge } from '../database/models/challenge.model.js';
+
+const router = express.Router();
+
+//📥 GET /challenges Récupérer tous les challenges
+router.get('/', getAll);
+=======
 import { addChallenge, getAll, getById } from '../controllers/challenges.controller.js';
 
 const router = express.Router();
@@ -13,5 +27,34 @@ router.get('/:id', getById) // Details of a challenge
 //router.get('/:id/likes',) // Get & See the likes of challenges
 //router.post('/:id/likes',) // Give a like to a challenge PRIVATE
 //router.patch('/') // If the creator want to edit the challenge ? (pas dans le cahier des charges)
+>>>>>>> dev
+
+//📥 GET /challenges/:id Récupérer un challenge spécifique par son ID
+router.get('/:id', getById);
+
+//📤 POST /challenges Créer un nouveau challenge
+router.post('/', create);
+
+//📥 GET /challenges/game/:gameId Récupérer tous les challenges liés à un jeu donné
+router.get('/game/:gameId', async (req, res) => {
+  const { gameId } = req.params;
+
+  try {
+    const challenges = await Challenge.findAll({
+      where: { game_by: gameId },
+    });
+
+    res.json(challenges);
+  } catch (error) {
+    console.error(
+      'Erreur lors de la récupération des challenges pour le jeu :',
+      error
+    );
+    res.status(500).json({
+      error:
+        'Erreur serveur lors de la récupération des challenges liés au jeu',
+    });
+  }
+});
 
 export default router;

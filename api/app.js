@@ -25,6 +25,8 @@ app.use(express.json());    // Parse JSON request bodies
 app.use("/auth", authRouter)
 // app.use("/users", usersRouter);
 app.use("/games", gamesRouter);
+
+//recuperer tous les challenges + via l'id du jeux et création de challenge
 app.use("/challenges", challengesRouter);
 
 app.listen(PORT, () => {

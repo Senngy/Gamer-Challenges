@@ -80,16 +80,14 @@
     <div class="game-details__content">
       
       <div class="game-details__platform">
-        {#each game.platforms as platform}
+        {#each game.platform?.split(',') ?? [] as platform}
           <span class="game-details__platform-item">{platform}</span>
         {/each}
       </div>
 
       <h1 class="game-details__title">{game.title}</h1>
 
-      <p class="game-details__description">
-        {game.description}
-      </p>
+      <p class="game-details__description">{game.description}</p>
 
       <button class="btn btn--primary" on:click={openModal}>
         Lancer un nouveau défi maintenant
@@ -104,25 +102,30 @@
 <!-- Challenges Section -->
 <section class="catalog" aria-labelledby="catalog-title">
   <h2>
-    Participer à un défi créé par la communauté ! <span
-      >256 défis en cours…</span
-    >
+    Participer à un défi créé par la communauté !
+    <span>{challenges.length} défis en cours…</span>
   </h2>
 
   <div class="catalog__grid" role="list">
-    <ChallengeItem />
-    <ChallengeItem />
-    <ChallengeItem />
-    <ChallengeItem />
-    <ChallengeItem />
-    <ChallengeItem />
+    {#each challenges.slice(0, visibleCount) as challenge (challenge.id)}
+      <ChallengeItem {challenge} />
+    {/each}
   </div>
 
-  <div class="load-more-container">
-    <button class="btn secundary" id="load-more">
-      Voir plus de challenges
-    </button>
-  </div>
+  {#if visibleCount < challenges.length}
+    <div class="load-more-container">
+      <button
+        class="btn secundary"
+        id="load-more"
+        on:click={loadMore}
+        disabled={visibleCount >= challenges.length}
+      >
+        Voir plus de challenges
+      </button>
+    </div>
+  {:else}
+    <p class="no-more">Tous les challenges ont été chargés ✅</p>
+  {/if}
 </section>
 
 <!-- Challenge Creation Form -->
