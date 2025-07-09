@@ -37,3 +37,49 @@ POST http://localhost:3000/auth/logout
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
 
+## GAMES
+### All games
+GET http://localhost:3000/games
+### Specific game
+GET http://localhost:3000/games/2
+
+## USERS
+### All users
+GET http://localhost:3000/users
+
+## CHALLENGES
+### All challenges
+GET http://localhost:3000/challenges
+### Specific challenge
+GET http://localhost:3000/challenges/1
+### Create challenge
+POST http://localhost:3000/challenges
+Content-Type: application/json
+
+{
+    "title": "Titre du challenge",
+    "description": "Description du challenge",
+    "rules": "Règles du challenge",
+    "created_by": 1,
+    "game_by": 1
+}
+
+### Likes of a specific challenge
+GET http://localhost:3000/challenges/1/likes
+### Add a like to a specific challenge
+POST http://localhost:3000/challenges/1/likes
+Content-Type: application/json
+
+## PARTICIPATIONS
+### All participations of a challenge
+GET http://localhost:3000/challenges/1/participations
+### Create participation
+POST http://localhost:3000/participations
+Content-Type: application/json
+
+{
+    "media_link": "Chemin vers le média",
+    "description": "Description de la participation",
+    "challenge_id": 1,
+    "user_id": 1
+}

@@ -96,7 +96,6 @@
             Participer au défi maintenant
         </button>
     </div>
-
 </section>
 
 
