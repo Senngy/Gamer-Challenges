@@ -4,13 +4,17 @@
     /* Challenge Creation */
 
     import { page } from '$app/stores';
-    import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
 
     import Btn from '$lib/components/auth/Btn.svelte';
     import Input from "$lib/components/auth/Input.svelte";
 
-    import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
+    import Modal from '$lib/components/ui/Modal.svelte';
+
+    let showModal = $state(false); // ✅
+
+    function openModal() {
+    showModal = true; // ✅ direct
+	}
 
     import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
 
@@ -62,7 +66,7 @@
 
 
 
-  export let data;
+  const { data } = $props();
   const { game } = data;
   console.log(game);
 
@@ -74,6 +78,7 @@
     <img src={`/images/${game.image}`} alt={game.title} class="slide__image" />
 
     <div class="game-details__content">
+      
       <div class="game-details__platform">
         {#each game.platforms as platform}
           <span class="game-details__platform-item">{platform}</span>
@@ -86,9 +91,10 @@
         {game.description}
       </p>
 
-      <button class="btn btn--primary">
+      <button class="btn btn--primary" on:click={openModal}>
         Lancer un nouveau défi maintenant
       </button>
+
     </div>
   </section>
 {:else}
@@ -120,8 +126,8 @@
 </section>
 
 <!-- Challenge Creation Form -->
-
-<ProfilePopUp>
+<h4>Hello :)</h4>
+<Modal isOpen={showModal} close={() => showModal = false}>
 
     <h2>Créer un challenge</h2>
 
@@ -142,7 +148,7 @@
         <a href="/auth/signup">Cliquez ici</a>
     </div>
 
-</ProfilePopUp>
+</Modal>
 
 
 <style>
@@ -167,4 +173,5 @@
     color: #2563eb;
   }
 </style>
+
 
