@@ -2,7 +2,7 @@ export async function addParticipation(req, res) {
   const { media_link, description, challenge_id, user_id } = req.body;
 
   // Validation simple
-  if (!title || !description || !rules || !challenge_id || !user_id) {
+  if (!media_link || !description || !challenge_id || !user_id) {
     return res.status(400).json({ success: false, message: 'Champs manquants' });
   }
 
