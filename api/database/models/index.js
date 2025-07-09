@@ -4,10 +4,10 @@ import { Challenge } from './challenge.model.js';
 import { Game } from './game.model.js';
 import { User } from './user.model.js';
 import { Participation } from './participation.model.js';
-<<<<<<< HEAD
+
 // import { Vote } from './vote.model.js';
 // import { Comment } from './comment.model.js';
-=======
+
 
 console.log('⚙️  Models and associations initialized');
 // Initialisation des modèles
@@ -17,7 +17,7 @@ const Game = GameModel(sequelize);
 const Challenge = ChallengeModel(sequelize);
 const Participation = ParticipationModel(sequelize);
 */
->>>>>>> dev
+
 
 // 🔗 ASSOCIATIONS
 
