@@ -6,6 +6,7 @@ import express from "express";
 import usersRouter from "./routes/users.routes.js";
 import gamesRouter from "./routes/games.routes.js";
 import challengesRouter from "./routes/challenges.routes.js";
+import participationsRouter from "./routes/challenges.routes.js";
 import authRouter from "./routes/auth.routes.js"; // Import the auth routes
 
 const PORT = process.env.PORT || 3000; // Default port if not specified in .env
@@ -28,6 +29,7 @@ app.use("/games", gamesRouter);
 
 //recuperer tous les challenges + via l'id du jeux et création de challenge
 app.use("/challenges", challengesRouter);
+app.use("/participations", participationsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port at http://localhost:${PORT}`);

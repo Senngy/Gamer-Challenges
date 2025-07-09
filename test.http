@@ -1,5 +1,21 @@
 #eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5NzM4NDYsImV4cCI6MTc1MTk4MTA0Nn0.xexfNANRG23tcuNfCSUcyapV-zgn08NdVsvevcAx3uU
 
+
+## Games
+GET http://localhost:3000/games
+
+## Challenges
+### All challenges
+GET http://localhost:3000/challenges
+
+### Specific challenge
+GET http://localhost:3000/challenges/1
+
+## Participations
+### Specific participations
+GET http://localhost:3000/challenges/1/participations
+
+
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
 Content-Type: application/json
@@ -9,7 +25,7 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
-### me
+## me
 
 ### 🚀 Requête protégée avec le token
 

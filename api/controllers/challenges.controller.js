@@ -1,5 +1,9 @@
 import { Challenge } from '../database/models/challenge.model.js';
+import { Participation } from '../database/models/participation.model.js';
+//import { User } from '../database/models/user.model.js';
+import { StatusCodes } from 'http-status-codes';
 import { Game, User } from '../database/models/index.js'; // pour vérifier l'existence de game et user
+
 
 // Récupérer tous les challenges
 export async function getAll(req, res) {
@@ -66,9 +70,33 @@ export async function create(req, res) {
 
     return res.status(201).json(newChallenge);
   } catch (error) {
-    console.error('Erreur lors de la création du challenge:', error);
-    return res
-      .status(500)
-      .json({ error: 'Erreur lors de la création du challenge' });
-  }
+    console.error('Erreur lors de la création du challenge :', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur lors de la création du challenge.' });
+  };
 }
+
+/*export async function getParticipations(req, res) {
+  const challengeId = Number(req.params.id);
+
+  if (!challengeId) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid challenge ID' });
+  }
+
+  try {
+    const participations = await Participation.findAll({
+      where: { challenge_id: challengeId },
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'username', 'avatar']
+        }
+      ],
+      order: [['created_at', 'DESC']]
+    });
+
+    return res.status(StatusCodes.OK).json(participations);
+  } catch (err) {
+    console.error('Erreur lors du fetch des participations :', err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
+  };
+}*/

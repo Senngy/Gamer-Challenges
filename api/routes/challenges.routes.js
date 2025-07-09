@@ -17,11 +17,21 @@ router.get('/', getAll);
 router.get('/game/:gameId', async (req, res) => {
   const { gameId } = req.params;
 
+
+router.get('/:id', getById) // Details of a challenge
+
+router.get('/:id/participations', getById) // Details of a challenge
+
+//router.get('/:id/likes',) // Get & See the likes of challenges
+//router.post('/:id/likes',) // Give a like to a challenge PRIVATE
+//router.patch('/') // If the creator want to edit the challenge ? (pas dans le cahier des charges)
+
   // Validation optionnelle
-  const parsedGameId = parseInt(gameId, 10);
+  /*const parsedGameId = parseInt(gameId, 10);
   if (isNaN(parsedGameId)) {
     return res.status(400).json({ error: 'gameId invalide' });
-  }
+  }*/
+
 
   try {
     const challenges = await Challenge.findAll({

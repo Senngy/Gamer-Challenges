@@ -17,15 +17,64 @@
 	console.log('Game:', game);
 	console.log('Challenges:', challenges);
 
+    let showModal = $state(false);
+
+    function openModal() {
+      showModal = true;
+    }
+
+    import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
+
+    import { challengeCreation } from "$lib/services/challenge.service.js";
+    import { goto } from "$app/navigation";
+
+    let title = $state(''); // Variable pour stocker le titre
+    let description = $state(''); // Variable pour stocker la description
+    let rules = $state(''); // Variable pour stocker les règles
+
+    let game_by = $state($page.params.gameId); // Variable pour stocker l'ID du jeu
+    console.log(game_by)
+    let created_by = 1;
+    console.log(created_by)
+
+    let error =$state('');
+
+    const handleSubmitChallenge = async (e) => {
+        console.log('handleSubmitChallenge called');
+        e.preventDefault();
+
+        if (!title.trim() || !description.trim() || !rules.trim()) {
+            error = "Veuillez remplir tous les champs.";
+            return;
+        }
+
+        console.log('title:', title);
+        console.log('description:', description);
+        console.log('rules:', rules);
+        console.log('created_by:', created_by);
+        console.log('game_by:', game_by);
+
+        try {
+        const response = await challengeCreation(title, description, rules, created_by, game_by);
+
+        if (response && response.success) {
+            error = '';
+            alert('Challenge créé avec succès !');
+            goto(`/challenges/${response.challenge.id}`);
+        } else {
+            error = "Erreur : la création du challenge n'a pas été confirmée.";
+        }
+        } catch (e) {
+            console.error('Erreur de création :', e);
+            error = "Une erreur est survenue lors de la création.";
+        }
+    };
+
 	// UI
 	let visibleCount = 4;
 	let showModal = false;
 	let error = '';
 
-	// Formulaire
-	let title = '';
-	let description = '';
-	let rules = '';
 
 	const game_by = game.id; // ID du jeu depuis la donnée chargée
 	const created_by = 1; // TODO : remplacer par l'utilisateur réel connecté
@@ -116,47 +165,29 @@
 	{/if}
 </section>
 
-<!-- Challenge Creation Modal -->
-<Modal isOpen={showModal} close={() => (showModal = false)}>
-	<h2>Créer un challenge</h2>
+<!-- Challenge Creation Form -->
 
-	{#if error}
-		<div class="error">{error}</div>
-	{/if}
+<Modal isOpen={showModal} close={() => showModal = false}>
 
-	<ChallengeForm onSubmit={handleSubmitChallenge}>
-		<input type="hidden" value={game_by} name="gameId" />
-		<Input
-			id="title"
-			type="text"
-			label="Titre"
-			placeholder="Entrez un titre"
-			bind:value={title}
-			required
-		/>
-		<Input
-			id="description"
-			type="text"
-			label="Description"
-			placeholder="Entrez une description"
-			bind:value={description}
-			required
-		/>
-		<Input
-			id="rules"
-			type="text"
-			label="Règles"
-			placeholder="Précisez les règles"
-			bind:value={rules}
-			required
-		/>
-		<Btn>Valider</Btn>
-	</ChallengeForm>
+    <h2>Créer un challenge</h2>
 
-	<div class="already-account">
-		<span>Pas encore de compte ? Créez-en un simplement !</span>
-		<a href="/auth/signup">Cliquez ici</a>
-	</div>
+    {#if error}
+        <div class="error">{error}</div>
+    {/if}
+    
+    <ChallengeForm onSubmit={handleSubmitChallenge}>
+        <input type="hidden" value={game_by} name="gameId" />
+        <Input id="title" type="text" label="Titre" placeholder="Entrez un titre" bind:value={title} required />
+        <Input id="description" type="text" label="Description" placeholder="Entrez une description" bind:value={description} required />
+        <Input id="rules" type="text" label="Règles" placeholder="Précisez les règles" bind:value={rules} required />
+    
+        <Btn>Valider</Btn>
+    </ChallengeForm>
+    <div class="already-account">
+        <span>Pas encore de compte ? Créez en un simplement !</span>
+        <a href="/auth/signup">Cliquez ici</a>
+    </div>
+
 </Modal>
 
 <style>
