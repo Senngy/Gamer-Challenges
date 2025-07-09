@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
         pseudo: Joi.string().required(),
-        password: Joi.string().required(),
+        password: Joi.string().min(8).required(),
         email: Joi.string().required(),
         birth_date: Joi.date().required(),
         first_name: Joi.string().required(),
@@ -44,5 +44,34 @@ export function authenticate(req, res, next){
     // token n'existe pas et est valide et contient un id connu
     // Alors appeler le prochain middleware
     // Sinon refusé l'accès
+}
 
+export function validateUserUpdatePseudo(req, res, next) {
+    const updateUserSchema = Joi.object({
+        newPseudo: Joi.string().required(),
+    });
+    checkBody(updateUserSchema, req.body, res, next);
+}
+export function validateUserUpdatePassword(req, res, next) {
+  const updateUserSchema = Joi.object({
+    currentPassword: Joi.string()
+      .min(8)
+      .required()
+      .messages({
+        'any.required': 'Le mot de passe actuel est requis',
+        'string.min': 'Le mot de passe actuel doit contenir au moins 8 caractères',
+      }),
+
+    newPassword: Joi.string()
+      .min(8)
+      .disallow(Joi.ref('currentPassword')) // ne doit pas être identique
+      .required()
+      .messages({
+        'any.required': 'Le nouveau mot de passe est requis',
+        'string.min': 'Le nouveau mot de passe doit contenir au moins 8 caractères',
+        'any.invalid': 'Le nouveau mot de passe doit être différent de l\'ancien',
+      }),
+  });
+
+  checkBody(updateUserSchema, req.body, res, next);
 }

@@ -112,3 +112,85 @@ export async function logout (req, res) {
         });
     }
 }
+
+
+export async function deleteAccount(req, res) {
+    try {
+        const userId = req.user_id; // Récupération de l'ID de l'utilisateur à partir du token JWT
+        console.log("userId:", userId);
+
+        // Suppression de l'utilisateur de la base de données
+        const deletedUser = await User.destroy({ where: { id: userId } });
+
+        if (deletedUser) {
+            return res.status(StatusCodes.OK).json({ message: "Compte supprimé avec succès" });
+        } else {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Utilisateur non trouvé" });
+        }
+    } catch (error) {
+        console.error("Erreur dans deleteAccount auth api:", error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur lors de la suppression du compte" });
+    }
+}
+
+export async function modifyPassword(req, res) {
+    console.log("REQ BODY :", req.body);
+    console.log("REQ USER ID :", req.user_id);
+    console.log("currentPassword:", req.body.currentPassword);
+    console.log("newPassword:", req.body.newPassword);
+    try {
+        const userId = req.user_id; // Récupération de l'ID de l'utilisateur à partir du token JWT
+        const { currentPassword, newPassword } = req.body; // Récupération des mots de passe depuis le corps de la requête
+
+        // Récupération de l'utilisateur par ID
+        const user = await User.findByPk(userId);
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Utilisateur non trouvé" });
+        }
+
+        // Vérification du mot de passe actuel
+        const isMatch = await scrypt.compare(currentPassword, user.password); // Comparaison du mot de passe actuel avec le mot de passe haché stocké
+        if (!isMatch) {
+            return res.status(StatusCodes.UNAUTHORIZED).json({ error: "Mot de passe actuel incorrect" });
+        }
+
+        // Mise à jour du mot de passe
+        // Si le mot de passe correspond
+        const newHashedPassword = await scrypt.hash(newPassword);
+        user.password = newHashedPassword; // Hachage du nouveau mot de passe
+        await user.save(); // Sauvegarde de l'utilisateur avec le nouveau mot de passe
+        
+
+        return res.status(StatusCodes.OK).json({ message: "Mot de passe modifié avec succès" });
+    } catch (error) {
+        console.error("Erreur dans modifyPassword auth api:", error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur lors de la modification du mot de passe" });
+    }
+}
+
+export async function modifyPseudo(req, res) {
+    console.log("REQ BODY :", req.body);
+    const userId = req.user_id; // Récupération de l'ID de l'utilisateur à partir du token JWT
+    const { newPseudo } = req.body; // Récupération du nouveau pseudo depuis le corps de la requête
+    console.log("userId:", userId);
+    console.log("newPseudo:", newPseudo);
+
+    try {
+        // Récupération de l'utilisateur par ID
+        const user = await User.findByPk(userId);
+
+        if (!user) {
+            return res.status(StatusCodes.NOT_FOUND).json({ error: "Utilisateur non trouvé" });
+        }
+
+        // Mise à jour du pseudo
+        user.pseudo = newPseudo;
+        await user.save();
+
+        return res.status(StatusCodes.OK).json({ message: "Pseudo modifié avec succès" });
+    } catch (error) {
+        console.error("Erreur dans modifyPseudo auth api:", error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Erreur lors de la modification du pseudo" });
+    }
+}

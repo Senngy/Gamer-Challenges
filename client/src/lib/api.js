@@ -4,10 +4,12 @@ export default async function api(endpoint, method = "GET", body) {
     method,
     headers: {
       "Content-Type": "application/json",
-      // En-tête Authorization supprimé
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
     },
     body: JSON.stringify(body),
   });
+  console.log(`API call to ${endpoint} with method ${method} and body:`, body);
+  console.log("token :", localStorage.getItem("token"));  
 
   if (!response.ok) {
     throw new Error(`Failed to fetch ${endpoint}: ${response.statusText}`);

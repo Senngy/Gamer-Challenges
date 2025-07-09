@@ -1,12 +1,12 @@
 <script>
 
 </script>
- 
- <button type="submit" class="btn" on:click>
-   <slot></slot> 
- </button>
 
- <style>
+  <button type="submit" class="btn" on:click>
+    <slot></slot> 
+  </button>
+
+<style>
   .btn {
     padding: 10px 20px;
     border: none;
@@ -23,4 +23,4 @@
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
- </style>
+</style>

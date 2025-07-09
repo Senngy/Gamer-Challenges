@@ -1,20 +1,4 @@
-#eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5NzM4NDYsImV4cCI6MTc1MTk4MTA0Nn0.xexfNANRG23tcuNfCSUcyapV-zgn08NdVsvevcAx3uU
-
-
-## Games
-GET http://localhost:3000/games
-
-## Challenges
-### All challenges
-GET http://localhost:3000/challenges
-
-### Specific challenge
-GET http://localhost:3000/challenges/1
-
-## Participations
-### Specific participations
-GET http://localhost:3000/challenges/1/participations
-
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
 
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
@@ -25,18 +9,25 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
+
+
 ## me
 
-### 🚀 Requête protégée avec le token
-
-GET http://localhost:3000/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
-
-### 🚪 Logout
-POST http://localhost:3000/auth/logout
+### 📝 Mise à jour du mot de passe
+PATCH http://localhost:3000/auth/me/password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTE5ODIyMDMsImV4cCI6MTc1MTk4OTQwM30.wjlFg7tyXRG9z_1UgWMw8vhWcpc32drNa249YX4bUB0
+Authorization: Bearer {{token}}
 
+{
+    "currentPassword": "motdepasse8",
+    "newPassword": "motdepasse75"
+}
+
+### 🗑️ Suppression du compte
+DELETE http://localhost:3000/auth/me
+Content-Type: application/json
+Authorization: Bearer {{token}}
+=======
 ## GAMES
 ### All games
 GET http://localhost:3000/games
