@@ -10,11 +10,11 @@
 
     import Modal from '$lib/components/ui/Modal.svelte';
 
-    let showModal = $state(false); // ✅
+    let showModal = $state(false);
 
     function openModal() {
-    showModal = true; // ✅ direct
-	}
+      showModal = true;
+    }
 
     import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
 
@@ -29,7 +29,6 @@
     console.log(game_by)
     let created_by = 1;
     console.log(created_by)
-    // let created_by = $state(localStorage.getItem("userId") || ''); // Variable pour stocker l'ID de l'utilisateur
 
     let error =$state('');
 
@@ -54,7 +53,7 @@
         if (response && response.success) {
             error = '';
             alert('Challenge créé avec succès !');
-            goto('/challenges');
+            goto(`/challenges/${response.challenge.id}`);
         } else {
             error = "Erreur : la création du challenge n'a pas été confirmée.";
         }
@@ -78,7 +77,7 @@
     <img src={`/images/${game.image}`} alt={game.title} class="slide__image" />
 
     <div class="game-details__content">
-      
+
       <div class="game-details__platform">
         {#each game.platforms as platform}
           <span class="game-details__platform-item">{platform}</span>
@@ -91,7 +90,7 @@
         {game.description}
       </p>
 
-      <button class="btn btn--primary" on:click={openModal}>
+      <button class="btn btn--primary" onclick={openModal}>
         Lancer un nouveau défi maintenant
       </button>
 
@@ -126,7 +125,7 @@
 </section>
 
 <!-- Challenge Creation Form -->
-<h4>Hello :)</h4>
+
 <Modal isOpen={showModal} close={() => showModal = false}>
 
     <h2>Créer un challenge</h2>

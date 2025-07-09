@@ -1,7 +1,7 @@
 // challenges.routes.js
 import express from 'express';
 
-import { addChallenge, getAll, getById } from '../controllers/challenges.controller.js';
+import { addChallenge, getAll, getById, getParticipations } from '../controllers/challenges.controller.js';
 
 const router = express.Router();
 
@@ -10,6 +10,9 @@ router.get('/', getAll) // All of the challenges
 router.post('/', addChallenge) // Add challenges
 
 router.get('/:id', getById) // Details of a challenge
+
+router.get('/:id/participations', getById) // Details of a challenge
+
 //router.get('/:id/likes',) // Get & See the likes of challenges
 //router.post('/:id/likes',) // Give a like to a challenge PRIVATE
 //router.patch('/') // If the creator want to edit the challenge ? (pas dans le cahier des charges)
