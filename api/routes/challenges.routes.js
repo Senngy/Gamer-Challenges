@@ -1,4 +1,5 @@
 import express from 'express';
+
 import { getAll, getById, getChallengeParticipations, create } from '../controllers/challenges.controller.js'; // Import des fonctions du controller
 // import { authenticate } from '../middlewares/auth.middleware.js';
 import { validateUserCreationChallenge } from '../middlewares/challenge.middleware.js';

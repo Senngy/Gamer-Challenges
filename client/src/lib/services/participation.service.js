@@ -12,12 +12,19 @@ export async function participationCreation(media_link, description, user_id, ch
   }
 }
 
-export async function fetchParticipations(challenge_id) {
-	const res = await fetch(`/api/challenges/${challenge_id}/participations`);
-	if (res.ok) {
-		return await res.json();
-	} else {
-		console.error("Erreur de récupération des participations");
-		return [];
-	}
+
+export async function getParticipations(challenge_id) {
+  if (!challenge_id) {
+    throw new Error('Challenge ID is required');
+  }
+  console.log("SERVICE variable", challenge_id)
+  try {
+    const res = await api(`/challenges/${challenge_id}/participations`, "GET");
+    console.log("SERVICE réponse", res)
+    console.debug(`[getParticipations] Participations retrieved:`, res);
+    return res;
+  } catch (error) {
+    console.error(`[getParticipations] Failed to fetch participations for challenge ID ${challenge_id}:`, error);
+    throw error;
+  }
 }
