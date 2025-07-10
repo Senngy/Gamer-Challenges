@@ -8,11 +8,11 @@
     import { getParticipations } from "$lib/services/participation.service.js";
     import { participationCreation } from "$lib/services/participation.service.js";
     import { goto } from "$app/navigation";
+	import { get } from 'svelte/store';
+    import { onMount } from 'svelte';
 
-    const { data } = $props();
-
-	const { challengeId } = data;
-
+    const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
+	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
     console.log(`PAGE Bonjour je suis le ${challengeId}`);
 
     const challenge_id = challengeId;
@@ -25,19 +25,48 @@
         gamey_by: ""
     });
 
-    let participations = $state([]);
+    let participations = $state([]); // Initialisation de la liste des participations
+    let showModal = $state(false); // État pour contrôler l'affichage du modal
+    let error =$state(''); // État pour les messages d'erreur
+    let media_link =$state(''); // État pour le lien du média
+    let description =$state(''); // État pour la description de la participation
+    let user_id = 1; // Remplacez par l'ID de l'utilisateur connecté
+    // console.log(`user_id: ${user_id}`)
 
-    let user_id = 1;
-    console.log(`user_id: ${user_id}`)
+    onMount(async () => { // Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
+        // Récupération des détails du challenge
+       try {
+           const challengeDetails = await getChallenge(challenge_id); // Appel à la fonction pour récupérer les détails du challenge
+           if (!challengeDetails) throw new Error("Pas de challenge trouvé"); 
 
-    let showModal = $state(false);
+           const { title, description, rules, created_by, game_by } = challengeDetails; // Récupération des détails du challenge 
+           const image = await getGameImage(game_by); // Appel à la fonction pour récupérer l'image du jeu associé au challenge
 
-    let error =$state('');
+            challenge = { // remplissage de l'objet challenge avec les données récupérées
+                title,
+                description,
+                rules,
+                created_by,
+                game_by,
+                image // ✅ Injecte ici l’image récupérée
+           };
+    } catch (err) {
+      console.error("Erreur récupération challenge :", err);
+    }
+  });
 
-    let media_link =$state('');
-    let description =$state('');
+  async function getGameImage(gameId) { // Fonction pour récupérer l'image du jeu associé au challenge
+    try {
+      const res = await fetch(`http://localhost:3000/games/${gameId}`);
+      const game = await res.json();
+      return game.image;
+    } catch (err) {
+      console.error("Erreur getGameImage :", err);
+      return null;
+    }
+  }
 
-    const getChallengeDetails = async () => {
+    const getChallengeDetails = async () => { // Fonction pour récupérer les détails du challenge
         try {
             const challengeDetails = await getChallenge(challenge_id);
             console.log("Données du challenge récupérées :", challengeDetails);
@@ -55,6 +84,7 @@
                 created_by,
                 game_by
             };
+           return getGameImage(challenge.game_by);
         } catch (error) {
             console.error("Erreur lors de la récupération des informations du challenge :", error);
         }
@@ -115,6 +145,9 @@
         getChallengeDetails();
         getParticipationsList();
     });
+   
+            
+
 
 </script>
 

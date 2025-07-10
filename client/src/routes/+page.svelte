@@ -33,18 +33,16 @@
   <div class="popular-games__content slide" data-index="0">
     <div class="popular-games__text">
       <span class="popular-games__tag">🔥 Populaires</span>
-      <h1 class="popular-games__title" id="popular-games-title">VALORANT</h1>
+      <h1 class="popular-games__title" id="popular-games-title">The Witcher 3</h1>
       <p class="popular-games__description">
-        Valorant est un jeu de tir tactique dans lequel deux équipes de cinq
-        joueurs s'affrontent dans des parties intenses, avec des agents dotés de
-        compétences uniques.
+        The Witcher 3 est un RPG épique où vous incarnez Geralt, un chasseur de monstres, explorant un vaste monde ouvert rempli de quêtes, de créatures et de choix moraux.
       </p>
-      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(10)}
+      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(8)}
         >Voir les challenges</button
       >
     </div>
     <img
-      src="/images/background-valorant.webp"
+      src="/images/the-witcher-3.jpg"
       alt="Valorant"
       class="slide__image"
     />
@@ -55,18 +53,17 @@
     <div class="popular-games__text">
       <span class="popular-games__tag">🔥 Populaires</span>
       <h1 class="popular-games__title" id="popular-games-title">
-        Apex Legends
+        CyberPunk 2077
       </h1>
       <p class="popular-games__description">
-        Apex Legends est un jeu de tir en équipe où des légendes s'affrontent
-        dans des batailles épiques, chacune avec des compétences uniques.
+        Cyberpunk 2077 est un RPG futuriste en monde ouvert où vous incarnez V, un mercenaire évoluant dans la mégalopole de Night City, entre cybernétique, gangs et choix décisifs.
       </p>
-      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(2)}  
+      <button class="btn btn--primary popular-games__btn" on:click={() => testRedirectChallengesById(32)}  
         >Voir les challenges</button
       >
     </div>
     <img
-      src="/images/apex-legends.jpg"
+      src="/images/cyberpunk2077.webp"
       alt="Apex Legends"
       class="slide__image"
     />
@@ -84,14 +81,16 @@
     </div>
 
     <div class="popular-games__pagination-wrapper">
-      <div class="popular-games__pagination" aria-live="polite">1 / 4</div>
+      <div class="popular-games__pagination" aria-live="polite">1 / 2</div>
       <svg class="progress-circle" viewBox="0 0 36 36" aria-hidden="true">
         <circle class="circle-bg" cx="12" cy="12" r="10" />
         <circle class="circle-fill" cx="12" cy="12" r="10" />
       </svg>
     </div>
   </nav>
+
 </section>
+
 
 <!-- ========================== -->
 <!-- Leaderboard -->
