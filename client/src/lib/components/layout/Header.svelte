@@ -33,17 +33,13 @@
         <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
       </li>
       <li>
-        <a href="/apropos" class="mobile-link" sveltekit:prefetch>À propos</a>
+        <a href="/about" class="mobile-link" sveltekit:prefetch>À propos</a>
       </li>
       <li>
-        <a href="/auth/signup" class="mobile-link" sveltekit:prefetch
-          >Inscription</a
-        >
+        <a href="/auth/signup" class="mobile-link" sveltekit:prefetch>Inscription</a>
       </li>
       <li>
-        <a href="/auth/login" class="mobile-link" sveltekit:prefetch
-          >Connexion</a
-        >
+        <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Connexion</a>
       </li>
     </ul>
   </nav>
