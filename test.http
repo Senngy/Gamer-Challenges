@@ -88,7 +88,3 @@ Content-Type: application/json
     "user_id": 1
 }
 
-
-### All challenges of a specific game
-GET http://localhost:3000/challenges/game/28 
-

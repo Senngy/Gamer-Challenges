@@ -84,7 +84,35 @@ export async function create(req, res) { // Créer un nouveau challenge
 
     return res.status(StatusCodes.CREATED).json(newChallenge); // Retour du challenge créé
   } catch (error) {
-    console.error('Erreur lors de la création du challenge :', error); // Log de l'erreur
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur lors de la création du challenge.' }); // Erreur serveur
+
+    console.error('Erreur lors de la création du challenge :', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur lors de la création du challenge.' });
+  }
+}
+
+export async function getParticipations(req, res) {
+  const challengeId = Number(req.params.id);
+
+  if (!challengeId) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid challenge ID' });
+  }
+
+  try {
+    const participations = await Participation.findAll({
+      where: { challenge_id: challengeId },
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'pseudo', 'avatar']
+        }
+      ],
+      order: [['created_at', 'DESC']],
+    });
+
+    return res.status(StatusCodes.OK).json(participations);
+  } catch (err) {
+    console.error('Erreur lors du fetch des participations :', err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
   }
 }
