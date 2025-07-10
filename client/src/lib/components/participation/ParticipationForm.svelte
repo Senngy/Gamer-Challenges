@@ -1,16 +1,15 @@
 <script>
-  import { challengeCreation } from '$lib/services/challenge.service.js';
-  let title = '';
+  import { participationCreation } from '$lib/services/participation.service.js';
+  let media_link = '';
   let description = '';
-  let rules = '';
 
   async function handleSubmit() {
-    if (!title || !description || !rules ) {
+    if (!media_link || !description ) {
       error = "Des informations sont manquantes.";
       return;
     }
     try {
-      await challengeCreation( title, description, rules );
+      await participationCreation( media_linl, description );
       error = '';
     } catch (e) {
       error = e.message;
@@ -20,7 +19,7 @@
   export let onSubmit = () => {};
 </script>
 
-<form on:submit={onSubmit}>
+<form on:submit|preventDefault={onSubmit}>
   <slot />
 </form>
 

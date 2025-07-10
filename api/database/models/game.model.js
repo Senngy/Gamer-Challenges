@@ -1,8 +1,8 @@
 // src/lib/server/database/models/Game.js
-import { Model, DataTypes } from 'sequelize'; // Import des outils Sequelize
-import { sequelize } from '../connection.js'; // Connexion à la BDD
+import { Model, DataTypes } from 'sequelize';
+import { sequelize } from '../connection.js';
 
-export class Game extends Model {} // Déclaration du modèle Game
+export class Game extends Model {}
 
 Game.init(
   {
