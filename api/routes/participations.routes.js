@@ -7,7 +7,7 @@ import { validateUserCreationChallenge } from '../middlewares/challenge.middlewa
 const router = express.Router();
 
 router.post('/', validateUserCreationChallenge, addParticipation) // Create participations PRIVATE
-router.delete('/:id') // delete participations PRIVATE // Ne pas oublier d'implémenter la fonction authenticate 
+// router.delete('/:id') // delete participations PRIVATE // Ne pas oublier d'implémenter la fonction authenticate 
 
 
 export default router;
