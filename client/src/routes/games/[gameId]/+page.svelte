@@ -7,28 +7,28 @@
 	import Input from '$lib/components/auth/Input.svelte';
 	import { challengeCreation } from '$lib/services/challenge.service.js';
 
-	// Récupération des données passées par load()
+	//Récupération des données passées par load()
 	//export let data;
 	const { data } = $props();
-  const { game, challenges } = data;
+	const { game, challenges } = data;
 
 	// Debug
 	console.log('Game:', game);
 	console.log('Challenges:', challenges);
 
     let showModal = $state(false);
-	  let title = $state(''); // Variable pour stocker le titre
+	let title = $state(''); // Variable pour stocker le titre
     let description = $state(''); // Variable pour stocker la description
     let rules = $state(''); // Variable pour stocker les règles
 
     //let game_by = $state(globalThis.$page.params.gameId); // Variable pour stocker l'ID du jeu
-	  let game_by = $state(data.game.id); // ID du jeu depuis la donnée chargée
+	let game_by = $state(data.game.id); // ID du jeu depuis la donnée chargée
     console.log(game_by)
     let created_by = 1;
     console.log(created_by)
 
     let error =$state('');
-	  let visibleCount = $state(4);
+	let visibleCount = $state(4);
 	//let showModal = false;
 	//let error = '';
 	//const game_by = game.id; // ID du jeu depuis la donnée chargée

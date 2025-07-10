@@ -75,7 +75,7 @@ export async function create(req, res) {
   };
 }
 
-/*export async function getParticipations(req, res) {
+export async function getParticipations(req, res) {
   const challengeId = Number(req.params.id);
 
   if (!challengeId) {
@@ -88,15 +88,16 @@ export async function create(req, res) {
       include: [
         {
           model: User,
-          attributes: ['id', 'username', 'avatar']
+          as: 'user',
+          attributes: ['id', 'pseudo', 'avatar']
         }
       ],
-      order: [['created_at', 'DESC']]
+      order: [['created_at', 'DESC']],
     });
 
     return res.status(StatusCodes.OK).json(participations);
   } catch (err) {
     console.error('Erreur lors du fetch des participations :', err);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
-  };
-}*/
+  }
+};

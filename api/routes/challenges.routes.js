@@ -4,6 +4,7 @@ import {
   getAll,
   getById,
   create,
+  getParticipations
 } from '../controllers/challenges.controller.js';
 
 import { Challenge } from '../database/models/challenge.model.js';
@@ -15,7 +16,7 @@ router.get('/', getAll);
 
 router.get('/:id', getById) // Details of a challenge
 
-router.get('/:id/participations', getById) // Details of a challenge
+router.get('/:id/participations', getParticipations) // Participations of a challenge
 
 //router.get('/:id/likes',) // Get & See the likes of challenges
 //router.post('/:id/likes',) // Give a like to a challenge PRIVATE

@@ -1,3 +1,5 @@
+import { Participation } from '../database/models/participation.model.js';
+
 export async function addParticipation(req, res) {
   const { media_link, description, challenge_id, user_id } = req.body;
 
@@ -7,7 +9,7 @@ export async function addParticipation(req, res) {
   }
 
   try {
-    const challenge = await Challenge.create({
+    const participation = await Participation.create({
         media_link,
         description,
         challenge_id,
@@ -17,7 +19,7 @@ export async function addParticipation(req, res) {
     res.status(201).json({
       success: true,
       message: 'Participation créée avec succès',
-      challenge
+      participation
     });
   } catch (error) {
     console.error('Erreur lors de la création de la participation :', error);
