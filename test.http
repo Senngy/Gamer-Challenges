@@ -32,17 +32,25 @@ Authorization: Bearer {{token}}
 GET http://localhost:3000/games
 
 ### 🕹️ Détails d'un jeu spécifique
-GET http://localhost:3000/games/1
+GET http://localhost:3000/games/16
+
+
 
 ## USERS
+
 ### All users
 GET http://localhost:3000/users
 
+
+
 ## CHALLENGES
+
 ### All challenges
 GET http://localhost:3000/challenges
+
 ### Specific challenge
-GET http://localhost:3000/challenges/1
+GET http://localhost:3000/games/1/challenges
+
 ### Create challenge
 POST http://localhost:3000/challenges
 Content-Type: application/json
@@ -57,13 +65,18 @@ Content-Type: application/json
 
 ### Likes of a specific challenge
 GET http://localhost:3000/challenges/1/likes
+
 ### Add a like to a specific challenge
 POST http://localhost:3000/challenges/1/likes
 Content-Type: application/json
 
+
+
 ## PARTICIPATIONS
+
 ### All participations of a challenge
 GET http://localhost:3000/challenges/1/participations
+
 ### Create participation
 POST http://localhost:3000/participations
 Content-Type: application/json

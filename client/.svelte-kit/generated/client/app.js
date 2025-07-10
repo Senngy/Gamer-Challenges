@@ -28,7 +28,7 @@ export const dictionary = {
 		"/exit": [8],
 		"/games": [~9],
 		"/games/[gameId]": [~10],
-		"/legal notices": [11],
+		"/legalNotices": [11],
 		"/me": [12]
 	};
 

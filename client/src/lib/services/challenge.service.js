@@ -21,8 +21,10 @@ export async function getChallenge(challengeId) {
 export async function challengeCreation(title, description, rules, created_by, game_by) {
   try {
     const challengeCreated = await api('/challenges', "POST", { title, description, rules, created_by, game_by });
+
     console.log('Challenge créé avec succès :', challengeCreated);
     return challengeCreated;
+
   } catch (error) {
     console.error('Échec de création :', error);
     throw error;

@@ -7,7 +7,6 @@ export async function addParticipation(req, res) {
   if (!media_link || !description || !challenge_id || !user_id) {
     return res.status(400).json({ success: false, message: 'Champs manquants' });
   }
-
   try {
     const participation = await Participation.create({
         media_link,

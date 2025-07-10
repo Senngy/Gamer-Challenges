@@ -10,24 +10,28 @@
 	//Récupération des données passées par load()
 	//export let data;
 	const { data } = $props();
-	const { game, challenges } = data;
+
+  const { game, challenges } = data;
 
 	// Debug
 	console.log('Game:', game);
 	console.log('Challenges:', challenges);
 
-    let showModal = $state(false);
+  let showModal = $state(false);
 	let title = $state(''); // Variable pour stocker le titre
-    let description = $state(''); // Variable pour stocker la description
-    let rules = $state(''); // Variable pour stocker les règles
+  let description = $state(''); // Variable pour stocker la description
+  let rules = $state(''); // Variable pour stocker les règles
 
-    //let game_by = $state(globalThis.$page.params.gameId); // Variable pour stocker l'ID du jeu
-	let game_by = $state(data.game.id); // ID du jeu depuis la donnée chargée
-    console.log(game_by)
-    let created_by = 1;
-    console.log(created_by)
+    
+	let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
+  let created_by = $state(challenges.created_by || 1); // ID du jeu associé aux challenges
+	// Debug
+	console.log("game by :",game_by)
+  console.log("created by:",created_by)
 
-    let error =$state('');
+  let error =$state('');
+	let success = $state('');
+
 	let visibleCount = $state(4);
 	//let showModal = false;
 	//let error = '';
@@ -42,23 +46,55 @@
             error = "Veuillez remplir tous les champs.";
             return;
         }
-
-        console.log('title:', title);
-        console.log('description:', description);
-        console.log('rules:', rules);
-        console.log('created_by:', created_by);
-        console.log('game_by:', game_by);
+		if (title.length < 3 || description.length < 8 || rules.length < 6) {
+			error = "Veuillez respecter les longueurs minimales des champs.";
+			return;
+		}
+		if (title.length > 30 || description.length > 50 || rules.length > 100) {
+			error = "Veuillez respecter les longueurs maximales des champs.";
+			return;
+		}
+		if (/(?:[a-zA-Z])\1\1/.test(title) || /(?:[a-zA-Z])\1\1/.test(description) || /(?:[a-zA-Z])\1\1/.test(rules)) {
+			error = "Aucun champ ne doit contenir plus de 3 lettres identiques à la suite.";
+			return;
+		}
+         /*
+        console.log('handleSubmitChallenge title:', title);
+        console.log('handleSubmitChallengedescription:', description);
+        console.log('handleSubmitChallenge rules:', rules);
+        console.log('handleSubmitChallenge created_by:', created_by);
+        console.log('handleSubmitChallenge game_by:', game_by);
+		*/
 
         try {
-        const response = await challengeCreation(title, description, rules, created_by, game_by);
+           const challengeCreated = await challengeCreation(title, description, rules, created_by, game_by);
+		   console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
 
-        if (response && response.success) {
-            error = '';
-            alert('Challenge créé avec succès !');
-            goto(`/challenges/${response.challenge.id}`);
-        } else {
-            error = "Erreur : la création du challenge n'a pas été confirmée.";
-        }
+           if (!challengeCreated) {
+			   error = "Une erreur est survenue lors de la création du challenge.";
+			   return;
+            }
+		    error = '';
+            //alert('Challenge créé avec succès !');
+		    success = "Challenge créé avec succès !";
+			if(success) {
+				setTimeout(() => {
+				    success = '';
+				    showModal = false; // Fermer la modale après succès
+			    }, 2000); // Ferme la modale après 2 secondes
+			}
+			// Réinitialiser les champs du formulaire
+			title = '';
+			description = '';
+			rules = '';
+	
+			// Optionnel : rediriger vers la page du challenge créé
+			// Vous pouvez décommenter la ligne suivante si vous souhaitez rediriger
+			if (challengeCreated && challengeCreated.id) {
+				setTimeout(() => {
+                    goto(`/challenges/${challengeCreated.id}`);
+				}, 2500); // Redirige après 2.5 secondes
+			}	
         } catch (e) {
             console.error('Erreur de création :', e);
             error = "Une erreur est survenue lors de la création.";
@@ -144,7 +180,8 @@
         <input type="hidden" value={game_by} name="gameId" />
         <Input id="title" type="text" label="Titre" placeholder="Entrez un titre" bind:value={title} required />
         <Input id="description" type="text" label="Description" placeholder="Entrez une description" bind:value={description} required />
-        <Input id="rules" type="text" label="Règles" placeholder="Précisez les règles" bind:value={rules} required />
+		<label for="rules">Règles</label>
+        <textarea id="rules" class="rules" type="text" label="Règles" placeholder="Précisez les règles" bind:value={rules} required></textarea>
     
         <Btn>Valider</Btn>
     </ChallengeForm>
@@ -152,6 +189,9 @@
         <span>Pas encore de compte ? Créez en un simplement !</span>
         <a href="/auth/signup">Cliquez ici</a>
     </div>
+	{#if success}
+        <p class="success">{success}</p>
+    {/if}
 
 </Modal>
 
@@ -161,7 +201,32 @@
 		text-align: center;
 		margin-bottom: 1rem;
 	}
+	.success {
+		color: #a3cca4;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+	.rules {
+	    width: 100%;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        font-size: 14px;
+	}
+	.rules::placeholder {
+        color: rgba(255, 255, 255, 0.6); 
+		font-family: 'Roboto', sans-serif;
+    }
 
+	label {
+        font-weight: bold;
+        margin-top: 0.3rem;
+        display: block;
+        padding-left: 2rem;
+      /* or text-align: center; */
+    }
 	.already-account {
 		margin-top: 1.5rem;
 		text-align: center;

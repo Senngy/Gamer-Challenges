@@ -4,7 +4,6 @@ import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 // import { User } from "../database/models/user.model.js";
 
-
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
         pseudo: Joi.string().required(),
@@ -52,6 +51,7 @@ export function validateUserUpdatePseudo(req, res, next) {
     });
     checkBody(updateUserSchema, req.body, res, next);
 }
+
 export function validateUserUpdatePassword(req, res, next) {
   const updateUserSchema = Joi.object({
     currentPassword: Joi.string()
