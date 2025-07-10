@@ -82,9 +82,9 @@ POST http://localhost:3000/participations
 Content-Type: application/json
 
 {
-    "media_link": "Chemin vers le média",
+    "media_link": "Chemnnnin vers le média test",
     "description": "Description de la participation",
-    "challenge_id": 1,
-    "user_id": 1
+    "challenge_id": 3,
+    "user_id": 3
 }
 
