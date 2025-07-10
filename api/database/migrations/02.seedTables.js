@@ -1,7 +1,8 @@
-import gamesData from './03.seedgame.js'; // Import des données de jeux
+// import gamesData from './03.seedgame.js'; // Import des données de jeux
 import { User, Game, Challenge, Participation } from '../models/index.js';
 import { sequelize } from '../models/index.js';
 import { scrypt } from '../../utils/scrypt.js';
+import { importRAWGGames } from '../importGames.js';
 
 
 console.log('🔄 Réinitialisation de la base...');
@@ -31,16 +32,41 @@ const user3 = await User.create({
 });
 
 // 🕹️ Insertion des jeux du catalogue
-await Game.bulkCreate(gamesData);
+// await Game.bulkCreate(gamesData);
+
+
+// 🎮 Création des jeux
+await importRAWGGames(40);
+console.log('🎮 Création des jeux...');
+
+/*
+const game1 = await Game.create({
+  title: 'Call of Duty: Modern Warfare',
+  image: 'cod.jpg',
+  description: 'FPS militaire',
+  platform: 'PC,PS5',
+});
+const game2 = await Game.create({
+  title: 'Forza Horizon 5',
+  image: 'forza.jpg',
+  description: 'Course automobile',
+  platform: 'Xbox,PC',
+});
+const game3 = await Game.create({
+  title: 'League of Legends',
+  image: 'lol.jpg',
+  description: 'MOBA compétitif',
+  platform: 'PC',
+});
+*/
 
 // 🏆 Création des défis (challenges)
-/*
 console.log('🏆 Création des challenges...');
 const challenge1 = await Challenge.create({
   title: 'Tuer 10 ennemis en 3 minutes',
   description: 'Défi rapidité multijoueur',
   rules: 'Pas de grenades, pas de véhicules',
-  game_by: game1.id,
+  game_by: 1,
   created_by: user1.id,
 });
 
@@ -48,7 +74,7 @@ const challenge2 = await Challenge.create({
   title: 'Gagner une course en difficulté max',
   description: 'Conduite extrême',
   rules: 'Pas de rewind, IA max',
-  game_by: game2.id,
+  game_by: 2,
   created_by: user2.id,
 });
 
@@ -56,10 +82,10 @@ const challenge3 = await Challenge.create({
   title: 'Faire un pentakill en ranked',
   description: 'Objectif ultime',
   rules: 'En partie classée uniquement',
-  game_by: game3.id,
+  game_by: 3,
   created_by: user3.id,
 });
-*/
+
 
 // 👥 Création des participations
 console.log('🎬 Création des participations...');
