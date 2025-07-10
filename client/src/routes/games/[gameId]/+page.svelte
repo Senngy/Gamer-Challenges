@@ -1,43 +1,38 @@
 <script>
 	import { goto } from '$app/navigation';
-
 	import ChallengeItem from '$lib/components/ui/ChallengeItem.svelte';
 	import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
 	import Btn from '$lib/components/auth/Btn.svelte';
 	import Input from '$lib/components/auth/Input.svelte';
-
 	import { challengeCreation } from '$lib/services/challenge.service.js';
 
 	// Récupération des données passées par load()
-	export let data;
-	const { game, challenges } = data;
+	//export let data;
+	const { data } = $props();
+    const { game, challenges } = data;
 
 	// Debug
 	console.log('Game:', game);
 	console.log('Challenges:', challenges);
 
     let showModal = $state(false);
-
-    function openModal() {
-      showModal = true;
-    }
-
-    import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
-
-    import { challengeCreation } from "$lib/services/challenge.service.js";
-    import { goto } from "$app/navigation";
-
-    let title = $state(''); // Variable pour stocker le titre
+	let title = $state(''); // Variable pour stocker le titre
     let description = $state(''); // Variable pour stocker la description
     let rules = $state(''); // Variable pour stocker les règles
 
-    let game_by = $state($page.params.gameId); // Variable pour stocker l'ID du jeu
+    //let game_by = $state(globalThis.$page.params.gameId); // Variable pour stocker l'ID du jeu
+	let game_by = $state(data.game.id); // ID du jeu depuis la donnée chargée
     console.log(game_by)
     let created_by = 1;
     console.log(created_by)
 
     let error =$state('');
+	let visibleCount = $state(4);
+	//let showModal = false;
+	//let error = '';
+	//const game_by = game.id; // ID du jeu depuis la donnée chargée
+	//const created_by = 1; // TODO : remplacer par l'utilisateur réel connect
 
     const handleSubmitChallenge = async (e) => {
         console.log('handleSubmitChallenge called');
@@ -69,53 +64,20 @@
             error = "Une erreur est survenue lors de la création.";
         }
     };
-
 	// UI
-	let visibleCount = 4;
-	let showModal = false;
-	let error = '';
-
-
-	const game_by = game.id; // ID du jeu depuis la donnée chargée
-	const created_by = 1; // TODO : remplacer par l'utilisateur réel connecté
-
+	function openModal() {
+      showModal = true;
+    }
 	function loadMore() {
 		visibleCount += 4;
 	}
 
-	function openModal() {
-		showModal = true;
-	}
-
-	const handleSubmitChallenge = async (e) => {
-		e.preventDefault();
-
-		if (!title.trim() || !description.trim() || !rules.trim()) {
-			error = 'Veuillez remplir tous les champs.';
-			return;
-		}
-
-		try {
-			const response = await challengeCreation(title, description, rules, created_by, game_by);
-
-			if (response && response.success) {
-				error = '';
-				alert('Challenge créé avec succès !');
-				goto('/challenges');
-			} else {
-				error = "Erreur : la création du challenge n'a pas été confirmée.";
-			}
-		} catch (e) {
-			console.error('Erreur de création :', e);
-			error = 'Une erreur est survenue lors de la création.';
-		}
-	};
 </script>
 
 <!-- Game details -->
 {#if game}
 	<section class="game-details" aria-labelledby="game-details">
-		<img src={`/images/${game.image}`} alt={game.title} class="slide__image" />
+		<img src={`${game.image}`} alt={game.title} class="slide__image" />
 
 		<div class="game-details__content">
 			<div class="game-details__platform">

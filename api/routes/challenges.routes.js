@@ -13,11 +13,6 @@ const router = express.Router();
 // 📥 GET /challenges - Récupérer tous les challenges
 router.get('/', getAll);
 
-// 📥 GET /challenges/game/:gameId - Récupérer tous les challenges liés à un jeu donné
-router.get('/game/:gameId', async (req, res) => {
-  const { gameId } = req.params;
-
-
 router.get('/:id', getById) // Details of a challenge
 
 router.get('/:id/participations', getById) // Details of a challenge
@@ -33,6 +28,9 @@ router.get('/:id/participations', getById) // Details of a challenge
   }*/
 
 
+// 📥 GET /challenges/game/:gameId - ROUTE A SUPPRIMER Récupérer tous les challenges liés à un jeu donné
+router.get('/game/:gameId', async (req, res) => {
+  const { gameId } = req.params;
   try {
     const challenges = await Challenge.findAll({
       where: { game_by: parsedGameId },

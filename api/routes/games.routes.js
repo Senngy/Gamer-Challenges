@@ -30,6 +30,10 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ error: 'Erreur serveur' });
   }
 });
+//router.get('/:id', getGameById, ) // Details of a game
+//router.get('/:id', challengesByGameId) // Details of a game 
+// OU
+//router.get('/:id', getGameById, challengesByGameId) // Details of a game 
 
 // ✅ (Optionnel) Route pour récupérer les challenges d’un jeu spécifique
 router.get('/:id/challenges', async (req, res) => {
