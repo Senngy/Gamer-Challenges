@@ -11,3 +11,4 @@ export function load({ params }) {
   console.log(`SERVER Bonjour je suis le ${challengeId}`);
   return { challengeId };
 }
+

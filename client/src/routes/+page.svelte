@@ -63,8 +63,8 @@
       >
     </div>
     <img
-      src="/images/cyberpunk2077.webp"
-      alt="Apex Legends"
+      src="/images/cyberpunk2077.jpg"
+      alt="Cyberpunk 2077"
       class="slide__image"
     />
   </div>
@@ -177,3 +177,12 @@
     {/each}
   </div>
 </section>
+<style>
+  .popular-games__description {
+      text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  }
+</style>

@@ -4,6 +4,7 @@
     import Input from "$lib/components/auth/Input.svelte";
     import Modal from '$lib/components/ui/Modal.svelte';
     import ParticipationForm from '$lib/components/participation/ParticipationForm.svelte';
+    import FilterText from '$lib/components/ui/FilterText.svelte';
     import { getChallenge } from "$lib/services/challenge.service.js";
     import { getParticipations } from "$lib/services/participation.service.js";
     import { participationCreation } from "$lib/services/participation.service.js";
@@ -25,12 +26,18 @@
         gamey_by: ""
     });
 
+    let challengeCreator = $state({
+        pseudo: "",
+        avatar: ""
+    });
+
     let participations = $state([]); // Initialisation de la liste des participations
     let showModal = $state(false); // État pour contrôler l'affichage du modal
     let error =$state(''); // État pour les messages d'erreur
+    let success =$state(''); // État pour les messages de succès
     let media_link =$state(''); // État pour le lien du média
     let description =$state(''); // État pour la description de la participation
-    let user_id = 1; // Remplacez par l'ID de l'utilisateur connecté
+    let user_id = 3; // Remplacez par l'ID de l'utilisateur connecté
     // console.log(`user_id: ${user_id}`)
 
     onMount(async () => { // Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
@@ -41,7 +48,9 @@
 
            const { title, description, rules, created_by, game_by } = challengeDetails; // Récupération des détails du challenge 
            const image = await getGameImage(game_by); // Appel à la fonction pour récupérer l'image du jeu associé au challenge
-
+           const { pseudo, avatar } = await getUserInfo(created_by); // Récupération des informations de l'utilisateur connecté
+           console.log("onMount pseudo :", pseudo);
+           console.log("onMount avatar :", avatar);
             challenge = { // remplissage de l'objet challenge avec les données récupérées
                 title,
                 description,
@@ -50,21 +59,45 @@
                 game_by,
                 image // ✅ Injecte ici l’image récupérée
            };
+              challengeCreator = { // remplissage de l'objet challengeCreator avec les données de l'utilisateur
+                 pseudo,
+                 avatar
+                };
+                await getParticipationsList(); // Récupération des participations du challenge
     } catch (err) {
       console.error("Erreur récupération challenge :", err);
     }
   });
 
-  async function getGameImage(gameId) { // Fonction pour récupérer l'image du jeu associé au challenge
-    try {
-      const res = await fetch(`http://localhost:3000/games/${gameId}`);
-      const game = await res.json();
-      return game.image;
-    } catch (err) {
-      console.error("Erreur getGameImage :", err);
-      return null;
+    async function getGameImage(gameId) { // Fonction pour récupérer l'image du jeu associé au challenge
+       try {
+           const res = await fetch(`http://localhost:3000/games/${gameId}`);
+           const game = await res.json();
+           return game.image;
+        } catch (err) {
+            console.error("Erreur getGameImage :", err);
+           return null;
+        }
     }
-  }
+
+    async function getUserInfo(userId) { 
+        try {
+            const res = await fetch(`http://localhost:3000/users/${userId}`);
+            if (!res.ok) {
+                throw new Error(`Erreur HTTP ${res.status}`);
+            }
+             const user = await res.json();
+             console.log("User info récupéré :", user);
+            return {
+                pseudo: user.pseudo,   // ou user.username, selon ta structure
+                avatar: user.avatar    // ou user.image, selon ta structure
+            };
+        } catch (err) {
+            console.error("Erreur getUserInfo :", err);
+            return null;
+       }
+    }
+   
 
     const getChallengeDetails = async () => { // Fonction pour récupérer les détails du challenge
         try {
@@ -121,16 +154,22 @@
         console.log('user_id:', user_id);
 
         try {
-        const response = await participationCreation(media_link, description, challenge_id, user_id);
+           const response = await participationCreation(media_link, description, user_id, challenge_id); // 
 
-        if (response && response.success) {
+            console.log('Response from participationCreation:', response);
+            // Si la création est réussie, réinitialiser les champs et fermer le modal
+            media_link = '';
+            description = '';
             error = '';
-            alert('Participation créée avec succès !');
-            showModal = false;
-            await getParticipations();
-        } else {
-            error = "Erreur : la création du challenge n'a pas été confirmée.";
-        }
+           if (response && response.success) {
+               error = '';
+              success = 'Participation créée avec succès !';
+              setTimeout(() => {
+				    success = '';
+				    showModal = false; // Fermer la modale après succès
+			    }, 3000); // Ferme la modale après 2 secondes
+               await getParticipations(challenge_id); // Rafraîchir la liste des participations
+            }
         } catch (e) {
             console.error('Erreur de création :', e);
             error = "Une erreur est survenue lors de la création.";
@@ -146,7 +185,6 @@
         getParticipationsList();
     });
    
-            
 
 
 </script>
@@ -159,13 +197,13 @@
 
 		<div class="challenge-details__content">
 			<h1 class="challenge-details__title">{challenge.title}</h1>
-			<p class="challenge-details__description">{challenge.description}</p>
-            <p class="challenge-details__rules">{challenge.rules}</p>
+			<p class="challenge-details__description">Objectif : {challenge.description}</p>
+            <p class="challenge-details__rules">Règle : {challenge.rules}</p>
 
             <div class="challenge_created-by">
                 <p>Challenge created by</p>
-                <div class="challenge__user-avatar" aria-hidden="true">B</div>
-                <p class="challenge__user-name">#user</p>
+                <div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
+                <p class="challenge__user-name">{challengeCreator.pseudo}</p>
             </div>
 
 			<button class="btn btn--primary" onclick={openModal}>
@@ -224,6 +262,9 @@
         <span>Pas encore de compte ? Créez en un simplement !</span>
         <a href="/auth/signup">Cliquez ici</a>
     </div>
+    {#if success}
+        <p class="success">{success}</p>
+    {/if}
 
 </Modal>
 
@@ -249,4 +290,9 @@
   .already-account a:hover {
     color: #2563eb;
   }
+  .success {
+		color: #a3cca4;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
 </style>

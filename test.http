@@ -41,6 +41,8 @@ GET http://localhost:3000/games/16
 ### All users
 GET http://localhost:3000/users
 
+### Specific user
+GET http://localhost:3000/users/2
 
 
 ## CHALLENGES
@@ -84,7 +86,8 @@ Content-Type: application/json
 {
     "media_link": "Chemnnnin vers le média test",
     "description": "Description de la participation",
-    "challenge_id": 3,
+    "challenge_id": 2,
     "user_id": 3
+
 }
 

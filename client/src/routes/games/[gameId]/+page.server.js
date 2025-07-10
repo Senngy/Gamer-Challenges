@@ -13,7 +13,7 @@ export async function load({ fetch, params }) {
   try {
     const [gameRes, challengesRes] = await Promise.all([
       fetch(`http://localhost:3000/games/${gameId}`),
-      fetch(`http://localhost:3000/challenges/game/${gameId}`) // CHANGER LE FETCH POUR LES CHALLENGES D'UN JEU
+      fetch(`http://localhost:3000/games/${gameId}/challenges`) // CHANGER LE FETCH POUR LES CHALLENGES D'UN JEU
     ]);
 
     if (!gameRes.ok) throw error(gameRes.status, 'Jeu introuvable');
