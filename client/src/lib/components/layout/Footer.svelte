@@ -39,7 +39,7 @@
   <!-- Bloc Navigation Légale -->
   <nav class="footer__nav" aria-label="Navigation légale">
     <ul>
-      <li><a href="#">Mentions <br> légales</a></li>
+      <li><a href="/legalNotices">Mentions <br> légales</a></li>
       <li><a href="#">Conditions <br> d’utilisation</a></li>
       <li><a href="#">Politique de <br> confidentialité</a></li>
     </ul>

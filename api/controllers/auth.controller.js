@@ -1,4 +1,3 @@
-// api/controllers/auth.controller.js
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
 // import { User } from '../database/models/user.model.js';

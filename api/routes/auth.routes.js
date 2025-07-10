@@ -1,4 +1,3 @@
-// auth.routes.js
 import express from 'express';
 import { authenticate, validateUserCreation, validateUserUpdatePassword, validateUserUpdatePseudo } from '../middlewares/auth.middleware.js';
 import { login, register, me, logout, modifyPassword, modifyPseudo, deleteAccount } from '../controllers/auth.controller.js';

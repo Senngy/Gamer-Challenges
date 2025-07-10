@@ -1,4 +1,5 @@
 import { Game } from '../database/models/index.js';
+import { Challenge } from '../database/models/index.js';
 import { StatusCodes } from 'http-status-codes';
 
 // ✅ GET /games - Récupérer tous les jeux
@@ -26,19 +27,57 @@ export async function getById(req, res) {
   const { id } = req.params;
 
   if (!id || isNaN(parseInt(id))) {
-    return res.status(400).json({ error: 'ID de jeu invalide' });
+    return res.status(StatusCodes.BAD_REQUEST).json({ 
+      error: 'ID de jeu invalide' 
+    });
   }
 
   try {
     const game = await Game.findByPk(id);
 
     if (!game) {
-      return res.status(404).json({ error: 'Jeu non trouvé' });
+      return res.status(StatusCodes.NOT_FOUND).json({ 
+        error: 'Jeu non trouvé' 
+      });
     }
 
-    return res.json(game);
+    return res.status(StatusCodes.OK).json(game);
   } catch (error) {
-    console.error('Erreur getById:', error);
-    return res.status(500).json({ error: 'Erreur serveur' });
+    console.error('Erreur lors de la récupération du jeu :', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+      error: 'Erreur serveur lors de la récupération du jeu' 
+    });
+  }
+}
+
+// ✅ GET /games/:id/challenges - Récupérer les challenges d'un jeu spécifique
+export async function getChallengesByGameId(req, res) {
+  const { id } = req.params;
+
+  if (!id || isNaN(parseInt(id))) {
+    return res.status(StatusCodes.BAD_REQUEST).json({ 
+      error: 'ID de jeu invalide' 
+    });
+  }
+
+  try {
+    // Vérifier d'abord que le jeu existe
+    const game = await Game.findByPk(id);
+    if (!game) {
+      return res.status(StatusCodes.NOT_FOUND).json({ 
+        error: 'Jeu non trouvé' 
+      });
+    }
+
+    const challenges = await Challenge.findAll({
+      where: { game_by: id },
+    });
+
+    return res.status(StatusCodes.OK).json(challenges);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des challenges :', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
+      error: 'Erreur serveur lors de la récupération des challenges' 
+    });
   }
 }

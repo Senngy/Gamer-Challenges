@@ -1,66 +1,80 @@
-import { Challenge } from '../database/models/challenge.model.js';
-import { Participation } from '../database/models/participation.model.js';
-//import { User } from '../database/models/user.model.js';
-import { StatusCodes } from 'http-status-codes';
-import { Game, User } from '../database/models/index.js'; // pour vérifier l'existence de game et user
+import { Challenge } from '../database/models/challenge.model.js'; // Import du modèle Challenge
+import { Participation } from '../database/models/participation.model.js'; // Import du modèle Participation
+import { StatusCodes } from 'http-status-codes'; // Import des codes de statut HTTP
+import { Game, User } from '../database/models/index.js'; // Import des modèles Game et User
 
-
-// Récupérer tous les challenges
-export async function getAll(req, res) {
+export async function getAll(req, res) { // Récupérer tous les challenges
   try {
-    const challenges = await Challenge.findAll();
+    const challenges = await Challenge.findAll(); // Récupération de tous les challenges
 
-    if (!challenges || challenges.length === 0) {
-      return res.status(404).json({ error: 'No challenges found' });
+    if (!challenges || challenges.length === 0) { // Vérification si des challenges existent
+      return res.status(StatusCodes.NOT_FOUND).json({ error: 'No challenges found' }); // Aucun challenge trouvé
     }
 
-    return res.json(challenges);
+    return res.status(StatusCodes.OK).json(challenges); // Retour des challenges
   } catch (error) {
-    console.error('Error fetching challenges:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error fetching challenges:', error); // Log de l'erreur
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' }); // Erreur serveur
   }
 }
 
-// Récupérer un challenge par son ID
-export async function getById(req, res) {
+export async function getById(req, res) { // Récupérer un challenge par son ID
   try {
-    const challenge = await Challenge.findByPk(req.params.id);
+    const challenge = await Challenge.findByPk(req.params.id); // Recherche du challenge par ID
 
-    if (!challenge) {
-      return res.status(404).json({ error: 'Challenge not found' });
+    if (!challenge) { // Vérification si le challenge existe
+      return res.status(StatusCodes.NOT_FOUND).json({ error: 'Challenge not found' }); // Challenge non trouvé
     }
 
-    return res.json(challenge);
+    return res.status(StatusCodes.OK).json(challenge); // Retour du challenge
   } catch (error) {
-    console.error('Error fetching challenge:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error fetching challenge:', error); // Log de l'erreur
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' }); // Erreur serveur
   }
 }
 
-// Créer un nouveau challenge
-export async function create(req, res) {
+export async function getChallengeParticipations(req, res) { // Récupérer les participations d'un challenge
   try {
-    const { title, description, rules, game_by, created_by } = req.body;
+    const challengeId = req.params.id; // Récupération de l'ID du challenge
+    
+    const challenge = await Challenge.findByPk(challengeId, { // Recherche du challenge avec ses participations
+      include: { 
+        model: Participation, 
+        as: "participations",
+        include: { model: User, as: "user", attributes: ['id', 'pseudo'] } // Inclusion des informations utilisateur
+      }
+    });
 
-    if (!title || !description || !rules || !game_by || !created_by) {
-      return res.status(400).json({ error: 'Champs manquants' });
+    if (!challenge) { // Vérification si le challenge existe
+      return res.status(StatusCodes.NOT_FOUND).json({ error: 'Challenge not found' }); // Challenge non trouvé
     }
 
-    // Vérifier que le jeu existe
-    const gameExists = await Game.findByPk(game_by);
-    if (!gameExists) {
-      return res
-        .status(400)
-        .json({ error: `Jeu avec ID ${game_by} introuvable.` });
+    return res.status(StatusCodes.OK).json(challenge.participations); // Retour des participations
+  } catch (error) {
+    console.error('Error fetching challenge participations:', error); // Log de l'erreur
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Internal Server Error' }); // Erreur serveur
+  }
+}
+
+export async function create(req, res) { // Créer un nouveau challenge
+  try {
+    const { title, description, rules, game_by, created_by } = req.body; // Récupération des données de la requête
+
+    if (!title || !description || !rules || !game_by || !created_by) { // Validation des champs obligatoires
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Champs manquants' }); // Champs manquants
     }
 
-    // Optionnel : vérifier que l'utilisateur existe
-    // const userExists = await User.findByPk(created_by);
-    // if (!userExists) {
-    //   return res.status(400).json({ error: `Utilisateur avec ID ${created_by} introuvable.` });
-    // }
+    const gameExists = await Game.findByPk(game_by); // Vérification de l'existence du jeu
+    if (!gameExists) { // Si le jeu n'existe pas
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: `Jeu avec ID ${game_by} introuvable.` }); // Jeu non trouvé
+    }
 
-    const newChallenge = await Challenge.create({
+    const userExists = await User.findByPk(created_by); // Vérification de l'existence de l'utilisateur
+    if (!userExists) { // Si l'utilisateur n'existe pas
+      return res.status(StatusCodes.BAD_REQUEST).json({ error: `Utilisateur avec ID ${created_by} introuvable.` }); // Utilisateur non trouvé
+    }
+
+    const newChallenge = await Challenge.create({ // Création du nouveau challenge
       title,
       description,
       rules,
@@ -68,35 +82,9 @@ export async function create(req, res) {
       created_by,
     });
 
-    return res.status(201).json(newChallenge);
+    return res.status(StatusCodes.CREATED).json(newChallenge); // Retour du challenge créé
   } catch (error) {
-    console.error('Erreur lors de la création du challenge :', error);
-    res.status(500).json({ success: false, message: 'Erreur serveur lors de la création du challenge.' });
-  };
-}
-
-/*export async function getParticipations(req, res) {
-  const challengeId = Number(req.params.id);
-
-  if (!challengeId) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ error: 'Invalid challenge ID' });
+    console.error('Erreur lors de la création du challenge :', error); // Log de l'erreur
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur lors de la création du challenge.' }); // Erreur serveur
   }
-
-  try {
-    const participations = await Participation.findAll({
-      where: { challenge_id: challengeId },
-      include: [
-        {
-          model: User,
-          attributes: ['id', 'username', 'avatar']
-        }
-      ],
-      order: [['created_at', 'DESC']]
-    });
-
-    return res.status(StatusCodes.OK).json(participations);
-  } catch (err) {
-    console.error('Erreur lors du fetch des participations :', err);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
-  };
-}*/
+}
