@@ -4,45 +4,49 @@
   import Btn from "$lib/components/auth/Btn.svelte";
   import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
   import { register } from "$lib/services/auth.service.js";
+  import { validateRegistrationForm } from "$lib/verification/validation.form.register.js";
   import { goto } from "$app/navigation";
+  
   let pseudo = $state('');
   let email = $state('');
-  let password =$state('');
-  let confirmPassword =$state('');
-  let error =$state('');
-  let birth_date =$state('');
-  let first_name =$state('');
-  let last_name =$state('');
+  let password = $state('');
+  let confirmPassword = $state('');
+  let error = $state('');
+  let birth_date = $state('');
+  let first_name = $state('');
+  let last_name = $state('');
 
-const handleSubmitRegister = async (e) => {
-  e.preventDefault();
-    if (password !== confirmPassword) {
-      error = "Les mots de passe ne correspondent pas.";
-      return;
+  const handleSubmitRegister = async (e) => {
+    e.preventDefault();
+    
+    // ✅ Préparation des données pour validation
+    const formData = { pseudo, email, password, confirmPassword, first_name, last_name, birth_date };
+    
+    // ✅ Validation complète avec le fichier validation.secure.js
+    const validationResult = validateRegistrationForm(formData);
+    
+    // ❌ Si validation échoue, on bloque tout et affiche l'erreur
+    if (!validationResult.isValid) {
+      // Afficher la première erreur trouvée
+      const firstError = Object.values(validationResult.errors)[0];
+      error = firstError;
+      return; // 🛑 BLOQUE la redirection
     }
-    if (!email.includes('@')) {
-      error = "Adresse email invalide.";
-      return;
-    }
-    // Ajoute ici la logique d'inscription (API, etc.)
-    if (pseudo === '' || email === '' || password === '' || birth_date === '' || first_name === '' || last_name === '') {
-      error = "Veuillez remplir tous les champs."; 
-      return;
-    }
-    console.log('pseudo:', pseudo);
-    console.log('email:', email);  
-  
-      try {
-      // Call your API to register the user
+    
+    // ✅ Si validation réussit, on continue avec l'inscription
+    try {
       await register(pseudo, email, password, birth_date, first_name, last_name);
-
+      
+      // Succès : on efface l'erreur et redirige
+      error = '';
+      alert('Inscription réussie ! Vous allez être redirigé vers la page de connexion...');
+      goto('/auth/login');
+      
     } catch (e) {
+      // Erreur serveur
       error = "Une erreur est survenue lors de l'inscription.";
+      // 🛑 Pas de redirection en cas d'erreur serveur
     }
-
-    error = '';
-    alert('Inscription réussie ! Vous allez être rediriger vers la page de connexion...');
-    goto('/auth/login');
   };
 </script>
 
@@ -65,7 +69,6 @@ const handleSubmitRegister = async (e) => {
     <span>Vous avez déjà un compte ?</span>
     <a href="/auth/login">Cliquez ici</a>
   </div>
-
 </AuthContainer>
 
 <style>

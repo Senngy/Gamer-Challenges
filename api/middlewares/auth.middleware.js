@@ -6,12 +6,67 @@ import jwt from "jsonwebtoken";
 
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
-        pseudo: Joi.string().required(),
-        password: Joi.string().min(8).required(),
-        email: Joi.string().required(),
-        birth_date: Joi.date().required(),
-        first_name: Joi.string().required(),
-        last_name: Joi.string().required(),
+        pseudo: Joi.string()
+            .min(3)
+            .max(30)
+            .pattern(/^[a-zA-Z0-9_-]+$/)
+            .required()
+            .messages({
+                'string.min': 'Le pseudo doit contenir au moins 3 caractères',
+                'string.max': 'Le pseudo ne peut pas dépasser 30 caractères',
+                'string.pattern.base': 'Le pseudo ne peut contenir que des lettres, chiffres, tirets et underscores',
+                'any.required': 'Le pseudo est requis'
+            }),
+        password: Joi.string()
+            .min(8)
+            .max(128)
+            .pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+            .required()
+            .messages({
+                'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
+                'string.max': 'Le mot de passe ne peut pas dépasser 128 caractères',
+                'string.pattern.base': 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial (@$!%*?&)',
+                'any.required': 'Le mot de passe est requis'
+            }),
+        email: Joi.string()
+            .email({ tlds: { allow: false } })
+            .max(255)
+            .required()
+            .messages({
+                'string.email': 'L\'adresse email n\'est pas valide',
+                'string.max': 'L\'email ne peut pas dépasser 255 caractères',
+                'any.required': 'L\'email est requis'
+            }),
+        birth_date: Joi.date()
+            .max('now')
+            .min(new Date(Date.now() - 120 * 365 * 24 * 60 * 60 * 1000))
+            .required()
+            .custom((value, helpers) => {
+                const today = new Date();
+                const birthDate = new Date(value);
+                const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+                
+                if (age < 13) {
+                    return helpers.error('date.min.age');
+                }
+                return value;
+            })
+            .messages({
+                'date.max': 'La date de naissance ne peut pas être dans le futur',
+                'date.min': 'Âge maximum autorisé : 100 ans',
+                'date.min.age': 'Vous devez avoir au moins 13 ans pour vous inscrire',
+                'any.required': 'La date de naissance est requise'
+            }),
+        first_name: Joi.string()
+            .min(2)
+            .max(50)
+            .pattern(/^[a-zA-ZÀ-ÿ\s\-']+$/)
+            .required(),
+        last_name: Joi.string()
+            .min(2)
+            .max(50)
+            .pattern(/^[a-zA-ZÀ-ÿ\s\-']+$/)
+            .required()
     });
     checkBody(createUserSchema, req.body, res, next);
 }
