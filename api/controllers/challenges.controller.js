@@ -121,38 +121,45 @@ export async function getParticipations(req, res) {
 //
 
 export const getLikes = async (req, res) => {
-  const challengeId = parseInt(req.params.id, 10);
-  const userId = req.query.user_id; // facultatif
+  const target_id = parseInt(req.params.id, 10);
+  const user_id = req.query.user_id;
+  const target_type = 'challenge';
 
-  if (!challengeId || isNaN(challengeId)) {
+  if (isNaN(target_id)) {
     return res.status(400).json({ error: 'ID de challenge invalide.' });
   }
 
   try {
-    if (userId) {
-      // Vérifier si ce user a liké ce challenge
-      const like = await Like.findOne({
-        where: {
-          user_id: userId,
-          target_type: 'challenge',
-          target_id: challengeId
-        }
-      });
-
-      return res.status(200).json({ liked: !!like });
-    }
-
-    // Sinon : retourner le nombre total de likes
-    const count = await Like.count({
+    // 👍 Nombre total de likes
+    const totalLikes = await Like.count({
       where: {
-        target_type: 'challenge',
-        target_id: challengeId
+        target_id,
+        target_type
       }
     });
 
-    return res.status(200).json({ likes: count });
+    // ✅ Si user_id fourni → vérifier si user a liké
+    if (user_id) {
+      const like = await Like.findOne({
+        where: {
+          target_id,
+          target_type,
+          user_id: parseInt(user_id, 10)
+        }
+      });
+
+      return res.json({
+        liked: !!like,
+        likes: totalLikes
+      });
+    }
+
+    // Sinon, juste le total
+    return res.json({
+      likes: totalLikes
+    });
   } catch (err) {
-    console.error(err);
+    console.error('Erreur getLikes :', err);
     return res.status(500).json({ error: 'Erreur serveur.' });
   }
 };
@@ -160,6 +167,7 @@ export const getLikes = async (req, res) => {
 //
 
 export const addLike = async (req, res) => {
+  console.log('➡️ Params:', req.params); // Doit afficher { id: '1' }
   const challengeId = parseInt(req.params.id, 10);
   const userId = req.body.user_id;
 

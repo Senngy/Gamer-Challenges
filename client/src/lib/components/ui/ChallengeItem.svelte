@@ -3,6 +3,9 @@
 	export let challenge;
 	// let challenge = $props();
 	import { createEventDispatcher } from 'svelte';
+
+	import LikeItem from '$lib/components/ui/LikeItem.svelte';
+
 	const dispatch = createEventDispatcher();
 
 	let challengeCreator = {
@@ -64,9 +67,7 @@
 			<div class="challenge__user-avatar">{challengeCreator.avatar}</div>
 			<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 		</div>
-		<div class="challenge__like-count">
-			Likes : {challenge.challenge_likes}
-		</div>
+		<LikeItem target={challenge} targetType="challenge" user_id={2} />
 	</div>
 </div>
 
