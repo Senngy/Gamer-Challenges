@@ -25,7 +25,7 @@ export const login = async (credentials) => {
 
 export async function register(pseudo, email, password, birth_date, first_name, last_name) {
   try {
-    const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date, first_name, last_name });
+    const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date, first_name, last_name }, false);
     console.log('Login auth.service.js successful:', userRegister);
   } catch (error) {
     console.error('Registration failed:', error);
@@ -103,9 +103,7 @@ export const deleteAccount = async () => {
     //   headers: {
     //   Authorization: `Bearer ${token}`,
     // },
-  
-    console.log('Delete auth.service.js successful deleteAccountUser:', deleteAccountUser);
-  return;
+    return;
   } catch (error) {
     console.error('Delete Account failed:', error);
     throw error;

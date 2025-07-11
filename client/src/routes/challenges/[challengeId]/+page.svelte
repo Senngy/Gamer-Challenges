@@ -162,7 +162,14 @@
             description = '';
             error = '';
            if (response && response.success) {
-               error = '';
+              const newParticipation = response.participation;
+
+              newParticipation.user = {
+                  pseudo: challengeCreator.pseudo,
+                  avatar: challengeCreator.avatar
+                };
+              participations = [...participations, newParticipation]; // Ajout immédiat sans re-fetch
+              error = '';
               success = 'Participation créée avec succès !';
               setTimeout(() => {
 				    success = '';
@@ -170,9 +177,15 @@
 			    }, 3000); // Ferme la modale après 2 secondes
                await getParticipations(challenge_id); // Rafraîchir la liste des participations
             }
-        } catch (e) {
-            console.error('Erreur de création :', e);
-            error = "Une erreur est survenue lors de la création.";
+        } catch (err) {
+            console.error('Erreur de création :', err);
+        
+            if(err.message?.includes("déjà participé")) {
+                error = "Vous avez déjà participé à ce challenge.";
+            } else {
+                error = "Une erreur est survenue lors de la création de la participation.";
+            }
+            // error = "Une erreur est survenue lors de la création.";
         }
     };
 

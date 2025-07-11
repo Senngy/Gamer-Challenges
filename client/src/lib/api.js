@@ -1,4 +1,43 @@
 // api.js
+export default async function api(endpoint, method = "GET", body = null, useAuth = true) {
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  // 👉 Ajoute le token uniquement si useAuth est true
+  if (useAuth) {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+  }
+
+  const options = {
+    method,
+    headers,
+  };
+
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+
+  const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, options);
+
+  if (!response.ok) {
+    let errorData;
+    try {
+      errorData = await response.json();
+    } catch {
+      errorData = { message: response.statusText };
+    }
+    throw new Error(errorData.message || `Erreur HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+/*
 export default async function api(endpoint, method = "GET", body) {
   const options = {
     method,
@@ -33,3 +72,4 @@ export default async function api(endpoint, method = "GET", body) {
   const data = await response.json();
   return data;
 }
+  */

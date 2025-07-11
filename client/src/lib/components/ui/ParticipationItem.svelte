@@ -1,6 +1,9 @@
 <script>
     export let participation;
     console.log("Lien media :", participation.media_link)
+    console.log("user avatar :", participation.user.avatar)
+    console.log("user pseudo :", participation.user.pseudo)
+   
 </script>
 
 <div class="participation__item" role="listitem">

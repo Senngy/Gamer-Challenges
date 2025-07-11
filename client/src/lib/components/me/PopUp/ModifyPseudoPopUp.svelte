@@ -48,12 +48,15 @@
         <button class="btn cancel" type="button" on:click={onClose}>Annuler</button>
       </div>
     </form>
+     {#if success}
+        <p class="success">{success}</p>
+     {/if}
   </div>
 
 
 <style>
   .popup-content {
-    background: rgba(59, 56, 56, 0.847);
+   /* background: rgba(59, 56, 56, 0.847); */
     padding: 20px;
     border-radius: 10px;
     text-align: center;
@@ -69,5 +72,10 @@
   .btn {
     margin: 0 1rem;
   }
+  .success {
+		color: #a3cca4;
+		text-align: center;
+		margin-top: 1rem;
+	}
  
 </style>
