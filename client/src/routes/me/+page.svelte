@@ -7,10 +7,16 @@
   import ModifyPasswordPopUp from '$lib/components/me/PopUp/ModifyPasswordPopUp.svelte';
   import ModifyPseudoPopUp from '$lib/components/me/PopUp/ModifyPseudoPopUp.svelte'; // Si vous avez besoin de modifier le pseudo
   import Btn from '$lib/components/me/Btn.svelte';
+  import { logout } from '$lib/services/auth.service.js'; // Fonction de déconnexion
 	import { goto } from '$app/navigation'; // Pour la navigation
   import { authStore, clearAuth, setAuth, getAuth } from '$lib/store/authStore.svelte.js'; // Importation du store d'authentification
   import { getCurrentUser } from '$lib/services/auth.service.js'; // Fonction pour récupérer
 	import { get } from 'svelte/store';
+
+   $effect(() => {
+    getAuth();
+  });
+
 
   let user = $state({
     username: "",
@@ -52,14 +58,21 @@
     }
   };
 
-  function logout() { // Fonction de déconnexion
+   async function cleanLogout() { // Fonction de déconnexion
     // Logique de déconnexion ici
+    try {
+      await logout(); // Appel de la fonction de déconnexion
+      clearAuth(); // Nettoyage du store d'authentification
+      // Destruction du token d'authentification dans le back 
+      console.log('Déconnexion réussie');  
+      alert("Déconnexion !");
+   
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
     // Nettoyer le localStorage
     // Mettre à jour le store d'authentification
-    clearAuth(); // Nettoyage du store d'authentification
-    // Destruction du token d'authentification dans le back 
-    console.log('Déconnexion réussie');  
-    alert("Déconnexion !");
+    
   }
   
   let label = "Photo de profil / Avatar";
@@ -88,6 +101,7 @@
 
   function redirect(url) { // Redirige vers une autre page
     goto(url);
+    window.location.reload();
   }
 
 getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
@@ -145,7 +159,7 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
   {/if}    
 
   <!-- Bouton de déconnexion -->
-  <Btn class="btn logout" on:click={() => {logout(); redirect('/');}}>Se déconnecter</Btn>
+  <Btn class="btn logout" on:click={() => {cleanLogout(); redirect('/');}}>Se déconnecter</Btn>
 
   <!--Challenges de l'utilisateur-->
   <div class="challenges">
