@@ -54,9 +54,9 @@
 
 <header class="header" aria-label="En-tête du site Gamer Challenge">
   <!-- Logo du site -->
+   <div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
    {#if isAuthenticated()}
-     <div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
-     <p>{userInfo.pseudo}</p>
+          <p>Utilisateur : {userInfo.pseudo}</p>
    {/if}
 
   <!-- Barre de recherche -->
