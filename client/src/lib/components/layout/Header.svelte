@@ -5,30 +5,54 @@
   import { goto } from "$app/navigation";
   import { logout } from "$lib/services/auth.service.js";
   import { onMount } from "svelte";
+  import { searchGames } from "$lib/services/game.service.js";
   let userInfo = $state({});
   let userInfoJSON = null;
   let userAvatar = null;
+  let searchQuery = $state('');
+  let searchResults = $state([]);
 
   onMount(async () => {
       try {
         userInfoJSON = localStorage.getItem("user");
         userInfo = JSON.parse(userInfoJSON);
-        console.log("userInfo", userInfo);
+        //console.log("userInfo", userInfo);
         const user = await getUserById(userInfo.id);
-        console.log("Utilisateur récupéré :", user);
+        // console.log("Utilisateur récupéré :", user);
         userAvatar = user.avatar;
-        console.log("Avatar récupéré :", userAvatar);
+        // console.log("Avatar récupéré :", userAvatar);
       } catch (error) {
         console.error("Erreur lors de la récupération de l'avatar :", error);
       }
   });
 
 
-  $effect(() => {
-    getAuth();
+  $effect(() => { // 
+    getAuth(); //
   });
 
-  
+  $effect(async () => {
+     onSearch()
+  });
+  const onSearch = async () => {
+      if (searchQuery.trim() === '') { // Si la requête de recherche est vide, on vide les résultats  
+        searchResults = []; // On vide les résultats de la recherche
+        return;
+      } 
+      try {
+        const results = await searchGames(searchQuery); 
+        console.log('header search results : ', results)
+        searchResults = results
+        console.log('header search searchResults : ', searchResults)
+        console.log("results[0].title",results[0].title )
+        console.log("searchResults[0].title",searchResults[0].title )
+
+      } catch (error) {
+        console.error("Erreur lors de la recherche :", error);
+        searchResults = [];
+      }
+    };
+ 
  async function cleanLogout() { // Fonction de déconnexion
     // Logique de déconnexion ici
     try {
@@ -61,15 +85,29 @@
 
   <!-- Barre de recherche -->
   <div class="header__search-bar" aria-label="Barre de recherche">
+    <form on:submit|preventDefault={onSearch}>
     <label for="search" class="visually-hidden">Rechercher un jeu</label>
     <input
       type="search"
       id="search"
       name="search"
+      bind:value={searchQuery}
       placeholder="Rechercher votre jeu... 🔍"
       aria-label="Rechercher un jeu"
     />
+    </form>
   </div>
+  {#if searchResults.length > 0}
+   <ul class="search-results">
+    {#each searchResults as game}
+     <li class="result-game" >
+      <button type="button" class="btn-result" on:click={() => redirect(`/games/${game.id}`)}>{game.title}</button>
+     </li>
+    {/each}
+   </ul>
+  {:else if searchQuery.trim() !== ""}
+    <p class="no-result">Aucun résultat trouvé</p>
+  {/if}   
 
   <!-- Bouton menu burger -->
   <button

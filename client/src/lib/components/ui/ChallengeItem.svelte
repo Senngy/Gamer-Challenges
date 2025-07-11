@@ -15,8 +15,8 @@
 		// Récupération des détails du challenge
 		try {
 			const { pseudo, avatar } = await getUserInfo(challenge.created_by); // Récupération des informations de l'utilisateur connecté
-			console.log('onMount pseudo :', pseudo);
-			console.log('onMount avatar :', avatar);
+			// console.log('onMount pseudo :', pseudo);
+			// console.log('onMount avatar :', avatar);
 
 			challengeCreator = {
 				// remplissage de l'objet challengeCreator avec les données de l'utilisateur
@@ -35,7 +35,7 @@
 				throw new Error(`Erreur HTTP ${res.status}`);
 			}
 			const user = await res.json();
-			console.log('User info récupéré :', user);
+			// console.log('User info récupéré :', user);
 			return {
 				pseudo: user.pseudo, // ou user.username, selon ta structure
 				avatar: user.avatar // ou user.image, selon ta structure

@@ -14,7 +14,7 @@
 
     const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
 	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
-    console.log(`PAGE Bonjour je suis le ${challengeId}`);
+    //console.log(`PAGE Bonjour je suis le ${challengeId}`);
 
     const challenge_id = challengeId;
 
@@ -102,7 +102,7 @@
     const getChallengeDetails = async () => { // Fonction pour récupérer les détails du challenge
         try {
             const challengeDetails = await getChallenge(challenge_id);
-            console.log("Données du challenge récupérées :", challengeDetails);
+            //console.log("Données du challenge récupérées :", challengeDetails);
 
             if (!challengeDetails) {
                 throw new Error("Réponse inattendue : pas de détails disponibles");

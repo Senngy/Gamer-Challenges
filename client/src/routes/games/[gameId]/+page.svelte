@@ -13,8 +13,8 @@
 	const { data } = $props();
     const { game, challenges } = data;
 	// Debug
-	console.log('Game:', game);
-	console.log('Challenges:', challenges);
+	//console.log('Game:', game);
+	//console.log('Challenges:', challenges);
 
 	// copie locale réactive pour la liste des challenges
   let localChallenges = $state([...challenges]);
@@ -28,8 +28,8 @@
   let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
   let created_by = $state(challenges.created_by || 1); // ID du jeu associé aux challenges
 	// Debug
-	console.log("game by :",game_by)
-  console.log("created by:",created_by)
+	//console.log("game by :",game_by)
+    //console.log("created by:",created_by)
 
   let error =$state('');
 	let success = $state('');
