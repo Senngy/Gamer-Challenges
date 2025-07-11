@@ -1,5 +1,18 @@
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
 
+### 🔐 Inscription
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "pseudo": "Lams_Bmz",
+    "password": "ElOuedSouf213@",
+    "email": "lamsbmz92@gmail.com",
+    "birth_date": "19/10/1999",
+    "first_name": "Lamine",
+    "last_name": "BOUMAZA"
+}
+
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
 Content-Type: application/json
@@ -58,11 +71,11 @@ POST http://localhost:3000/challenges
 Content-Type: application/json
 
 {
-    "title": "Titre du ssschallenge",
-    "description": "Description du challenge",
-    "rules": "Règles du challenge",
-    "created_by": 2,
-    "game_by": 8
+    "title": "Algérie",
+    "description": "Dire One Two Three, viva l'Algérie 213 fois",
+    "rules": "Etre algérien",
+    "created_by": 1,
+    "game_by": 2
 }
 
 ### Likes of a specific challenge

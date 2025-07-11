@@ -19,21 +19,21 @@
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
     
-    // ✅ Préparation des données pour validation
+    // Préparation des données pour validation
     const formData = { pseudo, email, password, confirmPassword, first_name, last_name, birth_date };
     
-    // ✅ Validation complète avec le fichier validation.secure.js
+    // Validation complète avec le fichier validation.secure.js
     const validationResult = validateRegistrationForm(formData);
     
-    // ❌ Si validation échoue, on bloque tout et affiche l'erreur
+    // Si validation échoue, on bloque tout et affiche l'erreur
     if (!validationResult.isValid) {
       // Afficher la première erreur trouvée
       const firstError = Object.values(validationResult.errors)[0];
       error = firstError;
-      return; // 🛑 BLOQUE la redirection
+      return; // Bloque la redirection
     }
     
-    // ✅ Si validation réussit, on continue avec l'inscription
+    // Si validation réussit, on continue avec l'inscription
     try {
       await register(pseudo, email, password, birth_date, first_name, last_name);
       
@@ -45,7 +45,7 @@
     } catch (e) {
       // Erreur serveur
       error = "Une erreur est survenue lors de l'inscription.";
-      // 🛑 Pas de redirection en cas d'erreur serveur
+      // Pas de redirection en cas d'erreur serveur
     }
   };
 </script>

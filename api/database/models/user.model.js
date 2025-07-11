@@ -1,5 +1,6 @@
 import { sequelize } from '../connection.js';
 import { Model, DataTypes } from 'sequelize';
+import { format } from 'date-fns';
 
 export class User extends Model { } 
 
@@ -35,6 +36,10 @@ User.init(
     },
     birth_date: {
       type: DataTypes.DATEONLY,
+      get() {
+      const rawValue = this.getDataValue('birth_date');
+      return rawValue ? format(rawValue, 'dd/MM/yyyy') : null;
+    },
       allowNull: true,
     },
     avatar: {

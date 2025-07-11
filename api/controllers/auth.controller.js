@@ -50,16 +50,11 @@ export async function register(req, res) { // Fonction pour gérer l'inscription
     try {
         const hashedPassword = scrypt.hash(password); // Hash du mot de passe
         
-
+        const parsedDate = parse(birth_date, 'dd/MM/yyyy', new Date());
+        console.log(parsedDate);
+        
         //création du user en BDD
-        const user = await User.create({
-            pseudo, 
-            email,
-            password: hashedPassword, // Utilisation du mot de passe haché
-            birth_date,
-            first_name,
-            last_name,
-        });
+        const user = await User.create({ pseudo,  email, password: hashedPassword, birth_date: parsedDate, first_name, last_name });
         // on renvoit les infos au client
         return res.status(StatusCodes.CREATED).json(user);
     } catch (error) {

@@ -1,16 +1,31 @@
 // auth.service.js
 import api from '../api.js'; // Importe la fonction api pour faire les requêtes HTTP
+import { validateLoginData, sanitizeLoginData } from '../verification/validation.form.login.js';
 
-export const login = async (credentials) => { // Fonction de connexion
+export const login = async (credentials) => {
   try {
-    const { token, user } = await api('/auth/login', "POST", credentials); // Envoie les identifiants à l'API et récupère le token + user
-    console.log(' Login auth.service.js successful credientials:', credentials); // Affiche les identifiants dans la console
-    console.log('Login auth.service.js successful token:', token); // Affiche le token reçu
-    console.log('Login auth.service.js successful user:', user); // Affiche les infos utilisateur
-    return { token, user }; // Retourne token + infos utilisateur
+    // Validation côté client avant envoi
+    const { email, password } = credentials;
+    const validation = validateLoginData(email, password);
+    
+    if (!validation.isValid) {
+      // Créer une erreur personnalisée avec les erreurs de validation
+      const error = new Error('Données de connexion invalides');
+      error.validationErrors = validation.errors;
+      throw error;
+    }
+    
+    // Nettoyage des données
+    const sanitizedCredentials = sanitizeLoginData(email, password);
+    
+    const { token, user } = await api('/auth/login', "POST", sanitizedCredentials);
+    console.log('Login auth.service.js successful credentials:', sanitizedCredentials);
+    console.log('Login auth.service.js successful token:', token);
+    console.log('Login auth.service.js successful user:', user);
+    return { token, user };
   } catch (error) {
-    console.error('Login failed:', error); // Affiche l'erreur si l'API échoue
-    throw error; // Propage l'erreur au composant appelant
+    console.error('Login failed:', error);
+    throw error;
   }
 };
 

@@ -2,7 +2,7 @@ import Joi from "joi";
 import { checkBody } from "../utils/common.util.js";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
-// import { User } from "../database/models/user.model.js";
+
 
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
@@ -37,20 +37,8 @@ export function validateUserCreation(req, res, next) {
                 'string.max': 'L\'email ne peut pas dépasser 255 caractères',
                 'any.required': 'L\'email est requis'
             }),
-        birth_date: Joi.date()
-            .max('now')
-            .min(new Date(Date.now() - 120 * 365 * 24 * 60 * 60 * 1000))
+        birth_date: Joi.date().less(new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000))
             .required()
-            .custom((value, helpers) => {
-                const today = new Date();
-                const birthDate = new Date(value);
-                const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
-                
-                if (age < 13) {
-                    return helpers.error('date.min.age');
-                }
-                return value;
-            })
             .messages({
                 'date.max': 'La date de naissance ne peut pas être dans le futur',
                 'date.min': 'Âge maximum autorisé : 100 ans',
@@ -71,12 +59,31 @@ export function validateUserCreation(req, res, next) {
     checkBody(createUserSchema, req.body, res, next);
 }
 
+export function validateUserLogin(req, res, next) {
+    const loginUserSchema = Joi.object({
+        email: Joi.string()
+            .email({ tlds: { allow: false } })
+            .max(255)
+            .required()
+            .messages({
+                'string.email': 'L\'adresse email n\'est pas valide',
+                'string.max': 'L\'email ne peut pas dépasser 255 caractères',
+                'any.required': 'L\'email est requis'
+            }),
+        password: Joi.string()
+            .min(1)
+            .required()
+            .messages({
+                'string.min': 'Le mot de passe est requis',
+                'any.required': 'Le mot de passe est requis'
+            })
+    });
+    
+    checkBody(loginUserSchema, req.body, res, next);
+}
+
 export function authenticate(req, res, next){ 
     const authHeader = req.headers.authorization;
-    
-    // Si le header n'existe pas
-    // OU Si la valeur ne commence pas par Bearer
-    // Alors non connecté
     if (! authHeader || ! authHeader.startsWith('Bearer '))
     {
         return res.status(StatusCodes.UNAUTHORIZED).json({error: "authenticate : missing token"})
@@ -95,9 +102,6 @@ export function authenticate(req, res, next){
         res.status(StatusCodes.UNAUTHORIZED).json({error: 'authenticate : Token invalid or expired'});
 
     }
-    // token n'existe pas et est valide et contient un id connu
-    // Alors appeler le prochain middleware
-    // Sinon refusé l'accès
 }
 
 export function validateUserUpdatePseudo(req, res, next) {
