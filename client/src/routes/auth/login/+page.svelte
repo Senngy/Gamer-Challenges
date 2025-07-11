@@ -40,12 +40,18 @@
       const { token, user } = await login({email, password}); // Appel de la fonction de connexion
       console.log('Utilisateur connecté:', user); // Affichage de l'utilisateur connecté dans la console
       setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store ou le cookie
+       error = '';
+       alert('Connexion réussie !');
+       window.location.href = '/';
     } catch (e) {
       error = "Une erreur est survenue lors de la connexion.";
     }  
-    error = '';
-    alert('Connexion réussie !');
-    goto('/'); // Redirection vers la page d'accueil après une connexion réussie
+   
+     // Redirection vers la page d'accueil après une connexion réussie
+  }
+  function redirect(url) { // Redirige vers une autre page
+    goto(url);
+    window.location.reload();
   }
 </script>
 
@@ -57,7 +63,7 @@
     <Input id="email" type="email" name="email" label="Email" placeholder="Entrez votre email" bind:value={email} required /> 
     <Input id="password" type="password" name="password" label="Mot de passe" placeholder="Entrez votre mot de passe" bind:value={password} required minlength="8" maxlength="50"/>
       
-    <Btn>Se connecter</Btn>
+    <Btn >Se connecter</Btn>
   </AuthForm>
   <div class="no-account">
     <span>Pas encore de compte ?</span>

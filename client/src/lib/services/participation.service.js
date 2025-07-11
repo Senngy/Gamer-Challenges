@@ -2,6 +2,12 @@
 import api from '../api.js';
 
 export async function participationCreation(media_link, description, user_id, challenge_id) {
+  /*
+  console.log("SERVICE media_link", media_link)
+  console.log("SERVICE description", description) 
+  console.log("SERVICE user_id", user_id)
+  console.log("SERVICE challenge_id", challenge_id)
+  */
   try {
     const participationCreated = await api('/participations', "POST", { media_link, description, user_id, challenge_id });
     console.log('Participation créée avec succès :', participationCreated);
@@ -21,7 +27,6 @@ export async function getParticipations(challenge_id) {
   try {
     const res = await api(`/challenges/${challenge_id}/participations`, "GET");
     console.log("SERVICE réponse", res)
-    console.debug(`[getParticipations] Participations retrieved:`, res);
     return res;
   } catch (error) {
     console.error(`[getParticipations] Failed to fetch participations for challenge ID ${challenge_id}:`, error);

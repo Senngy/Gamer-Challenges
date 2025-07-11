@@ -6,24 +6,26 @@
 	import Btn from '$lib/components/auth/Btn.svelte';
 	import Input from '$lib/components/auth/Input.svelte';
 	import { challengeCreation } from '$lib/services/challenge.service.js';
+	import FilterText from '$lib/components/ui/FilterText.svelte';
 
 	//Récupération des données passées par load()
 	//export let data;
 	const { data } = $props();
-
-  const { game, challenges } = data;
-
+    const { game, challenges } = data;
 	// Debug
 	console.log('Game:', game);
 	console.log('Challenges:', challenges);
 
+	// copie locale réactive pour la liste des challenges
+  let localChallenges = $state([...challenges]);
+
   let showModal = $state(false);
-	let title = $state(''); // Variable pour stocker le titre
+  let title = $state(''); // Variable pour stocker le titre
   let description = $state(''); // Variable pour stocker la description
   let rules = $state(''); // Variable pour stocker les règles
 
     
-	let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
+  let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
   let created_by = $state(challenges.created_by || 1); // ID du jeu associé aux challenges
 	// Debug
 	console.log("game by :",game_by)
@@ -46,7 +48,7 @@
             error = "Veuillez remplir tous les champs.";
             return;
         }
-		if (title.length < 3 || description.length < 8 || rules.length < 6) {
+		if (title.length < 3 || description.length < 3 || rules.length < 3) {
 			error = "Veuillez respecter les longueurs minimales des champs.";
 			return;
 		}
@@ -74,14 +76,18 @@
 			   error = "Une erreur est survenue lors de la création du challenge.";
 			   return;
             }
+			// Mettre à jour la liste locale pour réafficher sans rechargement
+            localChallenges = [challengeCreated, ...localChallenges];
 		    error = '';
             //alert('Challenge créé avec succès !');
-		    success = "Challenge créé avec succès !";
-			if(success) {
+		    
+			if(challengeCreated && challengeCreated.id) {
+			   success = "Challenge créé avec succès !";
+			    // Fermer la modale après 2 secondes
 				setTimeout(() => {
 				    success = '';
 				    showModal = false; // Fermer la modale après succès
-			    }, 2000); // Ferme la modale après 2 secondes
+			    }, 3000); // Ferme la modale après 2 secondes
 			}
 			// Réinitialiser les champs du formulaire
 			title = '';
@@ -93,7 +99,7 @@
 			if (challengeCreated && challengeCreated.id) {
 				setTimeout(() => {
                     goto(`/challenges/${challengeCreated.id}`);
-				}, 2500); // Redirige après 2.5 secondes
+				}, 3500); // Redirige après 2.5 secondes
 			}	
         } catch (e) {
             console.error('Erreur de création :', e);
@@ -126,9 +132,9 @@
 			</div>
 
 			<h1 class="game-details__title">{game.title}</h1>
-			<p class="game-details__description">{game.description}</p>
+			<FilterText text={game.description} max={200}/>
 
-			<button class="btn btn--primary" on:click={openModal}>
+			<button class="btn btn--primary btn-game-card" on:click={openModal}>
 				Lancer un nouveau défi maintenant
 			</button>
 		</div>
@@ -141,12 +147,12 @@
 <section class="catalog" aria-labelledby="catalog-title">
 	<h2>
 		Participer à un défi créé par la communauté !
-		<span>{challenges.length} défis en cours…</span>
+		<span>{localChallenges.length} défis en cours…</span>
 	</h2>
 
 	<div class="catalog__grid" role="list">
-		{#each challenges.slice(0, visibleCount) as challenge (challenge.id)}
-			<ChallengeItem {challenge} />
+		{#each localChallenges.slice(0, visibleCount) as challenge (challenge.id)}
+			<ChallengeItem {challenge} role="button" tabindex="0" on:click={() => {goto(`/challenges/${challenge.id}`)}}/>
 		{/each}
 	</div>
 
@@ -243,5 +249,8 @@
 
 	.already-account a:hover {
 		color: #2563eb;
+	}
+	.btn-game-card {
+		margin-top: 1rem;
 	}
 </style>

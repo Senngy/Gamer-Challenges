@@ -36,6 +36,7 @@
 <!-- Hero Section -->
 <!-- ========================== -->
 <section class="popular-games" aria-labelledby="popular-games-title">
+
 	<!-- Slide 1 -->
 	<div class="popular-games__content slide" data-index="0">
 		<div class="popular-games__text">
@@ -64,6 +65,7 @@
 			</svg>
 		</div>
 	</nav>
+
 </section>
 
 <!-- ========================== -->
@@ -142,3 +144,12 @@
 		{/each}
 	</div>
 </section>
+<style>
+  .popular-games__description {
+      text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  }
+</style>

@@ -1,5 +1,6 @@
 <script>
 import { deleteAccount } from "$lib/services/auth.service.js";
+import { goto } from '$app/navigation'; // Pour la redirection
 export let onClose; // Fonction pour fermer la popup
 
 async function handleSubmitDelete() {
@@ -17,7 +18,7 @@ function redirect(url) { // Redirige vers une autre page
 
   <div class="popup-content">
     <h3>Êtes-vous sûr de vouloir supprimer votre compte ?</h3>
-    <p>Cette action est irréversible.</p>
+    <p>Cette action est irréversible.. et vous allez nous manquer 😢</p>
       <div class="buttons">
         <button class="btn confirm" on:click={() => {handleSubmitDelete(); redirect('/exit');}}>Confirmer</button>
         <button class="btn cancel" on:click={onClose}>Annuler</button>
@@ -27,7 +28,7 @@ function redirect(url) { // Redirige vers une autre page
 <style>
 
   .popup-content {
-    background: rgba(0, 0, 0, 0.8) ;
+    /*background: rgba(0, 0, 0, 0.8) ;*/
     padding: 20px;
     border-radius: 10px;
     text-align: center;

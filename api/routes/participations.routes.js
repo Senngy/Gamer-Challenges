@@ -6,7 +6,7 @@ import { validateUserCreationParticipation } from '../middlewares/participation.
 
 const router = express.Router();
 
-router.post('/',  addParticipation) // Create participations PRIVATE
+router.post('/', addParticipation) // Create participations PRIVATE
 // router.delete('/:id') // delete participations PRIVATE // Ne pas oublier d'implémenter la fonction authenticate 
 
 

@@ -8,6 +8,20 @@ export async function addParticipation(req, res) {
     return res.status(400).json({ success: false, message: 'Champs manquants' });
   }
   try {
+    // Vérification si l'utilisateur a déjà participé à ce challenge
+    const existingParticipation = await Participation.findOne({
+      where: {
+        challenge_id,
+        user_id
+      }
+    });
+    if (existingParticipation) {
+      return res.status(400).json({
+        success: false,
+        message: "Vous avez déjà participé à ce challenge."
+      });
+    }
+    // Création de la participation
     const participation = await Participation.create({
         media_link,
         description,

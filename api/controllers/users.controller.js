@@ -1,3 +1,5 @@
+import { User, Challenge } from "../database/models/index.js";
+
 export async function getAll(req, res) {
   const users = [
     { pseudo: "Jules95", email: "jules@example.com", password: "hashedpass1"},
@@ -11,11 +13,9 @@ export async function getAll(req, res) {
 }
 
 export async function getById(req, res) {
-    const user = {
-        pseudo: "Jules95",
-        email: "jules@example.com",
-        password: "hashedpass1"
-    };
+    const user = await User.findByPk(req.params.id, {
+        attributes: ["id", "pseudo", "email", "avatar"],
+    });
     if (!user) {
         return res.status(StatusCodes.NOT_FOUND).json({ error: "User not found" });
     }
