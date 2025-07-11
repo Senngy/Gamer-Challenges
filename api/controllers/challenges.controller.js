@@ -1,7 +1,7 @@
 import { Challenge } from '../database/models/challenge.model.js'; // Import du modèle Challenge
 import { Participation } from '../database/models/participation.model.js'; // Import du modèle Participation
 import { StatusCodes } from 'http-status-codes'; // Import des codes de statut HTTP
-import { Game, User } from '../database/models/index.js'; // Import des modèles Game et User
+import { Game, User, Like } from '../database/models/index.js'; // Import des modèles Game et User
 
 export async function getAll(req, res) { // Récupérer tous les challenges
   try {
@@ -116,3 +116,86 @@ export async function getParticipations(req, res) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
   }
 }
+
+
+//
+
+export const getLikes = async (req, res) => {
+  const challengeId = parseInt(req.params.id, 10);
+  const userId = req.query.user_id; // facultatif
+
+  if (!challengeId || isNaN(challengeId)) {
+    return res.status(400).json({ error: 'ID de challenge invalide.' });
+  }
+
+  try {
+    if (userId) {
+      // Vérifier si ce user a liké ce challenge
+      const like = await Like.findOne({
+        where: {
+          user_id: userId,
+          target_type: 'challenge',
+          target_id: challengeId
+        }
+      });
+
+      return res.status(200).json({ liked: !!like });
+    }
+
+    // Sinon : retourner le nombre total de likes
+    const count = await Like.count({
+      where: {
+        target_type: 'challenge',
+        target_id: challengeId
+      }
+    });
+
+    return res.status(200).json({ likes: count });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
+};
+
+//
+
+export const addLike = async (req, res) => {
+  const challengeId = parseInt(req.params.id, 10);
+  const userId = req.body.user_id;
+
+  const target_type = 'challenge'; // ✅ On sait que c’est un challenge via l’URL
+  const target_id = challengeId;
+
+  console.log('📥 Params:', req.params);
+  console.log('📥 Body:', req.body);
+
+  if (!userId || isNaN(challengeId)) {
+    return res.status(400).json({ error: 'Paramètres requis manquants.' });
+  }
+
+  try {
+    // ✅ Vérifie que le challenge existe
+    const challenge = await Challenge.findByPk(challengeId);
+    if (!challenge) {
+      return res.status(404).json({ error: 'Challenge introuvable.' });
+    }
+
+    // ✅ Vérifie et ajoute le like
+    const [like, created] = await Like.findOrCreate({
+      where: {
+        user_id: userId,
+        target_id,
+        target_type
+      }
+    });
+
+    if (!created) {
+      return res.status(400).json({ message: 'Vous avez déjà liké ce contenu.' });
+    }
+
+    return res.status(201).json({ message: 'Like ajouté avec succès.' });
+  } catch (err) {
+    console.error('Erreur lors de l’ajout du like :', err);
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
+};

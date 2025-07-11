@@ -5,26 +5,21 @@ import { Game } from './game.model.js';
 import { User } from './user.model.js';
 import { Participation } from './participation.model.js';
 
-// import { Vote } from './vote.model.js';
+import { Like } from './like.model.js';
+
 // import { Comment } from './comment.model.js';
 
 
 console.log('⚙️  Models and associations initialized');
-// Initialisation des modèles
-/*
-const User = UserModel(sequelize);
-const Game = GameModel(sequelize);
-const Challenge = ChallengeModel(sequelize);
-const Participation = ParticipationModel(sequelize);
-*/
 
+// Initialisation des modèles
 
 // 🔗 ASSOCIATIONS
 
 // User associations
 User.hasMany(Challenge, { foreignKey: 'created_by', as: 'challenge_created' });
 User.hasMany(Participation, { foreignKey: 'user_id', as: 'participant' });
-// User.hasMany(Vote, { foreignKey: 'user_id', as: 'votes' });
+
 // User.hasMany(Comment, { foreignKey: 'user_id', as: 'comments' });
 
 // Game associations
@@ -37,7 +32,6 @@ Challenge.hasMany(Participation, {
   foreignKey: 'challenge_id',
   as: 'participations',
 });
-// Challenge.hasMany(Vote, { foreignKey: 'challenge_id', as: 'votes' });
 // Challenge.hasMany(Comment, { foreignKey: 'challenge_id', as: 'comments' });
 
 // Participation associations
@@ -46,14 +40,16 @@ Participation.belongsTo(Challenge, {
   foreignKey: 'challenge_id',
   as: 'challenge',
 });
-// Participation.hasMany(Vote, { foreignKey: 'participation_id', as: 'votes' });
 
-/*
-// Vote associations (polymorphe : vote sur défi OU participation)
-Vote.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
-Vote.belongsTo(Challenge, { foreignKey: 'challenge_id', as: 'challenge' });
-Vote.belongsTo(Participation, { foreignKey: 'participation_id', as: 'participation' });
-*/
+// NEW Likes associations
+User.hasMany(Like, {
+  foreignKey: 'user_id',
+  as: 'likes'
+});
+Like.belongsTo(User, {
+  foreignKey: 'user_id',
+  as: 'user'
+});
 
 /*
 // Comment associations
@@ -62,4 +58,4 @@ Comment.belongsTo(Challenge, { foreignKey: 'challenge_id', as: 'challenge' });
 */
 
 // ✅ Export propre
-export { sequelize, User, Game, Challenge, Participation };
+export { sequelize, User, Game, Challenge, Participation, Like };

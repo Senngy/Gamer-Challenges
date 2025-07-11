@@ -68,10 +68,14 @@ Content-Type: application/json
 ### Likes of a specific challenge
 GET http://localhost:3000/challenges/1/likes
 
+
 ### Add a like to a specific challenge
-POST http://localhost:3000/challenges/1/likes
+POST http://localhost:3000/challenges/2/likes
 Content-Type: application/json
 
+{
+  "user_id": 2
+}
 
 
 ## PARTICIPATIONS
