@@ -1,4 +1,19 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTIyMzY5NDMsImV4cCI6MTc1MjI0NDE0M30.ke_pAra-Im49yRloIL6W1hFINF_Q2Ypgyq0h_-wzYK0
+
+## AUTH
+
+### Création de compte
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "pseudo": "ziggi",
+    "password": "zigzagziggi",
+    "email": "zig@zigzag.com",
+    "birth_date": "010119070",
+    "first_name": "Zig",
+    "last_name": "Zag"
+}
 
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
@@ -9,7 +24,7 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
-## page me
+## PAGE "ME"
 
 ### 📝 Mise à jour du mot de passe
 PATCH http://localhost:3000/auth/me/password
@@ -30,6 +45,9 @@ Authorization: Bearer {{token}}
 
 ### 🕹️ Liste des jeux
 GET http://localhost:3000/games
+
+### 🕹️ TOP 3 des jeux
+GET http://localhost:3000/games/top3
 
 ### 🕹️ Détails d'un jeu spécifique
 GET http://localhost:3000/games/16
@@ -56,13 +74,14 @@ GET http://localhost:3000/games/1/challenges
 ### Create challenge
 POST http://localhost:3000/challenges
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "title": "Titre du ssschallenge",
     "description": "Description du challenge",
     "rules": "Règles du challenge",
-    "created_by": 2,
-    "game_by": 8
+    "created_by": 3,
+    "game_by": 5
 }
 
 ### Likes of a specific challenge
@@ -82,12 +101,12 @@ GET http://localhost:3000/challenges/1/participations
 ### Create participation
 POST http://localhost:3000/participations
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "media_link": "Chemnnnin vers le média test",
     "description": "Description de la participation",
-    "challenge_id": 2,
-    "user_id": 3
-
+    "challenge_id": 1,
+    "user_id": 1
 }
 
