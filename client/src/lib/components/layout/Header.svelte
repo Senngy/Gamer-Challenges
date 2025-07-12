@@ -1,3 +1,4 @@
+<!-- Header.svelte -->
 <script>
   import { authStore, getAuth, isAuthenticated, clearAuth } from "$lib/store/authStore.svelte";
   import { getUserById } from "$lib/services/user.service";
@@ -41,16 +42,12 @@
       } 
       try {
         const results = await searchGames(searchQuery); 
-        console.log('header search results : ', results)
         searchResults = results
-        console.log('header search searchResults : ', searchResults)
-        console.log("results[0].title",results[0].title )
-        console.log("searchResults[0].title",searchResults[0].title )
-
       } catch (error) {
         console.error("Erreur lors de la recherche :", error);
         searchResults = [];
       }
+      searchResults
     };
  
  async function cleanLogout() { // Fonction de déconnexion
@@ -66,12 +63,20 @@
       console.error('Erreur lors de la déconnexion :', error);
     }
     // Nettoyer le localStorage
-    // Mettre à jour le store d'authentification
+    // Mettre à jour le store d'authentificationé
     
   }
   function redirect(url) { // Redirige vers une autre page
     goto(url);
-    window.location.reload();  // force le reload complet après la redirection SPA
+    //console.log("redirect", url)
+   // window.location.reload();  // force le reload complet après la redirection SPA
+  }
+  function redirectSearch(url) {
+    searchQuery = '';
+    searchResults = [];
+    goto(url, { invalidateAll: true });
+   // console.log("redirectSearch", url)
+    window.location.href = url 
   }
 
 </script>
@@ -91,23 +96,25 @@
       type="search"
       id="search"
       name="search"
+      class="search-input"
       bind:value={searchQuery}
       placeholder="Rechercher votre jeu... 🔍"
       aria-label="Rechercher un jeu"
     />
     </form>
-  </div>
-  {#if searchResults.length > 0}
+    {#if searchResults.length > 0}
    <ul class="search-results">
     {#each searchResults as game}
      <li class="result-game" >
-      <button type="button" class="btn-result" on:click={() => redirect(`/games/${game.id}`)}>{game.title}</button>
+      <button type="button" class="btn-result" on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button>
      </li>
     {/each}
    </ul>
   {:else if searchQuery.trim() !== ""}
     <p class="no-result">Aucun résultat trouvé</p>
   {/if}   
+  </div>
+  
 
   <!-- Bouton menu burger -->
   <button
@@ -153,5 +160,67 @@
     display: flex;
     justify-content: center;
     margin: 1rem auto;
+   
   }
+  .search-input {
+    color:white
+  }
+  .search-results {
+    position: absolute;
+    z-index: 11000;
+
+  }
+  .btn-result {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    margin-left: 1rem;
+    background: linear-gradient(135deg, #ffffff 0%, #636363 100%);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    min-width: 279px;
+    text-align: left;
+    padding: 0.7rem 4px;
+    font-size: 1.2rem;
+    color:rgba(51, 50, 50, 0.877);
+    font-weight: bold;
+  }
+  .btn-result:hover {
+    background: rgb(16, 16, 17);
+    color: white;
+   
+  }
+ @media (min-width: 0px) and (max-width: 380.98px) {
+  .btn-result {
+    min-width:290px ;
+    font-size: 0.6rem;
+  }
+}
+
+  @media (min-width: 381px) and (max-width: 567.98px) {
+  .btn-result {
+    min-width:340px ;
+    font-size: 0.8rem;
+  }
+}
+
+  /* Tablettes et plus (>= 768px) : 2 colonnes */
+@media (min-width: 568px) {
+  .btn-result {
+    min-width:370px ;
+    font-size: 1rem;
+  }
+}
+
+/* Desktop (>= 1024px) : 3 colonnes */
+@media (min-width: 1024px) {
+  .btn-result {
+    min-width:500px ;
+    font-size: 1.2rem;
+  }
+ 
+}
 </style>
