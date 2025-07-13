@@ -2,7 +2,7 @@ import Joi from "joi";
 import { checkBody } from "../utils/common.util.js";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
-
+import { parse, isValid } from 'date-fns';
 
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
@@ -37,14 +37,18 @@ export function validateUserCreation(req, res, next) {
                 'string.max': 'L\'email ne peut pas dépasser 255 caractères',
                 'any.required': 'L\'email est requis'
             }),
-        birth_date: Joi.date().less(new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000))
-            .required()
-            .messages({
-                'date.max': 'La date de naissance ne peut pas être dans le futur',
-                'date.min': 'Âge maximum autorisé : 100 ans',
-                'date.min.age': 'Vous devez avoir au moins 13 ans pour vous inscrire',
-                'any.required': 'La date de naissance est requise'
-            }),
+        birth_date: Joi.string()
+    .required()
+    .custom((value, helpers) => {
+      const parsed = parse(value, 'dd/MM/yyyy', new Date());
+      if (!isValid(parsed)) {
+        return helpers.error('any.invalid');
+      }
+      return parsed; // on retourne un Date
+    })
+    .messages({
+      'any.invalid': 'La date doit être au format JJ/MM/AAAA valide',
+    }),
         first_name: Joi.string()
             .min(2)
             .max(50)
