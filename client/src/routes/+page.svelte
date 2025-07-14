@@ -68,8 +68,11 @@
 		{/each}
 
 		<nav class="popular-games__nav">
-			<button class="popular-games__arrow prev" on:click={prev}>‹</button>
-			<button class="popular-games__arrow next" on:click={next}>›</button>
+			<div class="popular-games__arrows">
+				<button class="popular-games__arrow prev" on:click={prev}>‹</button>
+				<button class="popular-games__arrow next" on:click={next}>›</button>
+			</div>
+			
 			<div class="popular-games__pagination">{slideIndex + 1} / {topGames.length}</div>
 		</nav>
 
@@ -132,14 +135,6 @@
 </section>
 
 <style>
-	.popular-games__description {
-		text-shadow:
-			-1px -1px 0 #000,
-			1px -1px 0 #000,
-			-1px 1px 0 #000,
-			1px 1px 0 #000;
-	}
-
 	.pagination-dots {
 		display: flex;
 		justify-content: center;
