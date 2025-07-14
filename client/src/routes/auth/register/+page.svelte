@@ -26,6 +26,10 @@
     const validationResult = validateRegistrationForm(formData);
     
     // Si validation échoue, on bloque tout et affiche l'erreur
+    if (password !== confirmPassword) {
+      error = "Les mots de passe ne correspondent pas.";
+      return;
+    }
     if (!validationResult.isValid) {
       // Afficher la première erreur trouvée
       const firstError = Object.values(validationResult.errors)[0];

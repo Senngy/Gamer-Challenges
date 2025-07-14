@@ -47,6 +47,9 @@
 
 
   <div class="popup-content">
+    {#if error}
+      <p class="error">{error}</p>
+    {/if}
     <h3>Modifier votre mot de passe</h3>
     <form on:submit|preventDefault={handleSubmit}>
       <div class="input-group">
@@ -76,9 +79,6 @@
           bind:value={confirmPassword}
         />
       </div>
-      {#if error}
-        <p class="error">{error}</p>
-      {/if}
       <div class="buttons">
         <button class="btn confirm" type="submit">Confirmer</button>
         <button class="btn cancel" type="button" on:click={c}>Annuler</button>
