@@ -1,13 +1,13 @@
 import express from 'express';
-import { getAll, getById, getChallengesByGameId, getTopGames } from '../controllers/games.controller.js';
+import { getAll, getTop3, getById, getChallengesByGameId, getTopGames } from '../controllers/games.controller.js';
 
 const router = express.Router();
-
 // Route pour récupérer tous les jeux
 router.get('/', getAll);
 
-// route pour recuperer le top 3 des jeux via leur participation
 router.get('/top', getTopGames);
+
+router.get('/top3', getTop3);
 
 // Route pour récupérer un jeu par ID
 router.get('/:id', getById);

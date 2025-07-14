@@ -8,10 +8,10 @@ export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
         pseudo: Joi.string().required(),
         password: Joi.string().min(8).required(),
-        email: Joi.string().required(),
+        email: Joi.string().email().required(),
         birth_date: Joi.date().required(),
         first_name: Joi.string().required(),
-        last_name: Joi.string().required(),
+        last_name: Joi.string().required()
     });
     checkBody(createUserSchema, req.body, res, next);
 }
