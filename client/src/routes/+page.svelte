@@ -157,4 +157,8 @@
 	.pagination-dots span.active {
 		background: #333;
 	}
+	.popular-games__arrow {
+		pointer-events: auto; /* sans le pointer-events:auto les buttons du sliders étaient désactivés */
+		cursor: pointer;
+	}
 </style>
