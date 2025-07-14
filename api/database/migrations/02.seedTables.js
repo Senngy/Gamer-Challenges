@@ -1,5 +1,5 @@
 // import gamesData from './03.seedgame.js'; // Import des données de jeux
-import { User, Game, Challenge, Participation } from '../models/index.js';
+import { User, Game, Challenge, Participation, Like } from '../models/index.js';
 import { sequelize } from '../models/index.js';
 import { scrypt } from '../../utils/scrypt.js';
 import { importRAWGGames } from '../importGames.js';
@@ -116,6 +116,48 @@ await Participation.create({
   media_link: 'https://youtu.be/pentakill-lol',
   description: 'Pentakill à 35min',
 });
+
+// NEW
+console.log('❤️ Création des likes...');
+
+// Likes sur challenges
+await Like.create({
+  user_id: user2.id,
+  target_type: 'challenge',
+  target_id: challenge1.id
+});
+
+await Like.create({
+  user_id: user3.id,
+  target_type: 'challenge',
+  target_id: challenge1.id
+});
+
+await Like.create({
+  user_id: user1.id,
+  target_type: 'challenge',
+  target_id: challenge3.id
+});
+
+// Likes sur participations
+await Like.create({
+  user_id: user1.id,
+  target_type: 'participation',
+  target_id: 1 // Participation de user2 sur challenge1
+});
+
+await Like.create({
+  user_id: user3.id,
+  target_type: 'participation',
+  target_id: 3 // Participation de user1 sur challenge2
+});
+
+await Like.create({
+  user_id: user2.id,
+  target_type: 'participation',
+  target_id: 4 // Participation de user2 sur challenge3
+});
+
 
 console.log('✅ Données de test insérées avec succès !');
 await sequelize.close();

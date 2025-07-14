@@ -1,8 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
-	export let challenge;
-	// let challenge = $props();
+	// export let challenge;
+	let { challenge } = $props();
 	import { createEventDispatcher } from 'svelte';
+
+	import LikeItem from '$lib/components/ui/LikeItem.svelte';
+
 	const dispatch = createEventDispatcher();
 
 	let challengeCreator = {
@@ -51,7 +54,7 @@
 </script>
 
 <div class="challenge__item">
-	<div class="challenge__image" role="button" tabindex="0" on:click={() => dispatch('click')}>
+	<div type="button" class="challenge__image" role="button" tabindex="0" on:click={() => dispatch('click')}>
 		<div class="challenge__participation-count">
 			{challenge?.participations ?? 0} participations
 		</div>
@@ -64,9 +67,7 @@
 			<div class="challenge__user-avatar">{challengeCreator.avatar}</div>
 			<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 		</div>
-		<div class="challenge__like-count">
-			Likes : {challenge.challenge_likes}
-		</div>
+		<LikeItem {challenge} />
 	</div>
 </div>
 

@@ -1,7 +1,8 @@
+import jwt from 'jsonwebtoken';
 import { Challenge } from '../database/models/challenge.model.js'; // Import du modèle Challenge
 import { Participation } from '../database/models/participation.model.js'; // Import du modèle Participation
 import { StatusCodes } from 'http-status-codes'; // Import des codes de statut HTTP
-import { Game, User } from '../database/models/index.js'; // Import des modèles Game et User
+import { Game, User, Like } from '../database/models/index.js'; // Import des modèles Game et User
 
 export async function getAll(req, res) { // Récupérer tous les challenges
   try {
@@ -116,3 +117,91 @@ export async function getParticipations(req, res) {
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Erreur serveur' });
   }
 }
+
+
+//
+
+export const getLikes = async (req, res) => {
+  const target_id = parseInt(req.params.id, 10);
+  const target_type = 'challenge';
+
+  let user_id = null;
+
+  // ✅ Décodage manuel du token s'il existe
+  const authHeader = req.headers.authorization;
+  if (authHeader?.startsWith('Bearer ')) {
+    const token = authHeader.split(' ')[1];
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      user_id = payload.user_id;
+    } catch (err) {
+      console.warn('Token invalide ou expiré');
+    }
+  }
+
+  if (isNaN(target_id)) {
+    return res.status(400).json({ error: 'ID de challenge invalide.' });
+  }
+
+  try {
+    const totalLikes = await Like.count({ where: { target_id, target_type } });
+
+    let liked = false;
+    if (user_id) {
+      const like = await Like.findOne({
+        where: { target_id, target_type, user_id }
+      });
+      liked = !!like;
+    }
+
+    return res.json({
+      likes: totalLikes,
+      liked
+    });
+  } catch (err) {
+    console.error('Erreur getLikes :', err);
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
+};
+
+//
+
+  export const addLike = async (req, res) => {
+    const challengeId = parseInt(req.params.id, 10);
+    console.log(`Challenge ID: ${challengeId}`); // Doit afficher l'ID du challenge
+    const userId = req.user_id;
+    console.log(`User ID: ${userId}`); // Doit afficher l'ID du challenge
+
+    const target_type = 'challenge'; // ✅ On sait que c’est un challenge via l’URL
+    const target_id = challengeId;
+
+    if (!userId || isNaN(challengeId)) {
+      return res.status(400).json({ error: 'Paramètres requis manquants.' });
+    }
+
+    try {
+      // ✅ Vérifie que le challenge existe
+      const challenge = await Challenge.findByPk(challengeId);
+      if (!challenge) {
+        return res.status(404).json({ error: 'Challenge introuvable.' });
+      }
+
+      // ✅ Vérifie et ajoute le like
+      const [like, created] = await Like.findOrCreate({
+        where: {
+          user_id: userId,
+          target_id,
+          target_type
+        }
+      });
+
+      if (!created) {
+        return res.status(400).json({ message: 'Vous avez déjà liké ce contenu.' });
+      }
+
+      return res.status(201).json({ message: 'Like ajouté avec succès.' });
+    } catch (err) {
+      console.error('Erreur lors de l’ajout du like :', err);
+      return res.status(500).json({ error: 'Erreur serveur.' });
+    }
+  };

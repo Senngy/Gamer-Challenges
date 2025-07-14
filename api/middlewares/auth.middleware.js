@@ -6,6 +6,18 @@ import jwt from "jsonwebtoken";
 
 export function validateUserCreation(req, res, next) {
     const createUserSchema = Joi.object({
+        pseudo: Joi.string().required(),
+        password: Joi.string().min(8).required(),
+        email: Joi.string().email().required(),
+        birth_date: Joi.date().required(),
+        first_name: Joi.string().required(),
+        last_name: Joi.string().required()
+    });
+    checkBody(createUserSchema, req.body, res, next);
+}
+/*
+export function validateUserCreation(req, res, next) {
+    const createUserSchema = Joi.object({
         pseudo: Joi.string().alphanum().min(3).max(30).required(),
         password: Joi.string()
             .min(8)
@@ -17,10 +29,9 @@ export function validateUserCreation(req, res, next) {
         first_name: Joi.string().min(2).max(50).required(),
         last_name: Joi.string().min(2).max(50).required(),
     });
-
     checkBody(createUserSchema, req.body, res, next);
-
 }
+*/
 
 export function authenticate(req, res, next){ 
     const authHeader = req.headers.authorization;

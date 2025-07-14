@@ -55,22 +55,22 @@
         console.log('handleSubmitChallenge called');
         e.preventDefault();
 
-        if (!title.trim() || !description.trim() || !rules.trim()) {
-            error = "Veuillez remplir tous les champs.";
-            return;
-        }
-		if (title.length < 3 || description.length < 3 || rules.length < 3) {
-			error = "Veuillez respecter les longueurs minimales des champs.";
-			return;
-		}
-		if (title.length > 30 || description.length > 50 || rules.length > 100) {
-			error = "Veuillez respecter les longueurs maximales des champs.";
-			return;
-		}
-		if (/(?:[a-zA-Z])\1\1/.test(title) || /(?:[a-zA-Z])\1\1/.test(description) || /(?:[a-zA-Z])\1\1/.test(rules)) {
-			error = "Aucun champ ne doit contenir plus de 3 lettres identiques à la suite.";
-			return;
-		}
+        // if (!title.trim() || !description.trim() || !rules.trim()) {
+        //     error = "Veuillez remplir tous les champs.";
+        //     return;
+        // }
+		// if (title.length < 3 || description.length < 3 || rules.length < 3) {
+		// 	error = "Veuillez respecter les longueurs minimales des champs.";
+		// 	return;
+		// }
+		// if (title.length > 30 || description.length > 50 || rules.length > 100) {
+		// 	error = "Veuillez respecter les longueurs maximales des champs.";
+		// 	return;
+		// }
+		// if (/(?:[a-zA-Z])\1\1/.test(title) || /(?:[a-zA-Z])\1\1/.test(description) || /(?:[a-zA-Z])\1\1/.test(rules)) {
+		// 	error = "Aucun champ ne doit contenir plus de 3 lettres identiques à la suite.";
+		// 	return;
+		// }
          /*
         console.log('handleSubmitChallenge title:', title);
         console.log('handleSubmitChallengedescription:', description);

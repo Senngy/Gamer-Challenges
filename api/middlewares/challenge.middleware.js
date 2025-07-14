@@ -6,6 +6,8 @@ export function validateUserCreationChallenge(req, res, next) {
         title: Joi.string().required(),
         description: Joi.string().required(),
         rules: Joi.string().required(),
+        created_by: Joi.number().integer().min(1).required(),
+        game_by: Joi.number().integer().min(1).required()
     });
     checkBody(createChallengeSchema, req.body, res, next);
 }

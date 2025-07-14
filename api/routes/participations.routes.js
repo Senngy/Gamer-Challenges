@@ -1,13 +1,12 @@
 // participations.routes.js
 import express from 'express';
+import { authenticate } from '../middlewares/auth.middleware.js';
 import { addParticipation } from '../controllers/participations.controller.js';
 import { validateUserCreationParticipation } from '../middlewares/participation.middleware.js';
-// import { authenticate } from '../middlewares/auth.middleware.js';
+
 
 const router = express.Router();
 
-router.post('/', addParticipation) // Create participations PRIVATE
-// router.delete('/:id') // delete participations PRIVATE // Ne pas oublier d'implémenter la fonction authenticate 
-
+router.post('/', authenticate, validateUserCreationParticipation, addParticipation) // Authentification TESTÉE & VALIDÉE - Créer un nouveau challenge
 
 export default router;
