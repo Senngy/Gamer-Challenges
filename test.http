@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTI0ODk5MDIsImV4cCI6MTc1MjQ5NzEwMn0.Eoxb0G92VHxDXlnYBduzDsfEqJoWsdGPhz5GzGJuwss
 
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
@@ -72,6 +72,7 @@ GET http://localhost:3000/challenges/1/likes
 ### Add a like to a specific challenge
 POST http://localhost:3000/challenges/2/likes
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "user_id": 2

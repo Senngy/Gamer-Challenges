@@ -30,3 +30,40 @@ export async function challengeCreation(title, description, rules, created_by, g
     throw error;
   }
 }
+
+// Fonction pour récupérer les informations de likes du challenge
+export async function getLikes(challengeId) {
+  if (!challengeId) {
+    throw new Error('Challenge ID is required');
+  }
+
+  try {
+    const likes = await api(`/challenges/${challengeId}/likes`, "GET");
+    console.debug(`[getLikes] Likes retrieved:`, likes);
+    return likes;
+  } catch (error) {
+    console.error(`[getLikes] Failed to fetch likes with ID ${challengeId}:`, error);
+    throw error;
+  }
+}
+
+// Fonction d'ajout d'un like au challenge
+export async function addLike(challengeId) {
+
+  console.debug(`[addLike] Adding like to challenge with ID: ${challengeId}`);
+  
+  if (!challengeId) {
+    throw new Error('Challenge ID is required');
+  }
+
+  try {
+    const likeAdded = await api(`/challenges/${challengeId}/likes`, "POST");
+
+    console.log('Like ajouté avec succès :', likeAdded);
+    return likeAdded;
+
+  } catch (error) {
+    console.error('Échec d\'ajout du like :', error);
+    throw error;
+  }
+}

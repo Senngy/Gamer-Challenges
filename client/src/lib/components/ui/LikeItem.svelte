@@ -1,46 +1,41 @@
 <script>
-  export let target;         // challenge ou participation
-  export let targetType;     // 'challenge' ou 'participation'
-  export let user_id;
+  import { onMount } from 'svelte';
+  import { getLikes, addLike } from '$lib/services/challenge.service.js';
 
-  let isLiking = false;
+  let { challenge } = $props();
+  let likes = $state(0);
 
-  async function toggleLike() {
-    isLiking = true;
-
-    const method = target.user_liked ? 'DELETE' : 'POST';
-
-    const response = await fetch(`http://localhost:3000/${targetType}s/${target.id}/likes`, {
-      method,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ user_id })
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      target.user_liked = !target.user_liked;
-      target.likes += target.user_liked ? 1 : -1;
-    } else {
-      console.error(data.message || 'Erreur serveur');
+  const handleAddLike = async () => {
+    console.log('🔘 Bouton cliqué');
+    console.log(challenge.id, 'ID du challenge');
+    try {
+      await addLike(challenge.id);
+      likes += 1;
+      console.log('✅ Like ajouté');
+    } catch (err) {
+      console.error('❌ Erreur lors du like :', err.message);
     }
+  };
 
-    isLiking = false;
-  }
+  // Récupération initiale des likes une fois le composant monté
+  onMount(() => {
+    const fetchLikes = async () => {
+      console.log('📥 Récupération des likes pour', challenge.id);
+      try {
+        const data = await getLikes(challenge.id);
+        likes = data.likes;
+        console.log('✔️ Likes initiaux:', likes);
+      } catch (err) {
+        console.error('❌ Erreur récupération des likes :', err);
+      }
+    };
+
+    fetchLikes();
+  });
 </script>
 
-<button
-  class="like-button"
-  data-liked={target.user_liked}
-  on:click={toggleLike}
-  disabled={isLiking}>
-  {#if target.user_liked}
-    ❤️ Liked : <span class="like-count">{target.likes}</span>
-  {:else}
-    🤍 Like : <span class="like-count">{target.likes}</span>
-  {/if}
+<button type="button" class="like-button" on:click={handleAddLike}>
+  ❤️ <span class="like-count">{likes}</span>
 </button>
 
 <style>
@@ -52,12 +47,6 @@
     cursor: pointer;
     border-radius: 6px;
     transition: all 0.2s;
-  }
-
-  .like-button[data-liked='true'] {
-    color: red;
-    border-color: red;
-    font-weight: bold;
   }
 
   .like-count {

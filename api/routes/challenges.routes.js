@@ -1,6 +1,6 @@
 import express from 'express';
 
-//import { authenticate } from '../middlewares/auth.middleware.js';
+import { authenticate } from '../middlewares/auth.middleware.js';
 
 import { getAll, getById, getChallengeParticipations, create, getLikes, addLike } from '../controllers/challenges.controller.js'; // Import des fonctions du controller
 
@@ -13,7 +13,7 @@ router.get('/', getAll); // Récupérer tous les challenges
 //
 
 router.get('/:id/likes', getLikes);
-router.post('/:id/likes', addLike); // Créer un nouveau challenge // Ne pas oublier d'implémenter la fonction authenticate (route privée)
+router.post('/:id/likes', authenticate, addLike); // Créer un nouveau challenge // Ne pas oublier d'implémenter la fonction authenticate (route privée)
 
 
 //
