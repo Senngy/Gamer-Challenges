@@ -22,7 +22,7 @@ export const dictionary = {
 		"/": [2],
 		"/about": [3],
 		"/auth/login": [4],
-		"/auth/signup": [5],
+		"/auth/register": [5],
 		"/challenges/[challengeId]": [~6],
 		"/error404": [7],
 		"/exit": [8],

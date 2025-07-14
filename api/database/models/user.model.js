@@ -1,5 +1,8 @@
 import { sequelize } from '../connection.js';
 import { Model, DataTypes } from 'sequelize';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale'; // pour le format français
+
 
 export class User extends Model { } 
 
@@ -34,8 +37,12 @@ User.init(
       allowNull: true,
     },
     birth_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: true,
+    type: DataTypes.DATEONLY, // stocke uniquement la date
+    allowNull: true,
+    get() {
+    const rawValue = this.getDataValue('birth_date');
+    return rawValue ? format(new Date(rawValue), 'dd/MM/yyyy', { locale: fr }) : null;
+      }
     },
     avatar: {
       type: DataTypes.STRING(255),

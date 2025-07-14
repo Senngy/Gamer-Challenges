@@ -75,13 +75,7 @@ export async function create(req, res) { // Créer un nouveau challenge
       return res.status(StatusCodes.BAD_REQUEST).json({ error: `Utilisateur avec ID ${created_by} introuvable.` }); // Utilisateur non trouvé
     }
 
-    const newChallenge = await Challenge.create({ // Création du nouveau challenge
-      title,
-      description,
-      rules,
-      game_by,
-      created_by,
-    });
+    const newChallenge = await Challenge.create({ title, description, rules, game_by, created_by, }); // Création du nouveau challenge
 
     return res.status(StatusCodes.CREATED).json(newChallenge); // Retour du challenge créé
   } catch (error) {
@@ -101,13 +95,7 @@ export async function getParticipations(req, res) {
   try {
     const participations = await Participation.findAll({
       where: { challenge_id: challengeId },
-      include: [
-        {
-          model: User,
-          as: 'user',
-          attributes: ['id', 'pseudo', 'avatar']
-        }
-      ],
+      include: [{ model: User, as: 'user', attributes: ['id', 'pseudo', 'avatar'] }],
       order: [['created_at', 'DESC']],
     });
 

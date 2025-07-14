@@ -5,6 +5,8 @@ import { error } from '@sveltejs/kit';
 
 export async function load({ fetch, params }) {
   const { gameId } = params;
+  console.log(gameId);
+  
 
 
   if (!gameId || isNaN(+gameId)) {

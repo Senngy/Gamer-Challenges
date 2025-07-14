@@ -15,7 +15,7 @@ const corsOptions = { // Configuration CORS pour autoriser les requêtes depuis 
 app.use(cors(corsOptions)); // Application du middleware CORS avec options
 app.use(express.json()); // Middleware pour parser le JSON des requêtes
 
-app.use("/", mainRouter); // Toutes les routes API sont préfixées par "/api"
+app.use("/", mainRouter); // Toutes les routes API sont préfixées par "/"
 
 app.listen(PORT, () => { // Démarrage du serveur sur le port spécifié
   console.log(`Server is running on port at http://localhost:${PORT}`); // Message de confirmation

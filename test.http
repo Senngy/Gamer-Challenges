@@ -15,6 +15,19 @@ Content-Type: application/json
     "last_name": "Zag"
 }
 
+### 🔐 Inscription
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "pseudo": "Lams_Bmz",
+    "password": "ElOuedSouf213@",
+    "email": "lamsbmz92@gmail.com",
+    "birth_date": "19/10/1999",
+    "first_name": "Lamine",
+    "last_name": "BOUMAZA"
+}
+
 ### 🔐 Connexion et extraction du token
 POST http://localhost:3000/auth/login
 Content-Type: application/json

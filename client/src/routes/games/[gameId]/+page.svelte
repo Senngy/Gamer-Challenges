@@ -59,6 +59,7 @@
         //     error = "Veuillez remplir tous les champs.";
         //     return;
         // }
+
 		// if (title.length < 3 || description.length < 3 || rules.length < 3) {
 		// 	error = "Veuillez respecter les longueurs minimales des champs.";
 		// 	return;
@@ -77,15 +78,15 @@
         console.log('handleSubmitChallenge rules:', rules);
         console.log('handleSubmitChallenge created_by:', created_by);
         console.log('handleSubmitChallenge game_by:', game_by);
-		*/
+        */
 
         try {
-           const challengeCreated = await challengeCreation(title, description, rules, created_by, game_by);
-		   console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
+          const challengeCreated = await challengeCreation(title, description, rules, created_by, game_by);
+		  console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
 
-           if (!challengeCreated) {
-			   error = "Une erreur est survenue lors de la création du challenge.";
-			   return;
+          if (!challengeCreated) {
+			  	error = "Une erreur est survenue lors de la création du challenge.";
+			  	return;
             }
 			// Mettre à jour la liste locale pour réafficher sans rechargement
             localChallenges = [challengeCreated, ...localChallenges];
@@ -204,7 +205,7 @@
     </ChallengeForm>
     <div class="already-account">
         <span>Pas encore de compte ? Créez en un simplement !</span>
-        <a href="/auth/signup">Cliquez ici</a>
+        <a href="/auth/register">Cliquez ici</a>
     </div>
 	{#if success}
         <p class="success">{success}</p>

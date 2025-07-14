@@ -146,7 +146,7 @@
       </li>
       {:else}
       <li>
-        <a href="/auth/signup" class="mobile-link" sveltekit:prefetch>Inscription</a>
+        <a href="/auth/register" class="mobile-link" sveltekit:prefetch>Inscription</a>
       </li>
       <li>
         <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Connexion</a>

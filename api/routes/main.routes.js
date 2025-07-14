@@ -7,10 +7,10 @@ import authRouter from "./auth.routes.js"; // Routes pour l'authentification (lo
 
 const mainRouter = express.Router(); // Création du routeur principal Express
 
-mainRouter.use("/auth", authRouter); // Routes d'authentification via /api/auth
-mainRouter.use("/users", usersRouter); // Routes utilisateurs via /api/users
-mainRouter.use("/games", gamesRouter); // Routes jeux via /api/games
-mainRouter.use("/challenges", challengesRouter); // Routes défis via /api/challenges
-mainRouter.use("/participations", participationsRouter); // Routes participations via /api/participations
+mainRouter.use("/auth", authRouter); // Routes d'authentification via /auth
+mainRouter.use("/users", usersRouter); // Routes utilisateurs via /users
+mainRouter.use("/games", gamesRouter); // Routes jeux via /games
+mainRouter.use("/challenges", challengesRouter); // Routes défis via /challenges
+mainRouter.use("/participations", participationsRouter); // Routes participations via /participations
 
 export default mainRouter; // Export du routeur principal pour utilisation dans app.js

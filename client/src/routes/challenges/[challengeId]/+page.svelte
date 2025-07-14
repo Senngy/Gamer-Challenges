@@ -51,19 +51,10 @@
            const { pseudo, avatar } = await getUserInfo(created_by); // Récupération des informations de l'utilisateur connecté
            console.log("onMount pseudo :", pseudo);
            console.log("onMount avatar :", avatar);
-            challenge = { // remplissage de l'objet challenge avec les données récupérées
-                title,
-                description,
-                rules,
-                created_by,
-                game_by,
-                image // ✅ Injecte ici l’image récupérée
-           };
-              challengeCreator = { // remplissage de l'objet challengeCreator avec les données de l'utilisateur
-                 pseudo,
-                 avatar
-                };
-                await getParticipationsList(); // Récupération des participations du challenge
+           // remplissage de l'objet challenge avec les données récupérées
+            challenge = { title, description, rules, created_by, game_by, image }; // ✅ Injecte ici l’image récupérée
+            challengeCreator = { pseudo, avatar }; // remplissage de l'objet challengeCreator avec les données de l'utilisateur
+            await getParticipationsList(); // Récupération des participations du challenge
     } catch (err) {
       console.error("Erreur récupération challenge :", err);
     }
@@ -273,7 +264,7 @@
     </ParticipationForm>
     <div class="already-account">
         <span>Pas encore de compte ? Créez en un simplement !</span>
-        <a href="/auth/signup">Cliquez ici</a>
+        <a href="/auth/register">Cliquez ici</a>
     </div>
     {#if success}
         <p class="success">{success}</p>

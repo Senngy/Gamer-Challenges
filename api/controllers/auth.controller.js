@@ -4,6 +4,11 @@ import { StatusCodes } from 'http-status-codes';
 // import { Challenge } from '../database/models/challenge.model.js';
 import { User, Challenge } from '../database/models/index.js'; // Assurez-vous que cette importation est correcte
 import { scrypt } from '../utils/scrypt.js'; // Assurez-vous que cette importation est correcte
+import { parse, isValid } from 'date-fns'; // très important
+import { fr } from 'date-fns/locale';      // si besoin, sinon le parsing fonctionne sans
+
+
+
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
     console.log("REQ BODY :", req.body);
@@ -42,40 +47,44 @@ export async function login(req, res) { // Fonction pour gérer la connexion des
     }
 }
 
-export async function register(req, res) { // Fonction pour gérer l'inscription des utilisateurs
-    console.log("REQ BODY :", req.body);
-    // récupération du email et du mdp 
-    // et du nom du role
-    const { email, pseudo, password, birth_date, first_name, last_name } = req.body;
-    try {
-        const hashedPassword = scrypt.hash(password); // Hash du mot de passe
-        
+export async function register(req, res) {
+  console.log("REQ BODY :", req.body);
 
-        //création du user en BDD
-        const user = await User.create({
-            pseudo, 
-            email,
-            password: hashedPassword, // Utilisation du mot de passe haché
-            birth_date,
-            first_name,
-            last_name,
-        });
-        // on renvoit les infos au client
-        return res.status(StatusCodes.CREATED).json(user);
-    } catch (error) {
-        if (error.name === 'SequelizeUniqueConstraintError') {
+  const { email, pseudo, password, birth_date, first_name, last_name } = req.body;
 
-            let errorMsg = 'Duplicate entry';
-            if (error.errors.length > 0) {
-                errorMsg = error.errors[0].message;
-            }
-            return res.status(StatusCodes.CONFLICT).json({ 
-                error: errorMsg
-            });
-        }
-        console.log(error);
-        throw new Error("Internal Server Error !");
+  try {
+    const hashedPassword = scrypt.hash(password); // Hash du mot de passe
+
+    // Étape 1 – parser la date reçue en format 'dd/MM/yyyy'
+    const parsedDate = parse(birth_date, 'dd/MM/yyyy', new Date());
+
+    // Étape 2 – vérifier que la date est valide
+    if (!isValid(parsedDate)) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        error: "La date de naissance est invalide. Format attendu : JJ/MM/AAAA"
+      });
     }
+
+    // Étape 3 – création du user avec la date correctement parsée
+    const user = await User.create({ pseudo, email, password: hashedPassword, birth_date: parsedDate, first_name, last_name });
+
+    // Étape 4 – retour de la réponse au client
+    return res.status(StatusCodes.CREATED).json(user);
+
+  } catch (error) {
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      let errorMsg = 'Duplicate entry';
+      if (error.errors.length > 0) {
+        errorMsg = error.errors[0].message;
+      }
+      return res.status(StatusCodes.CONFLICT).json({ error: errorMsg });
+    }
+
+    console.log(error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: "Erreur interne du serveur."
+    });
+  }
 }
 
 export async function me (req, res) {
@@ -111,7 +120,6 @@ export async function logout (req, res) {
         });
     }
 }
-
 
 export async function deleteAccount(req, res) {
     try {

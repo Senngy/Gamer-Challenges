@@ -31,33 +31,3 @@ export const getAuth = () => {
 export const isAuthenticated = () => {
   return authStore.token;
 };
-
-/*
-export const authStore = $state({ user: null });
-
-export const setAuth = (user) => {
-  authStore.user = user;
-
-  localStorage.setItem("user", JSON.stringify(user));
-};
-
-export const clearAuth = () => {
-  authStore.user = null;
-
-  localStorage.removeItem("user");
-};
-
-export const getAuth = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user) {
-    authStore.user = user;
-
-  } else {
-    authStore.user = null;
-  }
-};
-
-export const isAuthenticated = () => {
-  return authStore.user !== null;
-};
-*/
