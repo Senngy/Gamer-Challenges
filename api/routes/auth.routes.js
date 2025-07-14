@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/me', authenticate, me); // Get the current user PRIVATE
 router.post('/login', validateUserLogin, login); // Login a user
-router.post('/signup', validateUserCreation, register); // Register a new user (signup dans le cahier des charges)
+router.post('/register', validateUserCreation, register); // Register a new user (signup dans le cahier des charges)
 router.post('/logout', authenticate, logout); // Logout a user PRIVATE
 router.patch('/me/password', authenticate, validateUserUpdatePassword, modifyPassword); // Update the current user PRIVATE
 router.patch('/me/pseudo', authenticate, validateUserUpdatePseudo, modifyPseudo); // Update the current user pseudo PRIVATE

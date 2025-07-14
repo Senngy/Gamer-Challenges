@@ -121,7 +121,6 @@ export async function logout (req, res) {
     }
 }
 
-
 export async function deleteAccount(req, res) {
     try {
         const userId = req.user_id; // Récupération de l'ID de l'utilisateur à partir du token JWT

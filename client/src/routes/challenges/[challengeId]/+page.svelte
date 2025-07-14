@@ -264,7 +264,7 @@
     </ParticipationForm>
     <div class="already-account">
         <span>Pas encore de compte ? Créez en un simplement !</span>
-        <a href="/auth/signup">Cliquez ici</a>
+        <a href="/auth/register">Cliquez ici</a>
     </div>
     {#if success}
         <p class="success">{success}</p>

@@ -31,7 +31,16 @@ export const login = async (credentials) => {
 
 export async function register(pseudo, email, password, birth_date, first_name, last_name) { // Fonction d'inscription
   try {
-    const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date, first_name, last_name }, false); // Envoie les données d'inscription à l'API
+    // Convertir la date de YYYY-MM-DD vers dd/MM/yyyy
+    const formatDateForAPI = (dateString) => {
+      const date = new Date(dateString);
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear();
+      return `${day}/${month}/${year}`;
+    };
+    const formattedBirthDate = formatDateForAPI(birth_date);
+    const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date: formattedBirthDate, first_name, last_name }, false); // Envoie les données d'inscription à l'API
     console.log('Login auth.service.js successful:', userRegister); // Affiche la réponse de l'API
   } catch (error) {
     console.error('Registration failed:', error); // Affiche l'erreur en cas d’échec

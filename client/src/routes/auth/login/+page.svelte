@@ -125,7 +125,7 @@
   
   <div class="no-account">
     <span>Pas encore de compte ?</span>
-    <a href="/auth/signup">Rejoindre la communauté</a>
+    <a href="/auth/register">Rejoindre la communauté</a>
   </div>
 </AuthContainer>
 
