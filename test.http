@@ -52,6 +52,9 @@ GET http://localhost:3000/games/top3
 ### 🕹️ Détails d'un jeu spécifique
 GET http://localhost:3000/games/16
 
+### 🕹️ Création d'un jeu
+GET http://localhost:3000/games/top
+
 
 
 ## USERS

@@ -24,7 +24,7 @@ export const dbConfig = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    dialect: 'postgres', // 🛑 tu avais 'mysql', je suppose que tu veux rester en postgres ?
+    dialect: 'postgres', 
     logging: false,
     define: {
       createdAt: 'created_at',

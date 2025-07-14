@@ -1,4 +1,4 @@
-import { Game, Challenge, Participation } from '../database/models/index.js';
+import { Game, Challenge, Participation, sequelize, } from '../database/models/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { Sequelize } from 'sequelize';
 
@@ -103,13 +103,64 @@ export async function getTop3(req, res) {
   }
 }
 
+// ✅ GET /games/top - Récupérer les 3 jeux avec le plus de participations
+export async function getTopGames(req, res) {
+  try {
+    const topGames = await Game.findAll({
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'image',
+        [
+          sequelize.fn(
+            'COUNT',
+            sequelize.fn(
+              'DISTINCT',
+              sequelize.col('challenges.participations.id')
+            )
+          ),
+          'participationCount',
+        ],
+      ],
+      include: [
+        {
+          model: Challenge,
+          as: 'challenges',
+          required: false,
+          attributes: [],
+          include: [
+            {
+              model: Participation,
+              as: 'participations',
+              required: false,
+              attributes: [],
+            },
+          ],
+        },
+      ],
+      group: ['Game.id'],
+      order: [[sequelize.literal('"participationCount"'), 'DESC']],
+      limit: 3,
+      subQuery: false,
+    });
+
+    res.json(topGames);
+  } catch (error) {
+    console.error('Erreur getTopGames:', error);
+    res.status(500).json({
+      error: 'Erreur serveur lors de la récupération du top des jeux.',
+    });
+  }
+}
+
 // ✅ GET /games/:id - Récupérer un jeu par son ID
 export async function getById(req, res) {
   const { id } = req.params;
 
   if (!id || isNaN(parseInt(id))) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ 
-      error: 'ID de jeu invalide' 
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: 'ID de jeu invalide',
     });
   }
 
@@ -117,27 +168,26 @@ export async function getById(req, res) {
     const game = await Game.findByPk(id);
 
     if (!game) {
-      return res.status(StatusCodes.NOT_FOUND).json({ 
-        error: 'Jeu non trouvé' 
+      return res.status(StatusCodes.NOT_FOUND).json({
+        error: 'Jeu non trouvé',
       });
     }
 
     return res.status(StatusCodes.OK).json(game);
   } catch (error) {
     console.error('Erreur lors de la récupération du jeu :', error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
-      error: 'Erreur serveur lors de la récupération du jeu' 
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: 'Erreur serveur lors de la récupération du jeu',
     });
   }
 }
-
 // ✅ GET /games/:id/challenges - Récupérer les challenges d'un jeu spécifique
 export async function getChallengesByGameId(req, res) {
   const { id } = req.params;
 
   if (!id || isNaN(parseInt(id))) {
-    return res.status(StatusCodes.BAD_REQUEST).json({ 
-      error: 'ID de jeu invalide' 
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: 'ID de jeu invalide',
     });
   }
 
@@ -145,8 +195,8 @@ export async function getChallengesByGameId(req, res) {
     // Vérifier d'abord que le jeu existe
     const game = await Game.findByPk(id);
     if (!game) {
-      return res.status(StatusCodes.NOT_FOUND).json({ 
-        error: 'Jeu non trouvé' 
+      return res.status(StatusCodes.NOT_FOUND).json({
+        error: 'Jeu non trouvé',
       });
     }
 
@@ -157,8 +207,8 @@ export async function getChallengesByGameId(req, res) {
     return res.status(StatusCodes.OK).json(challenges);
   } catch (error) {
     console.error('Erreur lors de la récupération des challenges :', error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ 
-      error: 'Erreur serveur lors de la récupération des challenges' 
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: 'Erreur serveur lors de la récupération des challenges',
     });
   }
 }
