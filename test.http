@@ -26,6 +26,19 @@ Content-Type: application/json
 
 ## PAGE "ME"
 
+### Inscription
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "jules111@example.com",
+    "password": "Exemple@1234",
+    "pseudo": "juul101",
+    "birth_date": "1948/11/24",
+    "first_name": "ju",
+    "last_name": "les"
+}
+
 ### 📝 Mise à jour du mot de passe
 PATCH http://localhost:3000/auth/me/password
 Content-Type: application/json
@@ -52,8 +65,14 @@ GET http://localhost:3000/games/top3
 ### 🕹️ Détails d'un jeu spécifique
 GET http://localhost:3000/games/16
 
+
+### Recherche par type de jeu
+GET http://localhost:3000/games/search?query=T
+
+
 ### 🕹️ Création d'un jeu
 GET http://localhost:3000/games/top
+
 
 
 

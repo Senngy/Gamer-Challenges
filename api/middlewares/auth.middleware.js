@@ -15,6 +15,23 @@ export function validateUserCreation(req, res, next) {
     });
     checkBody(createUserSchema, req.body, res, next);
 }
+/*
+export function validateUserCreation(req, res, next) {
+    const createUserSchema = Joi.object({
+        pseudo: Joi.string().alphanum().min(3).max(30).required(),
+        password: Joi.string()
+            .min(8)
+            .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&]).+$'))
+            .message('Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial')
+            .required(),
+        email: Joi.string().email().required(),
+        birth_date: Joi.date().less(new Date(Date.now() - 13 * 365 * 24 * 60 * 60 * 1000)).required(),
+        first_name: Joi.string().min(2).max(50).required(),
+        last_name: Joi.string().min(2).max(50).required(),
+    });
+    checkBody(createUserSchema, req.body, res, next);
+}
+*/
 
 export function authenticate(req, res, next){ 
     const authHeader = req.headers.authorization;

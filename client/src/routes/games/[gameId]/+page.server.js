@@ -6,6 +6,7 @@ import { error } from '@sveltejs/kit';
 export async function load({ fetch, params }) {
   const { gameId } = params;
 
+
   if (!gameId || isNaN(+gameId)) {
     throw error(400, 'Paramètre gameId manquant ou invalide');
   }

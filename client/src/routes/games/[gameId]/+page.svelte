@@ -1,3 +1,4 @@
+<!-- /games/[gameId] +page.svelte -->
 <script>
 	import { goto } from '$app/navigation';
 	import ChallengeItem from '$lib/components/ui/ChallengeItem.svelte';
@@ -7,17 +8,26 @@
 	import Input from '$lib/components/auth/Input.svelte';
 	import { challengeCreation } from '$lib/services/challenge.service.js';
 	import FilterText from '$lib/components/ui/FilterText.svelte';
+	import { page } from '$app/state'
+//import { invalidateAll } from '$app/navigation'; 
 
 	//Récupération des données passées par load()
 	//export let data;
 	const { data } = $props();
     const { game, challenges } = data;
 	// Debug
-	console.log('Game:', game);
-	console.log('Challenges:', challenges);
+	//console.log('Game:', game);
+	//console.log('Challenges:', challenges);
 
+	
 	// copie locale réactive pour la liste des challenges
-  let localChallenges = $state([...challenges]);
+  let localChallenges = $state([]);
+
+    $effect(() => {
+    localChallenges = [...data.challenges];
+  });
+
+  let las
 
   let showModal = $state(false);
   let title = $state(''); // Variable pour stocker le titre
@@ -28,8 +38,8 @@
   let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
   let created_by = $state(challenges.created_by || 1); // ID du jeu associé aux challenges
 	// Debug
-	console.log("game by :",game_by)
-  console.log("created by:",created_by)
+	//console.log("game by :",game_by)
+    //console.log("created by:",created_by)
 
   let error =$state('');
 	let success = $state('');
@@ -39,6 +49,7 @@
 	//let error = '';
 	//const game_by = game.id; // ID du jeu depuis la donnée chargée
 	//const created_by = 1; // TODO : remplacer par l'utilisateur réel connect
+
 
     const handleSubmitChallenge = async (e) => {
         console.log('handleSubmitChallenge called');
