@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTIyMzY5NDMsImV4cCI6MTc1MjI0NDE0M30.ke_pAra-Im49yRloIL6W1hFINF_Q2Ypgyq0h_-wzYK0
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTI0ODk5MDIsImV4cCI6MTc1MjQ5NzEwMn0.Eoxb0G92VHxDXlnYBduzDsfEqJoWsdGPhz5GzGJuwss
 
 ## AUTH
 
@@ -87,10 +87,15 @@ Authorization: Bearer {{token}}
 ### Likes of a specific challenge
 GET http://localhost:3000/challenges/1/likes
 
-### Add a like to a specific challenge
-POST http://localhost:3000/challenges/1/likes
-Content-Type: application/json
 
+### Add a like to a specific challenge
+POST http://localhost:3000/challenges/2/likes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "user_id": 2
+}
 
 
 ## PARTICIPATIONS
