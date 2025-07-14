@@ -107,7 +107,10 @@
 getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
 
 </script>
-<AuthContainer title="Mon profil">
+<div class="main-container">
+
+<h1 class="page-title">Mon compte</h1>
+<AuthContainer title="Mes informations personnelles">
     <div class="user-info">
   <div class="container email">
     <label for="email">Email :</label>
@@ -134,8 +137,7 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 
   <div class="container delete-account">
     <label for="delete">Suppression de compte :</label>
-    <Btn on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
-    
+    <Btn variant="delete" on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
   </div>
 
 </div>
@@ -158,24 +160,47 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
     </ProfilePopUp>  
   {/if}    
 
-  <!-- Bouton de déconnexion -->
-  <Btn class="btn logout" on:click={() => {cleanLogout(); redirect('/');}}>Se déconnecter</Btn>
-
-  <!--Challenges de l'utilisateur-->
-  <div class="challenges">
-  <h3>Mes challenges</h3>
-    <ul class="challenges-list">
-      {#each challenges as challenge}
-        <li>
-          <span>{challenge.title}</span>
-          <span class="status">{challenge.status}</span>
-        </li>
-      {/each}
-    </ul>
-  </div>
+  
 </AuthContainer>
 
+<AuthContainer title="Mes challenges">
+  <!--Challenges de l'utilisateur-->
+
+  {#if !user.id || challenges.length === 0} <!-- Si l'utilisateur n'a pas de challenges -->
+  <p>Aucun challenge créé pour le moment.</p>
+    {:else}
+
+  <ul class="challenges-list">
+    
+    {#each challenges as challenge}
+      <li>
+        <span>{challenge.title}</span>
+        <span class="status">{challenge.status}</span>
+      </li>
+    {/each}
+  </ul>
+
+  {/if}
+</AuthContainer>
+
+<!-- Bouton de déconnexion -->
+<Btn variant="logout" on:click={() => {cleanLogout(); redirect('/');}}>Se déconnecter</Btn>
+</div>
+
 <style>
+.main-container {
+  padding: 0 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.page-title {
+  text-align: center;
+  margin: 0.5em 0;
+  font-size: 2.5rem;
+}
+
 .user-info {
   background: none;
   padding: 1.5rem;
@@ -209,10 +234,9 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 .container.delete-account {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   gap: 0.5rem;
   margin-top: 2rem;
-  align-items: flex-start;
+  align-items: center;
 }
 .modify {
   background: none;
@@ -223,6 +247,5 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 .challenges {
   margin-top: 2rem;
 }
-
 
 </style>

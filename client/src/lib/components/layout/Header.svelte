@@ -84,9 +84,6 @@
 <header class="header" aria-label="En-tête du site Gamer Challenge">
   <!-- Logo du site -->
    <div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
-   {#if isAuthenticated()}
-          <p>Utilisateur : {userInfo.pseudo}</p>
-   {/if}
 
   <!-- Barre de recherche -->
   <div class="header__search-bar" aria-label="Barre de recherche">
@@ -129,30 +126,43 @@
   <!-- Menu de navigation mobile -->
   <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
     <button id="closeMenu" class="mobile-menu__close">×</button>
-    <ul>
-      <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
-      <li>
-        <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
-      </li>
-      <li>
-        <a href="/about" class="mobile-link" sveltekit:prefetch>À propos</a>
-      </li>
-      {#if isAuthenticated()}
-      <li>
-        <a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
-      </li>
-      <li class="button">
-      <Btn class="btn logout" on:click={() => {cleanLogout(); redirect('/');}}>Se déconnecter</Btn>
-      </li>
-      {:else}
-      <li>
-        <a href="/auth/register" class="mobile-link" sveltekit:prefetch>Inscription</a>
-      </li>
-      <li>
-        <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Connexion</a>
-      </li>
-      {/if}
-    </ul>
+    <div>
+      <div class="mobile-menu__container">
+        <span class="text-logo">Gamer<br />Challenges</span>
+      </div>
+
+      <div class="mobile-menu__container">
+        <ul>
+          <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
+          <li>
+          <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
+          </li>
+          <li>
+          <a href="/about" class="mobile-link" sveltekit:prefetch>À propos</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="mobile-menu__container user-section">
+        {#if isAuthenticated()}
+          <a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
+          <p class="connected-user">Vous êtes connecté en tant que : <span class="connected-user__pseudo">{userInfo.pseudo}</span></p>
+        {:else}
+          <ul>
+            <li>
+            <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a>
+            </li>
+            <li>
+            <a href="/auth/register" class="mobile-link strong" sveltekit:prefetch>Créer un compte</a>
+            </li>
+          </ul>
+        {/if}
+      </div>
+    </div>
+
+    <div>
+      <p class="copyright">Tous droits GamerChallenges 2025</p>
+    </div>
   </nav>
 </header>
 <style>
@@ -175,12 +185,6 @@
     border-right: none;
     border-top: none;
     margin-left: 1rem;
-    background: linear-gradient(135deg, #ffffff 0%, #636363 100%);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    border-radius: 2px;
     min-width: 279px;
     text-align: left;
     padding: 0.7rem 4px;
@@ -189,10 +193,47 @@
     font-weight: bold;
   }
   .btn-result:hover {
-    background: rgb(16, 16, 17);
+    border-radius: 2px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    background: linear-gradient(135deg, #ffffff 0%, #636363 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     color: white;
-   
   }
+
+  .mobile-menu__container {
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 1em;
+    text-align: center;
+  }
+
+  .text-logo {
+    font-size: 4vh;
+    font-weight: bold;
+    color: #eee;
+    margin-bottom: 1em;
+    font-family: 'Orbitron', sans-serif;
+  } 
+
+  .connected-user {
+    font-size: 0.8em;
+    margin-top: 0.8em;
+  }
+
+  .connected-user__pseudo {
+    font-weight: bold;
+    color: #8B1E1E;
+    transition: color 0.2s;
+  }
+
+  .copyright {
+    font-size: 0.8em;
+    color: #ccc;
+    margin-bottom: 2em;
+    text-align: center;
+  }
+
  @media (min-width: 0px) and (max-width: 380.98px) {
   .btn-result {
     min-width:290px ;

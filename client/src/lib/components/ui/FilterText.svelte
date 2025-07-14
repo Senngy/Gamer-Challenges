@@ -22,4 +22,4 @@
     });
 </script>
 
-<span>{displayText}</span>
+<p class="game-details__description">{displayText}</p>
