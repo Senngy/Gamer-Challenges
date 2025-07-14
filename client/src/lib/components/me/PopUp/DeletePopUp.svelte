@@ -1,11 +1,14 @@
 <script>
 import { deleteAccount } from "$lib/services/auth.service.js";
+import { clearAuth } from "$lib/store/authStore.svelte.js"
 import { goto } from '$app/navigation'; // Pour la redirection
 export let onClose; // Fonction pour fermer la popup
 
 async function handleSubmitDelete() {
   try {
     await deleteAccount()
+    clearAuth();
+    alert('Votre compte à bien été supprimé')
   } catch (error) {
     error = "Nous n'avons pas pu supprimé votre compte.";
       return;

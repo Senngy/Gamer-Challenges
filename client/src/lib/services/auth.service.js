@@ -42,11 +42,12 @@ export async function register(pseudo, email, password, birth_date, first_name, 
     const formattedBirthDate = formatDateForAPI(birth_date);
     const userRegister = await api('/auth/register', "POST", { pseudo, email, password, birth_date: formattedBirthDate, first_name, last_name }, false); // Envoie les données d'inscription à l'API
     console.log('Login auth.service.js successful:', userRegister); // Affiche la réponse de l'API
+    return userRegister;  // Retourne les données de l'utilisateur enregistré
   } catch (error) {
     console.error('Registration failed:', error); // Affiche l'erreur en cas d’échec
     throw error; // Propage l'erreur
   }
-  return userRegister;  // Retourne les données de l'utilisateur enregistré
+  
 };
 
 // Fonction pour récupérer les informations de l'utilisateur connecté

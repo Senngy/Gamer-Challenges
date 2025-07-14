@@ -1,4 +1,4 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTI0ODk5MDIsImV4cCI6MTc1MjQ5NzEwMn0.Eoxb0G92VHxDXlnYBduzDsfEqJoWsdGPhz5GzGJuwss
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOCwiaWF0IjoxNzUyNTAyMTQxLCJleHAiOjE3NTI1MDkzNDF9.-tc9IaOTfJCzwVdOPd8JGllUYZ8aEHc-SlD8fQME3oE
 
 ## AUTH
 
@@ -129,7 +129,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "user_id": 2
+  "user_id": 18
 }
 
 
