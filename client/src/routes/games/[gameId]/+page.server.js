@@ -8,6 +8,7 @@ export async function load({ fetch, params }) {
   console.log(gameId);
   
 
+
   if (!gameId || isNaN(+gameId)) {
     throw error(400, 'Paramètre gameId manquant ou invalide');
   }

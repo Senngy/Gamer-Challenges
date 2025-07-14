@@ -8,7 +8,7 @@ export function load({ params }) {
   //   return {};
   // }
   
-  console.log(`SERVER Bonjour je suis le ${challengeId}`);
+  //console.log(`SERVER Bonjour je suis le ${challengeId}`);
   return { challengeId };
 }
 

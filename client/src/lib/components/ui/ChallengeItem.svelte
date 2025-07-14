@@ -1,8 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
-	export let challenge;
-	// let challenge = $props();
+	// export let challenge;
+	let { challenge } = $props();
 	import { createEventDispatcher } from 'svelte';
+
+	import LikeItem from '$lib/components/ui/LikeItem.svelte';
+
 	const dispatch = createEventDispatcher();
 
 	let challengeCreator = {
@@ -15,8 +18,8 @@
 		// Récupération des détails du challenge
 		try {
 			const { pseudo, avatar } = await getUserInfo(challenge.created_by); // Récupération des informations de l'utilisateur connecté
-			console.log('onMount pseudo :', pseudo);
-			console.log('onMount avatar :', avatar);
+			// console.log('onMount pseudo :', pseudo);
+			// console.log('onMount avatar :', avatar);
 
 			challengeCreator = {
 				// remplissage de l'objet challengeCreator avec les données de l'utilisateur
@@ -35,7 +38,7 @@
 				throw new Error(`Erreur HTTP ${res.status}`);
 			}
 			const user = await res.json();
-			console.log('User info récupéré :', user);
+			// console.log('User info récupéré :', user);
 			return {
 				pseudo: user.pseudo, // ou user.username, selon ta structure
 				avatar: user.avatar // ou user.image, selon ta structure
@@ -51,7 +54,7 @@
 </script>
 
 <div class="challenge__item">
-	<div class="challenge__image" role="button" tabindex="0" on:click={() => dispatch('click')}>
+	<div type="button" class="challenge__image" role="button" tabindex="0" on:click={() => dispatch('click')}>
 		<div class="challenge__participation-count">
 			{challenge?.participations ?? 0} participations
 		</div>
@@ -64,9 +67,7 @@
 			<div class="challenge__user-avatar">{challengeCreator.avatar}</div>
 			<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 		</div>
-		<div class="challenge__like-count">
-			Likes : {challenge.challenge_likes}
-		</div>
+		<LikeItem {challenge} />
 	</div>
 </div>
 

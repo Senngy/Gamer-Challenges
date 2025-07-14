@@ -1,4 +1,19 @@
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTIwNjkzNTQsImV4cCI6MTc1MjA3NjU1NH0.Pk3BCmQPucFuWSYJSgp7BUkurUYp1jMZ9WkRGfiSUKw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTI0ODk5MDIsImV4cCI6MTc1MjQ5NzEwMn0.Eoxb0G92VHxDXlnYBduzDsfEqJoWsdGPhz5GzGJuwss
+
+## AUTH
+
+### Création de compte
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "pseudo": "ziggi",
+    "password": "zigzagziggi",
+    "email": "zig@zigzag.com",
+    "birth_date": "010119070",
+    "first_name": "Zig",
+    "last_name": "Zag"
+}
 
 ### 🔐 Inscription
 POST http://localhost:3000/auth/register
@@ -22,7 +37,20 @@ Content-Type: application/json
     "password": "motdepasse1"
 }
 
-## page me
+## PAGE "ME"
+
+### Inscription
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "jules111@example.com",
+    "password": "Exemple@1234",
+    "pseudo": "juul101",
+    "birth_date": "1948/11/24",
+    "first_name": "ju",
+    "last_name": "les"
+}
 
 ### 📝 Mise à jour du mot de passe
 PATCH http://localhost:3000/auth/me/password
@@ -44,8 +72,20 @@ Authorization: Bearer {{token}}
 ### 🕹️ Liste des jeux
 GET http://localhost:3000/games
 
+### 🕹️ TOP 3 des jeux
+GET http://localhost:3000/games/top3
+
 ### 🕹️ Détails d'un jeu spécifique
 GET http://localhost:3000/games/16
+
+
+### Recherche par type de jeu
+GET http://localhost:3000/games/search?query=T
+
+
+### 🕹️ Création d'un jeu
+GET http://localhost:3000/games/top
+
 
 
 
@@ -69,22 +109,28 @@ GET http://localhost:3000/games/1/challenges
 ### Create challenge
 POST http://localhost:3000/challenges
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "title": "Algérie",
-    "description": "Dire One Two Three, viva l'Algérie 213 fois",
-    "rules": "Etre algérien",
-    "created_by": 1,
-    "game_by": 2
+    "title": "Titre du ssschallenge",
+    "description": "Description du challenge",
+    "rules": "Règles du challenge",
+    "created_by": 3,
+    "game_by": 5
 }
 
 ### Likes of a specific challenge
 GET http://localhost:3000/challenges/1/likes
 
-### Add a like to a specific challenge
-POST http://localhost:3000/challenges/1/likes
-Content-Type: application/json
 
+### Add a like to a specific challenge
+POST http://localhost:3000/challenges/2/likes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "user_id": 2
+}
 
 
 ## PARTICIPATIONS
@@ -95,12 +141,12 @@ GET http://localhost:3000/challenges/1/participations
 ### Create participation
 POST http://localhost:3000/participations
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "media_link": "Chemnnnin vers le média test",
     "description": "Description de la participation",
-    "challenge_id": 2,
-    "user_id": 3
-
+    "challenge_id": 1,
+    "user_id": 1
 }
 
