@@ -145,7 +145,6 @@
 					</li>
 				</ul>
 			</div>
-
 			<div class="mobile-menu__container user-section">
 				{#if isAuthenticated()}
 					<a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
@@ -168,7 +167,6 @@
 				{/if}
 			</div>
 		</div>
-
 		<div>
 			<p class="copyright">Tous droits GamerChallenges 2025</p>
 		</div>
