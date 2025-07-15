@@ -34,7 +34,11 @@
 		pseudo: '',
 		avatar: ''
 	});
-
+	let game = $state({
+		id: '',
+		title: '',
+		image: ''
+	});
 	let challengeCreator = $state({
 		id: '',
 		pseudo: '',
@@ -108,7 +112,7 @@
 		}
 	});
 
-	async function getGameImage(gameId) {
+	async function getGameInfo(gameId) {
 		// Fonction pour récupérer l'image du jeu associé au challenge
 		try {
 			const game = await getGameInfos(gameId);
@@ -200,23 +204,43 @@
 	*/
 </script>
 
+<section class="intro">
+
+<!-- Game infos -->
+<section class="game-info">
+
+	<div class="game-info__bloc">
+		<img class="game-info__image" src={`${game.image}`} alt={game.title}/>
+	</div>
+
+	<div class="game-info__bloc">
+		<p>Challenge pour le jeu</p>
+		<p class="game-info__title">"{game.title}"</p>
+	</div>
+	
+</section>
+
 <!-- Challenge details -->
 
 {#if challenge && challengeCreator}
 	<section class="challenge-details" aria-labelledby="challenge-details">
-		<img src={`${challenge.image}`} alt={challenge.title} class="slide__image" />
 
 		<div class="challenge-details__content">
+
+			{#if challenge.id}
+				{console.log('✅ challenge est prêt', challenge)}
+				<LikeItem classCSS="btn-from-challenge-page" {challenge} />	
+			{:else}
+				<p>Chargement des Likes...</p>
+			{/if}
 			<h1 class="challenge-details__title">{challenge.title}</h1>
 			<p class="challenge-details__description">Objectif : {challenge.description}</p>
 			<p class="challenge-details__rules">Règle : {challenge.rules}</p>
-
 			<div class="challenge_created-by">
-				<p>Challenge created by</p>
+				<p>Challenge créé par</p>
 				<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
 				<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 			</div>
-
 			<button class="btn btn--primary" onclick={openModal}> Participer au défi maintenant </button>
 			{#if challenge.id}
 				{console.log('✅ challenge est prêt', challenge)}
@@ -231,27 +255,38 @@
 	<p>Challenge introuvable.</p>
 {/if}
 
+</section>
+
 <!-- Participations Section -->
 <section class="catalog" aria-labelledby="catalog-title">
-	<h2>
-		Voici les meilleures participations de la communauté ! <span
-			>{participations.length} participations en cours…</span
-		>
-	</h2>
+	
+	{#if participations.length > 0}
+
+	<p class="catalog-intro-text">
+		Déjà 
+		<span>{participations.length}</span>
+		{#if participations.length === 1}
+			participation !
+		{:else}
+			participations !
+		{/if}
+	</p>
 
 	<div class="catalog__grid" role="list">
-		{#if participations.length > 0}
-			{#each participations as participation}
-				<ParticipationItem {participation} />
-			{/each}
-		{:else}
-			<p>Aucune participation pour ce challenge pour le moment.</p>
-		{/if}
+		{#each participations as participation}
+			<ParticipationItem {participation} />
+		{/each}
 	</div>
 
-	<div class="load-more-container">
-		<button class="btn secundary" id="load-more"> Voir plus de participations </button>
-	</div>
+	{:else}
+		<p>Aucune participation pour ce challenge pour le moment.</p>
+	{/if}
+
+	<!-- <div class="load-more-container">
+		<button class="btn secundary" id="load-more">
+			Voir plus de participations
+		</button>
+	</div> -->
 </section>
 
 <!-- Participation Creation Form -->
@@ -299,6 +334,62 @@
 </Modal>
 
 <style>
+	.intro {
+		display: flex;
+		flex-direction: column;
+
+		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	}
+	.game-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
+		padding: 1em;
+		
+		background: linear-gradient(to bottom, #0C0E0F 0%, #8B1E1E 100%);
+	}
+	.game-info__bloc {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.game-info__title {
+		color: #eee;
+		/* color: #8B1E1E; */
+		font-weight: bold;
+		margin: 0.5em 0;
+		font-size: 1.2em;
+	}
+	.game-info__image {
+		width: auto;
+		height: auto;
+		border-radius: 5%;
+		object-fit: cover;
+		max-height: 100px;
+	}
+
+	/* Pour les écrans ≥ 768px (tablettes et plus) */
+	@media (min-width: 768px) {
+		.intro {
+			flex-direction: row;
+		}
+		.game-info {
+			flex-direction: column;
+		}
+		.game-info__bloc {
+			align-items: center;
+			text-align: center;
+		}
+	}
+
+	.catalog-intro-text {
+		font-size: 1.2em;
+		margin-bottom: 1em;
+	}
+
 	.error {
 		color: #ff6b6b;
 		text-align: center;

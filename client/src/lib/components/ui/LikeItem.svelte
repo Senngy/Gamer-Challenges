@@ -46,11 +46,9 @@
 		likes = res.likes;
 		liked = res.liked;
 	}
-
 	$effect(() => {
 		if (challenge.user_id) refreshLikes();
 	});
-
 	// Récupération initiale des likes une fois le composant monté
 	onMount(() => {
 		const fetchLikes = async () => {
@@ -63,45 +61,85 @@
 				console.error('❌ onMount Erreur récupération des likes :', err);
 			}
 		};
-
 		fetchLikes();
 	});
 </script>
 
-<button type="button" class={`like-button ${classCSS}`} on:click={handleToggleLike}>
-	❤️ <span class="like-count">{likes}</span>
+<button type="button" class={`like-button ${classCSS}`} class:liked={liked} on:click={handleToggleLike}>
+  <span class="like-count">{likes}</span>
 </button>
 
 <style>
-	.like-button {
-		background: none;
-		border: 1px solid #ccc;
-		padding: 8px 12px;
-		font-size: 1rem;
-		cursor: pointer;
-		border-radius: 6px;
-		transition: all 0.2s;
-	}
+  .like-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: all 0.2s;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
+  .like-button::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    background-image: url('/images/icons/heart-50-outlined.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .like-button:hover {
+    background: var(--btn-color);
+  }
+
+  .liked {
+    color: var(--text-color-red);
+    animation: pulse 0.2s ease-in-out;
+  }
+
+  .like-button.liked::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-right: 6px;
+    background-image: url('/images/icons/heart-50-filled.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
 	.like-count {
 		margin-left: 6px;
-	}
-
-	.like-button:disabled {
-		opacity: 0.6;
-		cursor: wait;
-	}
-	.btn-from-challenge-page {
-		min-width: 200px;
-		color: white;
-		margin: 1rem auto;
-	}
-	.btn-from-challenge-item {
-		width: 300px;
 	}
 	.error {
 		color: #ff6b6b;
 		text-align: center;
 		margin-bottom: 1rem;
 	}
+  .like-button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+  .btn-from-challenge-page, .btn-from-challenge-item, .btn-from-participation {
+		min-width: 100px;
+		color:white;
+  }
 </style>
