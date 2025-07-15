@@ -28,13 +28,13 @@
 			const { likedNow } = await toggleLike(challenge.id); // Nous renvois true si l'utilisateur n'a pas encore liké et ajoute un like sinon supprime le like
 			if (likedNow) {
 				likes += 1;
-				console.log('✅ Like ajouté');
+				//console.log('✅ Like ajouté');
 			}
 			if (!likedNow) {
 				likes -= 1;
-				console.log('❌ like supprimé ');
+				//console.log('❌ like supprimé ');
 			}
-			console.log('FRONT likedNow', likedNow);
+			//console.log('FRONT likedNow', likedNow);
 		} catch (err) {
 			console.error('❌ handleToggle Like - Erreur lors du like :', err.message);
 			alert('Oups.. Il y a un problème de notre côté lors du like');
@@ -54,11 +54,11 @@
 	// Récupération initiale des likes une fois le composant monté
 	onMount(() => {
 		const fetchLikes = async () => {
-			console.log('📥 onMount Récupération des likes pour le challenge', challenge.id);
+			//console.log('📥 onMount Récupération des likes pour le challenge', challenge.id);
 			try {
 				const data = await getLikes(challenge.id);
 				likes = data.likes;
-				console.log('✔️ onMount Likes initiaux:', likes);
+			//	console.log('✔️ onMount Likes initiaux:', likes);
 			} catch (err) {
 				console.error('❌ onMount Erreur récupération des likes :', err);
 			}

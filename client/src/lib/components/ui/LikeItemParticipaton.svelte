@@ -13,19 +13,6 @@
 		getAuth();
 	});
 
-	const handleAddLike = async () => {
-		console.log('🔘 Bouton cliqué');
-		console.log('participation', participation);
-		console.log(participation.id, 'ID de la participation');
-		try {
-			await addLike(participation.id);
-			likes += 1;
-			console.log('✅ Like ajouté');
-		} catch (err) {
-			console.error('❌ Erreur lors du like :', err.message);
-		}
-	};
-
 	const handleToggleLike = async () => {
         /*
 		console.log('🔘 Bouton cliqué');
@@ -41,15 +28,16 @@
 			const { likedNow } = await toggleLike(participation.id); // Nous renvois true si l'utilisateur n'a pas encore liké et ajoute un like sinon supprime le like
 			if (likedNow) {
 				likes += 1;
-				console.log('✅ Like ajouté');
+				//console.log('✅ Like ajouté');
 			}
 			if (!likedNow) {
 				likes -= 1;
-				console.log('❌ Like supprimé');
+				//console.log('❌ Like supprimé');
 			}
-			console.log('FRONT likedNow', likedNow);
+			//console.log('FRONT likedNow', likedNow);
 		} catch (err) {
 			console.error('❌ Erreur lors du like :', err.message);
+			alert('Oups.. Il y a un problème de notre côté lors du like');
 		}
 	};
 
@@ -66,11 +54,11 @@
 	// Récupération initiale des likes une fois le composant monté
 	onMount(() => {
 		const fetchLikes = async () => {
-			console.log('📥 onMount Récupération des likes de la participation', participation.id);
+			//console.log('📥 onMount Récupération des likes de la participation', participation.id);
 			try {
 				const data = await getLikes(participation.id);
 				likes = data.likes;
-				console.log('✔️ onMount Likes initiaux:', likes);
+			//	console.log('✔️ onMount Likes initiaux:', likes);
 			} catch (err) {
 				console.error('❌ onMount Erreur récupération des likes :', err);
 			}

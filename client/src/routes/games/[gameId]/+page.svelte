@@ -9,7 +9,8 @@
 	import { challengeCreation } from '$lib/services/challenge.service.js';
 	import FilterText from '$lib/components/ui/FilterText.svelte';
 	import { page } from '$app/state';
-	import { getAuth, isAuthenticated} from "$lib/store/authStore.svelte.js"
+	import { getAuth, isAuthenticated, authStore } from "$lib/store/authStore.svelte.js"
+	import { onMount } from 'svelte';
 	//import { invalidateAll } from '$app/navigation';
 
 	//Récupération des données passées par load()
@@ -26,32 +27,57 @@
 	$effect(() => {
 		localChallenges = [...data.challenges];
 	});
-	$effect(() => {
-		getAuth();
-	})
 
 	let showModal = $state(false);
 	let title = $state(''); // Variable pour stocker le titre
 	let description = $state(''); // Variable pour stocker la description
 	let rules = $state(''); // Variable pour stocker les règles
-
-	let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
-	let created_by = $state(challenges.created_by || 1); // ID du jeu associé aux challenges
-	// Debug
-	//console.log("game by :",game_by)
-	//console.log("created by:",created_by)
-
 	let error = $state('');
 	let success = $state('');
-
 	let visibleCount = $state(4);
-	//let showModal = false;
-	//let error = '';
-	//const game_by = game.id; // ID du jeu depuis la donnée chargée
-	//const created_by = 1; // TODO : remplacer par l'utilisateur réel connect
+
+	let game_by = $state(game.id); // ID du jeu depuis la donnée chargée
+	let created_by = $state();
+	let user_id = $state();
+	let challengeCreator = $state({
+		id: '',
+		pseudo: '',
+		avatar: ''
+	});
+
+	onMount(() => {
+		getAuth();
+		const currentUserId = authStore.user?.id;
+		if (!currentUserId) return;
+
+		user_id = currentUserId;
+	});
+/*
+	onMount(async () => {
+		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
+		// Récupération des détails du challenge
+		try {
+			const [gameInfo, userInfo] = await Promise.all([
+				getGameInfos(game_by), // Permet d'avoir les infos du jeu lié au challenge
+				getUserInfo(user_id) // Permet de recuper les infos de l'user connecté pour la création de participation
+			]);
+			const creatorChallengeInfos = await getUserInfo(created_by); // Permet de récuperer les infos du createur du challenge
+			// ici on ajoute les infos a nos variables réactives
+			challenge = { id, title, description, rules, created_by, game_by, image: gameInfo.image };
+			challengeCreator = {
+				id: creatorChallengeInfos.id,
+				pseudo: creatorChallengeInfos.pseudo,
+				avatar: creatorChallengeInfos.avatar
+			};
+		} catch (err) {
+			console.error('Erreur récupération challenge :', err);
+			error = 'Impossible de charger les données';
+		}
+	});
+	*/
 
 	const handleSubmitChallenge = async (e) => {
-		// console.log('handleSubmitChallenge called');
+		console.log('handleSubmitChallenge called');
 		e.preventDefault();
 
         if (!isAuthenticated()) {
@@ -71,13 +97,13 @@
 			error = 'Veuillez respecter les longueurs maximales des champs.';
 			return;
 		}
-        /*
+        created_by = user_id;
 		console.log('handleSubmitChallenge title:', title);
 		console.log('handleSubmitChallengedescription:', description);
 		console.log('handleSubmitChallenge rules:', rules);
 		console.log('handleSubmitChallenge created_by:', created_by);
 		console.log('handleSubmitChallenge game_by:', game_by);
-         */
+         
 		try {
 			const challengeCreated = await challengeCreation(
 				title,
@@ -86,7 +112,7 @@
 				created_by,
 				game_by
 			);
-			// console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
+			 console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
 
 			if (!challengeCreated) {
 				error = 'Une erreur est survenue lors de la création du challenge.';
@@ -95,8 +121,7 @@
 			// Mettre à jour la liste locale pour réafficher sans rechargement
 			localChallenges = [challengeCreated, ...localChallenges];
 			error = '';
-			alert('Challenge créé avec succès !');
-
+			
 			if (challengeCreated && challengeCreated.id) {
 				success = 'Challenge créé avec succès !';
 				// Fermer la modale après 2 secondes

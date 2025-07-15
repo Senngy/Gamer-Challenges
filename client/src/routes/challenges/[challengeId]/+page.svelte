@@ -11,7 +11,6 @@
 	import { getUserById } from '$lib/services/user.service.js';
 	import { getGameInfos } from '$lib/services/game.service.js';
 	import { goto } from '$app/navigation';
-	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import { getAuth, isAuthenticated, authStore } from '$lib/store/authStore.svelte.js';
 
@@ -30,7 +29,14 @@
 		game_by: ''
 	});
 
+	let participationCreator = $state({
+		id: '',
+		pseudo: '',
+		avatar: ''
+	});
+
 	let challengeCreator = $state({
+		id: '',
 		pseudo: '',
 		avatar: ''
 	});
@@ -43,14 +49,19 @@
 	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
 	// console.log(`user_id: ${user_id}`)
 
-	$effect(() => {
+	onMount(() => {
 		getAuth();
+		const currentUserId = authStore.user?.id;
+		if (!currentUserId) return;
+
+		user_id = currentUserId;
 	});
 	// à chaque fois que authStore change, on met à jour user_id
+	/*
 	$effect(() => {
 		user_id = authStore.user?.id ?? null;
 	});
-
+*/
 	onMount(async () => {
 		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
 		// Récupération des détails du challenge
@@ -59,13 +70,19 @@
 				await Promise.all([getChallenge(challenge_id), getParticipations(challenge_id)]);
 
 			const [gameInfo, userInfo] = await Promise.all([
-				getGameInfos(game_by), // permet d'avoir les infos du jeu lié au challenge
+				getGameInfos(game_by), // Permet d'avoir les infos du jeu lié au challenge
 				getUserInfo(user_id) // Permet de recuper les infos de l'user connecté pour la création de participation
 			]);
-            // ici on ajoute les infos a nos variables réactives
+			const creatorChallengeInfos = await getUserInfo(created_by); // Permet de récuperer les infos du createur du challenge
+			// ici on ajoute les infos a nos variables réactives
 			challenge = { id, title, description, rules, created_by, game_by, image: gameInfo.image };
-			challengeCreator = { pseudo: userInfo.pseudo, avatar: userInfo.avatar };
+			participationCreator = { pseudo: userInfo.pseudo, avatar: userInfo.avatar };
 			participations = participationsList;
+			challengeCreator = {
+				id: creatorChallengeInfos.id,
+				pseudo: creatorChallengeInfos.pseudo,
+				avatar: creatorChallengeInfos.avatar
+			};
 		} catch (err) {
 			console.error('Erreur récupération challenge :', err);
 			error = 'Impossible de charger les données';
@@ -84,6 +101,7 @@
 	}
 
 	async function getUserInfo(userId) {
+		if (!userId) return null;
 		try {
 			const user = await getUserById(userId);
 			//console.log('User info récupéré :', user);
@@ -97,33 +115,6 @@
 			return null;
 		}
 	}
-
-	const getChallengeDetails = async () => {
-		// Fonction pour récupérer les détails du challenge
-		try {
-			const challengeDetails = await getChallenge(challenge_id);
-			//console.log('Données du challenge récupérées :', challengeDetails);
-			if (!challengeDetails) {
-				throw new Error('Réponse inattendue : pas de détails disponibles');
-			}
-			return challengeDetails
-		} catch (error) {
-			console.error('Erreur lors de la récupération des informations du challenge :', error);
-		}
-	};
-
-	const getParticipationsList = async () => {
-		try {
-			const participationsList = await getParticipations(challenge_id);
-			//console.log('Liste des participations du challenge récupérées :', participationsList);
-			if (!participationsList) {
-				throw new Error('Réponse inattendue : pas de participations disponibles');
-			}
-			participations = participationsList;
-		} catch (error) {
-			console.error('Erreur lors de la récupération des participations du challenge :', error);
-		}
-	};
 
 	const handleSubmitParticipation = async (e) => {
 		console.log('handleSubmitParticipation called');
@@ -155,8 +146,8 @@
 				const newParticipation = response.participation;
 
 				newParticipation.user = {
-					pseudo: challengeCreator.pseudo,
-					avatar: challengeCreator.avatar
+					pseudo: participationCreator.pseudo,
+					avatar: participationCreator.avatar
 				};
 				participations = [...participations, newParticipation]; // Ajout immédiat sans re-fetch
 				error = '';
@@ -182,7 +173,7 @@
 	function openModal() {
 		showModal = true;
 	}
-/*
+	/*
 	$effect(() => {
 		getChallengeDetails();
 		getParticipationsList();

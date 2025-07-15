@@ -101,7 +101,7 @@
 
   function redirect(url) { // Redirige vers une autre page
     goto(url);
-    window.location.reload();
+    window.location.href = url;
   }
 
 getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
