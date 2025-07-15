@@ -73,6 +73,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Connexion | GamerChallenges</title>
+</svelte:head>
+
 <AuthContainer title="Connexion">
   <!-- Affichage des erreurs générales -->
   {#if generalError}

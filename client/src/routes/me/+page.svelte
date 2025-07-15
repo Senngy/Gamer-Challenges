@@ -107,6 +107,11 @@
 getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
 
 </script>
+
+<svelte:head>
+  <title>Mon compte | GamerChallenges</title>
+</svelte:head>
+
 <div class="main-container">
 
 <h1 class="page-title">Mon compte</h1>

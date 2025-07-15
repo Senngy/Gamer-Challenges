@@ -36,7 +36,12 @@
 	function prev() {
 		if (topGames.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
 	}
+
 </script>
+
+<svelte:head>
+  <title>Accueil | GamerChallenges</title>
+</svelte:head>
 
 <!-- ========================== -->
 <!-- Hero / Populaires -->

@@ -41,6 +41,8 @@
 	function prev() {
 		if (topGames.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
 	}
+
+
 </script>
 
 <!-- ========================== -->

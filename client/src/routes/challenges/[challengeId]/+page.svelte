@@ -198,6 +198,10 @@
 	}
 </script>
 
+<svelte:head>
+  <title>{challenge.title} | GamerChallenges</title>
+</svelte:head>
+
 <section class="intro">
 	<!-- Game infos -->
 	<section class="game-info">

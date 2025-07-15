@@ -1,3 +1,10 @@
+<script>
+</script>
+
+<svelte:head>
+  <title>Mentions légales | GamerChallenges</title>
+</svelte:head>
+
 <div class="legal-container">
   <h1>Mentions légales</h1>
   <h2>Éditeur du site</h2>
