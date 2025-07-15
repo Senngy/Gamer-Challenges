@@ -48,14 +48,6 @@
 	let description = $state(''); // État pour la description de la participation
 	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
 	// console.log(`user_id: ${user_id}`)
-
-	onMount(() => {
-		getAuth();
-		const currentUserId = authStore.user?.id;
-		if (!currentUserId) return;
-
-		user_id = currentUserId;
-	});
 	// à chaque fois que authStore change, on met à jour user_id
 	/*
 	$effect(() => {
@@ -63,27 +55,54 @@
 	});
 */
 	onMount(async () => {
-		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
-		// Récupération des détails du challenge
+		// 🟢 Code exécuté une seule fois lorsque le composant est monté (équivalent à componentDidMount)
+		getAuth();
+		user_id = authStore.user?.id ?? null;
+
 		try {
+			// 🔁 Appel parallèle : on récupère les détails du challenge + toutes les participations
 			const [{ id, title, description, rules, created_by, game_by }, participationsList] =
 				await Promise.all([getChallenge(challenge_id), getParticipations(challenge_id)]);
 
-			const [gameInfo, userInfo] = await Promise.all([
-				getGameInfos(game_by), // Permet d'avoir les infos du jeu lié au challenge
-				getUserInfo(user_id) // Permet de recuper les infos de l'user connecté pour la création de participation
-			]);
-			const creatorChallengeInfos = await getUserInfo(created_by); // Permet de récuperer les infos du createur du challenge
-			// ici on ajoute les infos a nos variables réactives
-			challenge = { id, title, description, rules, created_by, game_by, image: gameInfo.image };
-			participationCreator = { pseudo: userInfo.pseudo, avatar: userInfo.avatar };
-			participations = participationsList;
-			challengeCreator = {
-				id: creatorChallengeInfos.id,
-				pseudo: creatorChallengeInfos.pseudo,
-				avatar: creatorChallengeInfos.avatar
+			// 🔁 Appel parallèle : on récupère les infos du jeu + l'utilisateur connecté
+			const [gameInfo, userInfo] = await Promise.all([getGameInfos(game_by), getUserInfo(user_id)]);
+
+			// 👤 Récupération des infos du créateur du challenge (attention, appel en plus !)
+			const creatorChallengeInfos = await getUserInfo(created_by);
+
+			// Mise à jour des variables réactives avec les données obtenues
+			challenge = {
+				id,
+				title,
+				description,
+				rules,
+				created_by,
+				game_by,
+				image: gameInfo.image
 			};
+
+			if (creatorChallengeInfos) {
+				challengeCreator = {
+					id: creatorChallengeInfos.id,
+					pseudo: creatorChallengeInfos.pseudo,
+					avatar: creatorChallengeInfos.avatar
+				};
+			}
+
+			// Si user connecté, on récupère ses infos pour la participation
+			if (user_id) {
+				const userInfo = await getUserInfo(user_id);
+				if (userInfo) {
+					participationCreator = {
+						pseudo: userInfo.pseudo,
+						avatar: userInfo.avatar
+					};
+				}
+			}
+			// Mise à jour participations
+			participations = participationsList;
 		} catch (err) {
+			// ❌ Gestion des erreurs en cas d’échec de récupération
 			console.error('Erreur récupération challenge :', err);
 			error = 'Impossible de charger les données';
 		}
@@ -156,7 +175,7 @@
 					success = '';
 					showModal = false; // Fermer la modale après succès
 				}, 3000); // Ferme la modale après 2 secondes
-				await getParticipations(challenge_id); // Rafraîchir la liste des participations
+				//await getParticipations(challenge_id); // Rafraîchir la liste des participations
 			}
 		} catch (err) {
 			console.error('Erreur de création :', err);

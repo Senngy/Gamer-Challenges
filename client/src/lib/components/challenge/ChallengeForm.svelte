@@ -3,20 +3,6 @@
   let title = '';
   let description = '';
   let rules = '';
-
-  async function handleSubmit() {
-    if (!title || !description || !rules ) {
-      error = "Des informations sont manquantes.";
-      return;
-    }
-    try {
-      await challengeCreation( title, description, rules );
-      error = '';
-    } catch (e) {
-      error = e.message;
-    }
-  }
-
   export let onSubmit = () => {};
 </script>
 
