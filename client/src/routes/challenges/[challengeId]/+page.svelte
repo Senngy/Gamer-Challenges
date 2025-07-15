@@ -16,7 +16,6 @@
 
 	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
 	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
-	//console.log(`PAGE Bonjour je suis le ${challengeId}`);
 
 	const challenge_id = challengeId;
 
