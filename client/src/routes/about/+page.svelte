@@ -25,9 +25,9 @@
     },
     {
       name: "Sylvain MARCHAL",
-      role: "Développeur Back-End",
-      description: "Spécialiste des APIs et de l'architecture serveur, garant de la performance et de la sécurité.",
-      skills: ["Node.js", "Express", "PostgreSQL", "Docker", "API REST", "Sécurité"],
+      role: "Développeur Full-Stack",
+      description: "Spécialiste des APIs et de l'architecture serveur, garant de la performance et de la sécurité ainsi que de l'authentification",
+      skills: ["Node.js", "Express", "PostgreSQL", "JavaScript", "API REST", "Sécurité", "Svelte & SvelteKit", "Sequelize", "Git & GitHub"],
       avatar: "/images/sylvain.png"
     },
     {
