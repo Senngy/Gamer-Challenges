@@ -157,6 +157,10 @@
 	}
 </script>
 
+<svelte:head>
+  <title>{game.title} | GamerChallenges</title>
+</svelte:head>
+
 <!-- Game details -->
 {#if game}
 	<section class="game-details" aria-labelledby="game-details">

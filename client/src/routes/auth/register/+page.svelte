@@ -54,6 +54,10 @@
   };
 </script>
 
+<svelte:head>
+  <title>Inscription | GamerChallenges</title>
+</svelte:head>
+
 <AuthContainer title="Inscription">
   {#if error}
     <div class="error">{error}</div>

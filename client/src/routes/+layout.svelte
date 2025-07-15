@@ -4,14 +4,11 @@
   import CookieConsent from '$lib/components/ui/CookieConsent.svelte';
 </script>
 
-<!-- HEADER -->
 <Header />
 
 <main class="main-content">
   <slot />
-  <!-- contenu de chaque page -->
 </main>
 
-<!-- FOOTER -->
 <Footer />
 <CookieConsent />

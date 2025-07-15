@@ -1,3 +1,7 @@
+<svelte:head>
+  <title>Page non trouvée | GamerChallenges</title>
+</svelte:head>
+
 <div class="error404-container">
   <h1>404</h1>
   <h2>Page non trouvée</h2>

@@ -9,6 +9,10 @@
 	let visibleCount = $state(6);
 </script>
 
+<svelte:head>
+  <title>Catalogue | GamerChallenges</title>
+</svelte:head>
+
 <section class="catalog" aria-labelledby="catalog-title">
 	<h1 class="catalog__title">Choisissez un jeu et lancez vous dans un défi !</h1>
 	<div class="catalog__grid" role="list">
