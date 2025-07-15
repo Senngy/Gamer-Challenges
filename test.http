@@ -98,6 +98,13 @@ GET http://localhost:3000/users
 GET http://localhost:3000/users/2
 
 
+### Top user by challenge likes
+GET http://localhost:3000/users/topUsersByChallengeLikes
+
+### Top user by participation likes
+GET http://localhost:3000/users/topUsersByParticipationLikes
+
+
 ## CHALLENGES
 
 ### All challenges
