@@ -1,3 +1,4 @@
+
 <!-- Header.svelte -->
 <script>
 	import { authStore, getAuth, isAuthenticated, clearAuth } from '$lib/store/authStore.svelte';

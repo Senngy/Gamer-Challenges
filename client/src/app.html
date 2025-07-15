@@ -16,9 +16,9 @@
 
 <body data-sveltekit-preload-data="hover">
 	<div style="display: contents">%sveltekit.body%</div>
-
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
+
 		// === BURGER MENU (Mobile) ===
 		const burger = document.getElementById('burger');
 		const mobileMenu = document.getElementById('mobileMenu');
@@ -36,7 +36,6 @@
 				e.stopPropagation();
 				mobileMenu.classList.remove('show');
 			});
-
 			// Empêcher la fermeture en cliquant dans le menu
 			mobileMenu.addEventListener('click', (e) => {
 				e.stopPropagation();
@@ -130,8 +129,8 @@
 		}
 
 
-		initSlider();
-	});
-	</script>
-</body>
+		  initSlider();
+	   });
+	  </script>
+  </body>
 </html>

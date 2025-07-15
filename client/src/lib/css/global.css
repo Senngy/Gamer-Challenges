@@ -1,4 +1,5 @@
 /* ===========================
+
 ✅ VARIABLES CSS GLOBALES
 =========================== */
 :root {
@@ -107,6 +108,7 @@ h3 {
 	max-width: 250px;
 	font-size: 12px;
 }
+
 .header__search-bar input {
 	width: 100%;
 	padding: 10px 20px;
@@ -231,10 +233,12 @@ h3 {
 /* ===========================
 ✅ BOUTONS AUTH (mobile hidden par défaut)
 =========================== */
+
 .header__auth-buttons {
 	display: none;
 	gap: 10px;
 }
+
 .btn {
 	padding: 10px 20px;
 	border: none;
@@ -251,6 +255,7 @@ h3 {
 }
 
 /* ===========================
+
 ✅ CONTENU PRINCIPAL
 =========================== */
 .main-content {
@@ -435,6 +440,7 @@ h3 {
 /* ===========================
    ✅ LEADERBOARD
    =========================== */
+
 .leaderboard {
 	margin: var(--espace-section);
 	padding: 1em;
