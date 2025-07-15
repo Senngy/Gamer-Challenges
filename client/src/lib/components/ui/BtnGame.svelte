@@ -5,5 +5,5 @@
 
 </div>
 <style>
- 
+/* Ce style est inexistant */
 </style>

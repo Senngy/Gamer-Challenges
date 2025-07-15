@@ -761,25 +761,24 @@ span.catalog__game__title {
 /* === DETAILS === */
 
 .challenge-details {
-	position: relative;
 	width: 100%;
-	height: 360px;
 	border-radius: 20px;
-	overflow: hidden;
 	padding: 0;
 }
 
 /* Contenu au-dessus de l’image */
 .challenge-details__content {
-	position: relative;
-	z-index: 2;
-	height: 100%;
 	padding: 2em;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
 	color: #eeeeee;
+	gap: 1em
+}
+
+.challenge-details__content h1 {
+	margin: 0;
 }
 
 /* Image de fond (par balise <img>) */
@@ -793,26 +792,11 @@ span.catalog__game__title {
 	pointer-events: none;
 }
 
-/* Overlay sombre pour lisibilité du texte */
-.challenge-details::after {
-	content: '';
-	position: absolute;
-	inset: 0;
-	z-index: 1;
-
-	background: linear-gradient(
-		to bottom,
-		rgba(0, 0, 0, 0) 0%,
-		/* Transparent en haut */ rgba(0, 0, 0, 0.3) 50%,
-		/* Début de foncé */ rgba(0, 0, 0, 0.6) 100% /* Foncé en bas */
-	);
-}
 /* Titre du jeu */
 .challenge-details__title {
 	font-family: 'Orbitron', sans-serif;
 	font-size: 34px;
 	font-weight: bold;
-	margin: 0 0 0.5em 0;
 }
 
 /* Description */
@@ -820,7 +804,6 @@ span.catalog__game__title {
 .challenge-details__rules {
 	font-size: 16px;
 	line-height: 1.5;
-	margin-bottom: 1em;
 }
 
 .challenge-details__platform {
@@ -828,7 +811,6 @@ span.catalog__game__title {
 	flex-wrap: wrap;
 	gap: 10px;
 	font-size: 10px;
-	margin-bottom: 1.5em;
 }
 
 .challenge-details__platform-item {
