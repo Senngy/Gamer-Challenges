@@ -27,6 +27,7 @@
   <nav class="footer__nav" aria-label="Navigation légale">
     <ul>
       <li><a href="/about" class="mobile-link">À propos</a></li>
+      <li><a href="/contact" class="mobile-link">Contactez-nous</a></li>
       <li><a href="/faq" class="mobile-link">FAQ</a></li>
       <li><a href="/legal" class="mobile-link">Mentions légales</a></li>
       <li><a href="/terms" class="mobile-link">CGU</a></li>
@@ -36,13 +37,13 @@
 
   <!-- Bloc Réseaux sociaux -->
   <div class="footer__socials" aria-label="Réseaux sociaux">
-    <a href="#" class="social-icon" aria-label="GitHub">
+    <a href="https://github.com/" class="social-icon" aria-label="GitHub">
       <img src="/icone/github copie.png" alt="" role="presentation" />
     </a>
-    <a href="#" class="social-icon" aria-label="Discord">
+    <a href="https://discord.com/" class="social-icon" aria-label="Discord">
       <img src="/icone/discord.png" alt="" role="presentation" />
     </a>
-    <a href="#" class="social-icon" aria-label="LinkedIn">
+    <a href="https://fr.linkedin.com/" class="social-icon" aria-label="LinkedIn">
       <img src="/icone/linkedin.png" alt="" role="presentation" />
     </a>
   </div>

@@ -83,8 +83,7 @@
 
 <header class="header" aria-label="En-tête du site Gamer Challenge">
   <!-- Logo du site -->
-   <div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
-
+    <div class="header__logo" aria-label="Logo Gamer Challenge"><a href="/">GC</a></div>
   <!-- Barre de recherche -->
   <div class="header__search-bar" aria-label="Barre de recherche">
     <form on:submit|preventDefault={onSearch}>
@@ -100,13 +99,13 @@
     />
     </form>
     {#if searchResults.length > 0}
-   <ul class="search-results">
+    <ul class="search-results">
     {#each searchResults as game}
-     <li class="result-game" >
-      <button type="button" class="btn-result" on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button>
-     </li>
+      <li class="result-game" >
+        <button type="button" class="btn-result" on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button>
+      </li>
     {/each}
-   </ul>
+    </ul>
   {:else if searchQuery.trim() !== ""}
     <p class="no-result">Aucun résultat trouvé</p>
   {/if}   
@@ -128,15 +127,14 @@
     <button id="closeMenu" class="mobile-menu__close">×</button>
     <div>
       <div class="mobile-menu__container">
-        <span class="text-logo">Gamer<br />Challenges</span>
+        <a href="/" class="mobile-link" sveltekit:prefetch><span class="text-logo">Gamer<br />Challenges</span></a>
       </div>
 
       <div class="mobile-menu__container">
         <ul>
           <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
-          <li>
-          <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
-          </li>
+          <li><a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a></li>
+          <li><a href="/contact" class="mobile-link" sveltekit:prefetch>Contact</a></li>
         </ul>
       </div>
       
@@ -146,12 +144,8 @@
           <p class="connected-user">Vous êtes connecté en tant que : <span class="connected-user__pseudo">{userInfo.pseudo}</span></p>
         {:else}
           <ul>
-            <li>
-            <a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a>
-            </li>
-            <li>
-            <a href="/auth/register" class="mobile-link strong" sveltekit:prefetch>Créer un compte</a>
-            </li>
+            <li><a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a></li>
+            <li><a href="/auth/register" class="mobile-link strong" sveltekit:prefetch>Créer un compte</a></li>
           </ul>
         {/if}
       </div>
@@ -167,7 +161,6 @@
     display: flex;
     justify-content: center;
     margin: 1rem auto;
-   
   }
   .search-input {
     color:white
