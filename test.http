@@ -120,19 +120,25 @@ Authorization: Bearer {{token}}
 }
 
 ### Likes of a specific challenge
-GET http://localhost:3000/challenges/1/likes
+GET http://localhost:3000/challenges/3/likes
 
 
 ### Add a like to a specific challenge
 POST http://localhost:3000/challenges/2/likes
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTI1MzQxNzEsImV4cCI6MTc1MjU0MTM3MX0.J_RYN-mxXgz0kqLiwF_grJ0oulZYUjxXYehHFBUQKQc
 
 {
-  "user_id": 18
+  "user_id": 4
 }
 
+### Delete like to a specific challenge
+DELETE http://localhost:3000/challenges/2/likes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTI1MzQxNzEsImV4cCI6MTc1MjU0MTM3MX0.J_RYN-mxXgz0kqLiwF_grJ0oulZYUjxXYehHFBUQKQc
 
+{
+  "user_id": 4
+}
 ## PARTICIPATIONS
 
 ### All participations of a challenge

@@ -54,7 +54,13 @@
 </script>
 
 <div class="challenge__item">
-	<div type="button" class="challenge__image" role="button" tabindex="0" on:click={() => dispatch('click')}>
+	<div
+		type="button"
+		class="challenge__image"
+		role="button"
+		tabindex="0"
+		on:click={() => dispatch('click')}
+	>
 		<div class="challenge__participation-count">
 			{challenge?.participations ?? 0} participations
 		</div>
@@ -67,7 +73,12 @@
 			<div class="challenge__user-avatar">{challengeCreator.avatar}</div>
 			<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 		</div>
-		<LikeItem {challenge} />
+		{#if challenge}
+			{console.log('✅ challenge est prêt', challenge)}
+			<LikeItem classCSS="btn-from-challenge-item" {challenge} />
+		{:else}
+			<p>Chargement...</p>
+		{/if}
 	</div>
 </div>
 

@@ -1,4 +1,4 @@
-import { User, Challenge } from "../database/models/index.js";
+import { User, Like, Challenge } from "../database/models/index.js";
 
 export async function getAll(req, res) {
   const users = [
@@ -21,3 +21,11 @@ export async function getById(req, res) {
     }
   return res.json(user);
 }
+
+/*
+export async function getTopUsersByLikes(req, res) {
+  const userId =  
+ 
+
+}
+  */
