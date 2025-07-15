@@ -1,30 +1,87 @@
 <script>
   // Exemple de données utilisateur (à remplacer par des données réelles)
-  let user = {
-    username: " ",
-    first_name: " ",
-    last_name: " ",
-    email: " ",
+  import { onMount } from 'svelte';
+  import AuthContainer from '$lib/components/auth/AuthContainer.svelte';
+  import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
+  import DeletePopUp from '$lib/components/me/PopUp/DeletePopUp.svelte';
+  import ModifyPasswordPopUp from '$lib/components/me/PopUp/ModifyPasswordPopUp.svelte';
+  import ModifyPseudoPopUp from '$lib/components/me/PopUp/ModifyPseudoPopUp.svelte'; // Si vous avez besoin de modifier le pseudo
+  import Btn from '$lib/components/me/Btn.svelte';
+  import { logout } from '$lib/services/auth.service.js'; // Fonction de déconnexion
+	import { goto } from '$app/navigation'; // Pour la navigation
+  import { authStore, clearAuth, setAuth, getAuth } from '$lib/store/authStore.svelte.js'; // Importation du store d'authentification
+  import { getCurrentUser } from '$lib/services/auth.service.js'; // Fonction pour récupérer
+	import { get } from 'svelte/store';
+
+   $effect(() => {
+    getAuth();
+  });
+
+
+  let user = $state({
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
     birth_date: ""
+  });
+
+  let challenges = $state([
+    { title: " ", status: " " },
+    { title: " ", status: " " },
+    { title: " ", status: " " },
+  ]);
+  const getUserInfos = async () => { // Fonction pour récupérer les informations de l'utilisateur
+    
+    try {
+      const userInfos = await getCurrentUser(); // Appelle ton service
+      console.log("Données utilisateur récupérées :", userInfos);
+      if (!userInfos) {
+        throw new Error("Réponse inattendue : pas de userInfos");
+      }
+      console.log("User Infos:", userInfos);
+      const { pseudo, email, avatar, challenge_created } = userInfos;
+      user = {
+        pseudo,
+        email, 
+        avatar,
+      };
+      if(!challenge_created) {
+        challenges = ["Aucun challenge créé"];
+      } else {
+        challenges = challenge_created || []; // Assurez-vous que les challenges sont récupérés correctement
+        // Attention, challenges est un tableau d'objet [{},{},{}]
+        console.log("Challenges:", challenges);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des informations utilisateur :", error);
+    }
   };
 
-  let challenges = [
-    { title: " ", status: " " },
-    { title: " ", status: " " },
-    { title: " ", status: " " },
-  ];
-
-  function logout() {
+   async function cleanLogout() { // Fonction de déconnexion
     // Logique de déconnexion ici
-    alert("Déconnexion !");
+    try {
+      await logout(); // Appel de la fonction de déconnexion
+      clearAuth(); // Nettoyage du store d'authentification
+      // Destruction du token d'authentification dans le back 
+      console.log('Déconnexion réussie');  
+      alert("Déconnexion !");
+   
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion :', error);
+    }
+    // Nettoyer le localStorage
+    // Mettre à jour le store d'authentification
+    
   }
-  export let label = "Photo de profil / Avatar";
-  export let imageUrl = ""; // L'URL actuelle de l'avatar
-  export let id = "avatar-upload";
+  
+  let label = "Photo de profil / Avatar";
+  let imageUrl = ""; // L'URL actuelle de l'avatar
+  let id = "avatar-upload";
 
-  let previewUrl = imageUrl;
+  let previewUrl = $state(imageUrl);
 
-  function handleFileChange(event) {
+  function handleFileChange(event) { // Fonction pour gérer le changement de fichier pour l'avatar
     const file = event.target.files[0];
     if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
@@ -34,31 +91,42 @@
       reader.readAsDataURL(file);
     }
   }
-</script>
+  
+  let activeModal = $state(null); // Pour gérer l'état des popups
 
-<div class="profile-container">
-  <h2>Mon profil</h2>
+  function open(modal) { // Ouvre la popup
+    activeModal = modal; console.log("Which popup is active:", activeModal);
+  } 
+  function close() { activeModal = null; } // Ferme la popup active
+
+  function redirect(url) { // Redirige vers une autre page
+    goto(url);
+    window.location.href = url;
+  }
+
+getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
+
+</script>
+<div class="main-container">
+
+<h1 class="page-title">Mon compte</h1>
+<AuthContainer title="Mes informations personnelles">
     <div class="user-info">
-  <div class="container">
+  <div class="container email">
     <label for="email">Email :</label>
     <div>{user.email}</div>
   </div>
 
-  <div class="container">
-    <label for="birth_date">Date de naissance :</label>
-    <div>{user.birth_date}</div>
-  </div>
-
   <div class="container pseudo">
     <label for="pseudo" class="pseudo">Pseudo :</label>
-    <div>{user.username}</div>
-    <a href="/auth/change-password">Modifier le pseudo</a>
+    <div>{user.pseudo}</div>
+    <button class="modify" on:click={() => open('modifyPseudo')}>Modifier le pseudo</button>
   </div>
 
   <div class="container password">
     <label for="password">Mot de passe :</label>
     <div>••••••••</div>
-    <a href="/auth/change-password">Modifier le mot de passe</a>
+    <button class="modify" style="cursor:pointer" on:click={() => open('modifyPassword')}>Modifier le mot de passe</button>
   </div>
 
   <div class="container avatar-container">
@@ -69,14 +137,41 @@
 
   <div class="container delete-account">
     <label for="delete">Suppression de compte :</label>
-    <button class="btn delete" on:click={deleteAccount}>Supprimer mon compte</button>
+    <Btn variant="delete" on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
   </div>
+
 </div>
+  {#if activeModal}
+    <!-- Wrapper qui gère l’ouverture/fermeture générale -->
+    <ProfilePopUp bind:open={activeModal} on:close={close}> <!-- Utilisation de la popup -->
+      {#if activeModal=== 'deletePassword'} <!-- Popup de suppression de compte -->
+        <DeletePopUp  on:close={close} /> 
+      {:else if activeModal === 'modifyPassword'} <!-- Popup de modification de mot de passe -->
+        <ModifyPasswordPopUp  
+          on:submit={(data) => {console.log("Nouveau mot de passe :", data.newPassword); close(); }}
+          on:close:{close}
+        />
+      {:else if activeModal === 'modifyPseudo'} <!-- Popup de modification de pseudo -->
+        <ModifyPseudoPopUp  
+          on:submit={(data) => {console.log("Nouveau pseudo :", data.newPseudo); close(); }}
+          on:close={close}
+        />
+      {/if}  
+    </ProfilePopUp>  
+  {/if}    
 
-<button class="btn logout" on:click={logout}>Se déconnecter</button>
+  
+</AuthContainer>
 
-  <h3>Mes challenges</h3>
+<AuthContainer title="Mes challenges">
+  <!--Challenges de l'utilisateur-->
+
+  {#if !user.id || challenges.length === 0} <!-- Si l'utilisateur n'a pas de challenges -->
+  <p>Aucun challenge créé pour le moment.</p>
+    {:else}
+
   <ul class="challenges-list">
+    
     {#each challenges as challenge}
       <li>
         <span>{challenge.title}</span>
@@ -84,28 +179,30 @@
       </li>
     {/each}
   </ul>
+
+  {/if}
+</AuthContainer>
+
+<!-- Bouton de déconnexion -->
+<Btn variant="logout" on:click={() => {cleanLogout(); redirect('/');}}>Se déconnecter</Btn>
 </div>
 
 <style>
-.profile-container {
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 2rem;
-  background: #222;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
+.main-container {
+  padding: 0 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 }
 
-h2 {
+.page-title {
   text-align: center;
-  font-size: 1.8rem;
-  margin-bottom: 2rem;
+  margin: 0.5em 0;
+  font-size: 2.5rem;
 }
 
 .user-info {
-  background: #2b0a0a;
+  background: none;
   padding: 1.5rem;
   border-radius: 8px;
   display: flex;
@@ -126,48 +223,29 @@ h2 {
 
 .container div, 
 .container input {
-  background: #444;
-  border: none;
-  padding: 0.6rem;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 1rem;
+  width: 100%;
+   padding: 10px 20px;
+   border: none;
+   border-radius: 25px;
+   background: rgba(255, 255, 255, 0.2);
+   color: white;
+   font-size: 14px;
 }
-
-.container a {
-  margin-top: 0.3rem;
-  color: #4f8cff;
-  font-size: 0.9rem;
-  text-decoration: underline;
-  align-self: flex-start;
-}
-
-.btn.logout,
-.btn.delete {
-  display: inline-block;
-  background: #e54747;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  padding: 0.7rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin-top: 1.2rem;
-}
-
-.btn.logout:hover,
-.btn.delete:hover {
-  background: #b91c1c;
-}
-
 .container.delete-account {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 0.5rem;
   margin-top: 2rem;
-  align-items: flex-start;
+  align-items: center;
 }
-
+.modify {
+  background: none;
+  color: #4f8cff;
+  text-decoration: underline;
+  border: none;
+}
+.challenges {
+  margin-top: 2rem;
+}
 
 </style>

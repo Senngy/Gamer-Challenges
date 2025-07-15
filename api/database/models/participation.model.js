@@ -28,7 +28,11 @@ Participation.init({
         model: 'challenges',
         key: 'id'
       }
-    }
+    },
+    participation_likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   }, {
     tableName: 'participations',
     sequelize, // Instance de Sequelize

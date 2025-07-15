@@ -1,0 +1,163 @@
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOCwiaWF0IjoxNzUyNTAyMTQxLCJleHAiOjE3NTI1MDkzNDF9.-tc9IaOTfJCzwVdOPd8JGllUYZ8aEHc-SlD8fQME3oE
+
+## AUTH
+
+### Création de compte
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "pseudo": "ziggi",
+    "password": "zigzagziggi",
+    "email": "zig@zigzag.com",
+    "birth_date": "010119070",
+    "first_name": "Zig",
+    "last_name": "Zag"
+}
+
+### 🔐 Inscription
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "pseudo": "Lams_Bmz",
+    "password": "ElOuedSouf213@",
+    "email": "lamsbmz92@gmail.com",
+    "birth_date": "19/10/1999",
+    "first_name": "Lamine",
+    "last_name": "BOUMAZA"
+}
+
+### 🔐 Connexion et extraction du token
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "jules@example.com",
+    "password": "motdepasse1"
+}
+
+## PAGE "ME"
+
+### Inscription
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "jules111@example.com",
+    "password": "Exemple@1234",
+    "pseudo": "juul101",
+    "birth_date": "1948/11/24",
+    "first_name": "ju",
+    "last_name": "les"
+}
+
+### 📝 Mise à jour du mot de passe
+PATCH http://localhost:3000/auth/me/password
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+    "currentPassword": "motdepasse8",
+    "newPassword": "motdepasse75"
+}
+
+### 🗑️ Suppression du compte
+DELETE http://localhost:3000/auth/me
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+## GAMES
+
+### 🕹️ Liste des jeux
+GET http://localhost:3000/games
+
+### 🕹️ TOP 3 des jeux
+GET http://localhost:3000/games/top3
+
+### 🕹️ Détails d'un jeu spécifique
+GET http://localhost:3000/games/16
+
+
+### Recherche par type de jeu
+GET http://localhost:3000/games/search?query=T
+
+
+### 🕹️ Création d'un jeu
+GET http://localhost:3000/games/top
+
+
+## USERS
+
+### All users
+GET http://localhost:3000/users
+
+### Specific user
+GET http://localhost:3000/users/2
+
+
+### Top user by challenge likes
+GET http://localhost:3000/users/topUsersByChallengeLikes
+
+### Top user by participation likes
+GET http://localhost:3000/users/topUsersByParticipationLikes
+
+
+## CHALLENGES
+
+### All challenges
+GET http://localhost:3000/challenges
+
+### Specific challenge
+GET http://localhost:3000/games/1/challenges
+
+### Create challenge
+POST http://localhost:3000/challenges
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Titre du ssschallenge",
+    "description": "Description du challenge",
+    "rules": "Règles du challenge",
+    "created_by": 3,
+    "game_by": 5
+}
+
+### Likes of a specific challenge
+GET http://localhost:3000/challenges/3/likes
+
+
+### Add a like to a specific challenge
+POST http://localhost:3000/challenges/2/likes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTI1MzQxNzEsImV4cCI6MTc1MjU0MTM3MX0.J_RYN-mxXgz0kqLiwF_grJ0oulZYUjxXYehHFBUQKQc
+
+{
+  "user_id": 4
+}
+
+### Delete like to a specific challenge
+DELETE http://localhost:3000/challenges/2/likes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0LCJpYXQiOjE3NTI1MzQxNzEsImV4cCI6MTc1MjU0MTM3MX0.J_RYN-mxXgz0kqLiwF_grJ0oulZYUjxXYehHFBUQKQc
+
+{
+  "user_id": 4
+}
+## PARTICIPATIONS
+
+### All participations of a challenge
+GET http://localhost:3000/challenges/1/participations
+
+### Create participation
+POST http://localhost:3000/participations
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "media_link": "Chemnnnin vers le média test",
+    "description": "Description de la participation",
+    "challenge_id": 1,
+    "user_id": 1
+}
+

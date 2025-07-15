@@ -4,12 +4,6 @@ dotenv.config();
 
 import { Sequelize } from 'sequelize';
 import { dbConfig } from './config.js';
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_PASSWORD:', process.env.DB_PASSWORD);
-console.log('DB_NAME:', process.env.DB_NAME);
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_PORT:', process.env.DB_PORT);
-console.log('NODE_ENV:', process.env.NODE_ENV);
 
 const config = process.env.NODE_ENV === 'development' ? dbConfig.development : dbConfig.production;
 

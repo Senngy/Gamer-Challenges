@@ -1,220 +1,139 @@
-<head>
-  <title>GamerChallenges - Accueil</title>
-</head>
+<script>
+	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
-<!-- Hero Section -->
-<section class="popular-games" aria-labelledby="popular-games-title">
-  <div class="popular-games__pattern-overlay" aria-hidden="true"></div>
+	let games = [];
+	let randomGames = [];
 
-  <div class="popular-games__content-wrapper">
-    <!-- Slide 1 -->
-    <div class="popular-games__content slide">
-      <span class="popular-games__tag">🔥 Populaires</span>
-      <h1 class="popular-games__title">VALORANT</h1>
-      <p class="popular-games__description">
-        Valorant est un jeu de tir tactique...
-      </p>
-      <button class="btn btn--primary popular-games__btn"
-        >Voir les challenges</button
-      >
+	let topGames = [];
+	let slideIndex = 0;
 
-      <img src="/images/background-valorant.webp" alt="Valorant" class="slide__image" />
-    </div>
-  </div>
+	onMount(async () => {
+		try {
+			const resGames = await fetch('http://localhost:3000/games');
+			games = await resGames.json();
+			randomGames =
+				games.length >= 4 ? [...games].sort(() => Math.random() - 0.5).slice(0, 4) : games;
 
-  <!-- Navigation + Progress -->
-  <nav class="popular-games__nav" aria-label="Navigation des jeux populaires">
-    <div class="popular-games__arrows">
-      <button class="popular-games__arrow prev" aria-label="Jeu précédent"
-        >‹</button
-      >
-      <button class="popular-games__arrow next" aria-label="Jeu suivant"
-        >›</button
-      >
-    </div>
+			const resTop = await fetch('http://localhost:3000/games/top');
+			topGames = await resTop.json();
+			console.log('Top games:', topGames); // Debug log
+		} catch (err) {
+			console.error('Erreur chargement jeux :', err);
+		}
+	});
 
-    <div class="popular-games__pagination-wrapper">
-      <div class="popular-games__pagination" aria-live="polite">1 / 4</div>
+	function truncateWords(text = '', max = 40) {
+		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
+		return words.slice(0, max).join(' ') + (words.length > max ? '…' : '');
+	}
 
-      <svg class="progress-circle" viewBox="0 0 36 36" aria-hidden="true">
-        <circle class="circle-bg" cx="18" cy="18" r="16" />
-        <circle class="circle-fill" cx="18" cy="18" r="16" />
-      </svg>
-    </div>
-  </nav>
-</section>
+	function next() {
+		if (topGames.length) slideIndex = (slideIndex + 1) % topGames.length;
+	}
 
-<!-- Leaderboard -->
-<aside class="leaderboard" aria-labelledby="leaderboard-title">
-  <div>
-    <h2 class="leaderboard__title" id="leaderboard-title">
-      Top challengers 🏆
-    </h2>
-    <span class="leaderboard__highlight" aria-hidden="true"
-      >#Gamerchallenges</span
-    >
-  </div>
+	function prev() {
+		if (topGames.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
+	}
+</script>
 
-  <!-- Player 1 -->
-  <div
-    class="leaderboard__item"
-    role="listitem"
-    aria-label="Joueur 1 : Babyloto, 12 likes, 1er place"
-  >
-    <div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-    <div class="leaderboard__player-info">
-      <h3 class="leaderboard__player-name">Babyloto</h3>
-      <div class="leaderboard__player-stats">
-        <span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span
-        >
-        <span class="leaderboard__player-stat-likes">12 likes</span>
-      </div>
-    </div>
-    <div class="leaderboard__player-level" aria-label="1ère place">🏆 1</div>
-  </div>
+<!-- ========================== -->
+<!-- Hero / Populaires -->
+<!-- ========================== -->
+<div class="block__content__populaires-top">
+	{#if topGames.length}
+		<section
+			class="popular-games"
+			aria-labelledby="popular-games-title"
+			tabindex="0"
+			on:keydown={(e) => {
+				if (e.key === 'ArrowRight') next();
+				if (e.key === 'ArrowLeft') prev();
+			}}
+		>
+			{#each topGames as game, i (game.id)}
+				{#if i === slideIndex}
+					<div class="popular-games__content slide active" data-index={i} transition:fade>
+						<div class="popular-games__text">
+							<span class="popular-games__tag">🔥 Populaires</span>
+							<h2 class="popular-games__title">{game.title}</h2>
+							<p class="popular-games__description">{truncateWords(game.description, 40)}</p>
+							<a href={`/games/${game.id}`} class="btn btn--primary popular-games__btn">
+								Voir le jeu et ses challenges
+							</a>
+						</div>
+						<img class="slide__image" src={game.image} alt={game.title} />
+					</div>
+				{/if}
+			{/each}
 
-  <span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
+			<nav class="popular-games__nav">
+				<div class="popular-games__arrows">
+					<button class="popular-games__arrow prev" on:click={prev}>‹</button>
+					<button class="popular-games__arrow next" on:click={next}>›</button>
+				</div>
 
-  <!-- Player 2 -->
-  <div
-    class="leaderboard__item"
-    role="listitem"
-    aria-label="Joueur 2 : Babyloto, 12 likes, 2ème place"
-  >
-    <div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-    <div class="leaderboard__player-info">
-      <h3 class="leaderboard__player-name">Babyloto</h3>
-      <div class="leaderboard__player-stats">
-        <span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span
-        >
-        <span class="leaderboard__player-stat-likes">12 likes</span>
-      </div>
-    </div>
-    <div class="leaderboard__player-level" aria-label="2ème place">🥈 2</div>
-  </div>
+				<div class="popular-games__pagination">{slideIndex + 1} / {topGames.length}</div>
+			</nav>
 
-  <span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
+			<!-- Pagination dots -->
+			<div class="pagination-dots">
+				{#each topGames as _, index}
+					<span class:active={index === slideIndex} on:click={() => (slideIndex = index)}></span>
+				{/each}
+			</div>
+		</section>
+	{:else}
+		<p>Chargement des jeux populaires…</p>
+	{/if}
 
-  <!-- Player 3 -->
-  <div
-    class="leaderboard__item"
-    role="listitem"
-    aria-label="Joueur 3 : Babyloto, 12 likes, 3ème place"
-  >
-    <div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-    <div class="leaderboard__player-info">
-      <h3 class="leaderboard__player-name">Babyloto</h3>
-      <div class="leaderboard__player-stats">
-        <span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span
-        >
-        <span class="leaderboard__player-stat-likes">12 likes</span>
-      </div>
-    </div>
-    <div class="leaderboard__player-level" aria-label="3ème place">🥉 3</div>
-  </div>
-</aside>
+	<!-- ========================== -->
+	<!-- Leaderboard -->
+	<!-- ========================== -->
+	<aside class="leaderboard" aria-labelledby="leaderboard-title">
+		<div>
+			<h2 class="leaderboard__title" id="leaderboard-title">Top challengers 🏆</h2>
+			<span class="leaderboard__highlight" aria-hidden="true">#Gamerchallenges</span>
+		</div>
 
+		{#each [1, 2, 3] as rank}
+			<div
+				class="leaderboard__item"
+				role="listitem"
+				aria-label={`Joueur ${rank} : Babyloto, 12 likes, ${rank}e place`}
+			>
+				<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
+				<div class="leaderboard__player-info">
+					<h3 class="leaderboard__player-name">Babyloto</h3>
+					<div class="leaderboard__player-stats">
+						<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
+						<span class="leaderboard__player-stat-likes">12 likes</span>
+					</div>
+				</div>
+				<div class="leaderboard__player-level" aria-label={`${rank}e place`}>
+					{rank === 1 ? '🏆' : rank === 2 ? '🥈' : '🥉'}
+					{rank}
+				</div>
+			</div>
+
+			{#if rank !== 3}
+				<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
+			{/if}
+		{/each}
+	</aside>
+</div>
+
+<!-- ========================== -->
 <!-- Catalog Section -->
+<!-- ========================== -->
 <section class="catalog" aria-labelledby="catalog-title">
-  <h2 class="catalog__title" id="catalog-title">
-    Également sur notre catalogue
-  </h2>
-  <div class="catalog__grid" role="list">
-    <!-- Catalog Item -->
-    <div
-      class="catalog__item"
-      role="listitem"
-      aria-label="Apex Legends, Saison 5, Stratégie, Battle Royale"
-    >
-      <div
-        class="catalog__image"
-        role="img"
-        aria-label="Illustration Apex Legends"
-      >
-        <div class="catalog__like-count" aria-label="Nombre de likes">
-          Nombre de like
-        </div>
-      </div>
-      <div class="catalog__content">
-        <h3 class="catalog__game-name">Apex Legends</h3>
-        <p class="catalog__season">Saison 5</p>
-        <div class="catalog__tags">
-          <span class="catalog__tag">Stratégie</span>
-          <span class="catalog__tag">Battle royale</span>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="catalog__item"
-      role="listitem"
-      aria-label="Apex Legends, Saison 5, Stratégie, Battle Royale"
-    >
-      <div
-        class="catalog__image"
-        role="img"
-        aria-label="Illustration Apex Legends"
-      >
-        <div class="catalog__like-count" aria-label="Nombre de likes">
-          Nombre de like
-        </div>
-      </div>
-      <div class="catalog__content">
-        <h3 class="catalog__game-name">Apex Legends</h3>
-        <p class="catalog__season">Saison 5</p>
-        <div class="catalog__tags">
-          <span class="catalog__tag">Stratégie</span>
-          <span class="catalog__tag">Battle royale</span>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="catalog__item"
-      role="listitem"
-      aria-label="Apex Legends, Saison 5, Stratégie, Battle Royale"
-    >
-      <div
-        class="catalog__image"
-        role="img"
-        aria-label="Illustration Apex Legends"
-      >
-        <div class="catalog__like-count" aria-label="Nombre de likes">
-          Nombre de like
-        </div>
-      </div>
-      <div class="catalog__content">
-        <h3 class="catalog__game-name">Apex Legends</h3>
-        <p class="catalog__season">Saison 5</p>
-        <div class="catalog__tags">
-          <span class="catalog__tag">Stratégie</span>
-          <span class="catalog__tag">Battle royale</span>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="catalog__item"
-      role="listitem"
-      aria-label="Apex Legends, Saison 5, Stratégie, Battle Royale"
-    >
-      <div
-        class="catalog__image"
-        role="img"
-        aria-label="Illustration Apex Legends"
-      >
-        <div class="catalog__like-count" aria-label="Nombre de likes">
-          Nombre de like
-        </div>
-      </div>
-      <div class="catalog__content">
-        <h3 class="catalog__game-name">Apex Legends</h3>
-        <p class="catalog__season">Saison 5</p>
-        <div class="catalog__tags">
-          <span class="catalog__tag">Stratégie</span>
-          <span class="catalog__tag">Battle royale</span>
-        </div>
-      </div>
-    </div>
-  </div>
+	<h2 class="catalog__title" id="catalog-title">
+		Découvrez les autres jeux disponibles ou vous pouvez participez a votre propre challenge ou defier la communitaie.
+	</h2>
+	<div class="catalog__grid" role="list">
+		{#each randomGames as game (game.id)}
+			<CatalogItem {game} />
+		{/each}
+	</div>
 </section>

@@ -9,6 +9,7 @@ export const dbConfig = {
     database: process.env.DB_NAME || 'gamer_challenges_db',
     host: process.env.DB_HOST || 'localhost',
     port: process.env.DB_PORT || 5432,
+    API_KEY: process.env.API_KEY || 'f0e13f63a16f4344871b7d453faca737',
     dialect: 'postgres',
     logging: console.log, // Logs SQL en dev
     define: {
@@ -23,7 +24,7 @@ export const dbConfig = {
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
-    dialect: 'postgres', // 🛑 tu avais 'mysql', je suppose que tu veux rester en postgres ?
+    dialect: 'postgres', 
     logging: false,
     define: {
       createdAt: 'created_at',

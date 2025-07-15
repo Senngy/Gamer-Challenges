@@ -1,13 +1,15 @@
 // user.routes.js
 import express from 'express';
 
-import { getAll, getById } from '../controllers/users.controller.js';
+import { getAll, getById, getTopUsersByChallengeLikes, getTopUsersByParticipationLikes } from '../controllers/users.controller.js';
 
 const router = express.Router();
 
 router.get('/', getAll) // All the users
-router.get('/:id', getById) // /!\ SET TO PRIVATE (route for the details of a specific user)
-//router.get('/:id/stats',) // Stats of users ( challenges, participations, likes)
-//router.patch('/:id') // Update user profile PRIVATE
+router.get('/topUsersByChallengeLikes', getTopUsersByChallengeLikes)
+router.get('/topUsersByParticipationLikes', getTopUsersByParticipationLikes)
+router.get('/:id', getById) // Route for the details of a specific user, possibly add Stats of users ( challenges, participations, likes)
+
+
 
 export default router;
