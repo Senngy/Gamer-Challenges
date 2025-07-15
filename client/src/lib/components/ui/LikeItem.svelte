@@ -26,6 +26,7 @@
 		}
 		try {
 			const { likedNow } = await toggleLike(challenge.id); // Nous renvois true si l'utilisateur n'a pas encore liké et ajoute un like sinon supprime le like
+			liked = likedNow; // Met à jour l'état liked avec la valeur retournée
 			if (likedNow) {
 				likes += 1;
 				//console.log('✅ Like ajouté');

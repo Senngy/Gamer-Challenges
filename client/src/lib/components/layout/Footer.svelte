@@ -68,5 +68,5 @@
 				</li>
 			</ul>
 		</section>
-	</div>
+	
 </footer>

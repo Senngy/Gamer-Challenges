@@ -16,7 +16,6 @@
 
 	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
 	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
-	//console.log(`PAGE Bonjour je suis le ${challengeId}`);
 
 	const challenge_id = challengeId;
 
@@ -51,13 +50,7 @@
 	let media_link = $state(''); // État pour le lien du média
 	let description = $state(''); // État pour la description de la participation
 	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
-	// console.log(`user_id: ${user_id}`)
-	// à chaque fois que authStore change, on met à jour user_id
-	/*
-	$effect(() => {
-		user_id = authStore.user?.id ?? null;
-	});
-*/
+
 	onMount(async () => {
 		// 🟢 Code exécuté une seule fois lorsque le composant est monté (équivalent à componentDidMount)
 		getAuth();
@@ -68,8 +61,13 @@
 			const [{ id, title, description, rules, created_by, game_by }, participationsList] =
 				await Promise.all([getChallenge(challenge_id), getParticipations(challenge_id)]);
 
+			console.log('Challenge récupéré :', { id, title, description, rules, created_by, game_by });
+
 			// 🔁 Appel parallèle : on récupère les infos du jeu + l'utilisateur connecté
 			const [gameInfo, userInfo] = await Promise.all([getGameInfos(game_by), getUserInfo(user_id)]);
+
+			console.log('Game info récupéré :', gameInfo);
+			console.log('User info récupéré :', userInfo);
 
 			// 👤 Récupération des infos du créateur du challenge (attention, appel en plus !)
 			const creatorChallengeInfos = await getUserInfo(created_by);
@@ -81,8 +79,14 @@
 				description,
 				rules,
 				created_by,
-				game_by,
-				image: gameInfo.image
+				game_by
+				// image: gameInfo.image
+			};
+
+			game = {
+				id: gameInfo.id,
+				title: gameInfo.title,
+				image: gameInfo.image,
 			};
 
 			if (creatorChallengeInfos) {
@@ -115,8 +119,9 @@
 	async function getGameInfo(gameId) {
 		// Fonction pour récupérer l'image du jeu associé au challenge
 		try {
-			const game = await getGameInfos(gameId);
-			return game.image;
+			game = await getGameInfos(gameId);
+			console.log('Game info récupéré :', game);
+			return game;
 		} catch (err) {
 			console.error('Erreur getGameImage :', err);
 			return null;
@@ -151,12 +156,7 @@
 			error = 'Veuillez remplir tous les champs.';
 			return;
 		}
-		/*
-		console.log('media_link:', media_link);
-		console.log('description:', description);
-		console.log('challenge_id:', challenge_id);
-		console.log('user_id:', user_id);
-         */
+
 		try {
 			const response = await participationCreation(media_link, description, user_id, challenge_id); //
 
@@ -196,88 +196,73 @@
 	function openModal() {
 		showModal = true;
 	}
-	/*
-	$effect(() => {
-		getChallengeDetails();
-		getParticipationsList();
-	});
-	*/
 </script>
 
 <section class="intro">
+	<!-- Game infos -->
+	<section class="game-info">
+		<div class="game-info__bloc">
+			<img class="game-info__image" src={`${game.image}`} alt={game.title} />
+		</div>
 
-<!-- Game infos -->
-<section class="game-info">
-
-	<div class="game-info__bloc">
-		<img class="game-info__image" src={`${game.image}`} alt={game.title}/>
-	</div>
-
-	<div class="game-info__bloc">
-		<p>Challenge pour le jeu</p>
-		<p class="game-info__title">"{game.title}"</p>
-	</div>
-	
-</section>
-
-<!-- Challenge details -->
-
-{#if challenge && challengeCreator}
-	<section class="challenge-details" aria-labelledby="challenge-details">
-
-		<div class="challenge-details__content">
-
-			{#if challenge.id}
-				{console.log('✅ challenge est prêt', challenge)}
-				<LikeItem classCSS="btn-from-challenge-page" {challenge} />	
-			{:else}
-				<p>Chargement des Likes...</p>
-			{/if}
-			<h1 class="challenge-details__title">{challenge.title}</h1>
-			<p class="challenge-details__description">Objectif : {challenge.description}</p>
-			<p class="challenge-details__rules">Règle : {challenge.rules}</p>
-			<div class="challenge_created-by">
-				<p>Challenge créé par</p>
-				<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
-				<p class="challenge__user-name">{challengeCreator.pseudo}</p>
-			</div>
-			<button class="btn btn--primary" onclick={openModal}> Participer au défi maintenant </button>
-			{#if challenge.id}
-				{console.log('✅ challenge est prêt', challenge)}
-
-				<LikeItem classCSS="btn-from-challenge-page" {challenge} />
-			{:else}
-				<p>Chargement des Likes...</p>
-			{/if}
+		<div class="game-info__bloc">
+			<p>Challenge pour le jeu</p>
+			<p class="game-info__title">"{game.title}"</p>
 		</div>
 	</section>
-{:else}
-	<p>Challenge introuvable.</p>
-{/if}
 
+	<!-- Challenge details -->
+
+	{#if challenge && challengeCreator}
+		<section class="challenge-details" aria-labelledby="challenge-details">
+			<div class="challenge-details__content">
+				{#if challenge.id}
+					{console.log('✅ challenge est prêt', challenge)}
+					<LikeItem classCSS="btn-from-challenge-page" {challenge} />
+				{:else}
+					<p>Chargement des Likes...</p>
+				{/if}
+				<h1 class="challenge-details__title">{challenge.title}</h1>
+				<p class="challenge-details__description">Objectif : {challenge.description}</p>
+				<p class="challenge-details__rules">Règle : {challenge.rules}</p>
+				<div class="challenge_created-by">
+					<p>Challenge créé par</p>
+					<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
+					<p class="challenge__user-name">{challengeCreator.pseudo}</p>
+				</div>
+				<button class="btn btn--primary" onclick={openModal}>
+					Participer au défi maintenant
+				</button>
+				{#if challenge.id}
+					{console.log('✅ challenge est prêt', challenge)}
+				{:else}
+					<p>Chargement des challenges</p>
+				{/if}
+			</div>
+		</section>
+	{:else}
+		<p>Challenge introuvable.</p>
+	{/if}
 </section>
 
 <!-- Participations Section -->
 <section class="catalog" aria-labelledby="catalog-title">
-	
 	{#if participations.length > 0}
+		<p class="catalog-intro-text">
+			Déjà
+			<span>{participations.length}</span>
+			{#if participations.length === 1}
+				participation !
+			{:else}
+				participations !
+			{/if}
+		</p>
 
-	<p class="catalog-intro-text">
-		Déjà 
-		<span>{participations.length}</span>
-		{#if participations.length === 1}
-			participation !
-		{:else}
-			participations !
-		{/if}
-	</p>
-
-	<div class="catalog__grid" role="list">
-		{#each participations as participation}
-			<ParticipationItem {participation} />
-		{/each}
-	</div>
-
+		<div class="catalog__grid" role="list">
+			{#each participations as participation}
+				<ParticipationItem {participation} />
+			{/each}
+		</div>
 	{:else}
 		<p>Aucune participation pour ce challenge pour le moment.</p>
 	{/if}
@@ -347,8 +332,8 @@
 		justify-content: center;
 		gap: 1em;
 		padding: 1em;
-		
-		background: linear-gradient(to bottom, #0C0E0F 0%, #8B1E1E 100%);
+
+		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
 	}
 	.game-info__bloc {
 		display: flex;
