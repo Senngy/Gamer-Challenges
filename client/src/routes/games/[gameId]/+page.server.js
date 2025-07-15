@@ -1,5 +1,5 @@
 // src/routes/games/[gameId]/+page.server.js
-import { error } from '@sveltejs/kit';
+import { error, HttpError } from '@sveltejs/kit';
 // import api from '$lib/api.js';
 
 
@@ -27,6 +27,8 @@ export async function load({ fetch, params }) {
 
     return { game, challenges };
   } catch (err) {
+    if (err instanceof HttpError) throw err;
+
     console.error('Erreur dans +page.server.js :', err);
     throw error(500, 'Erreur lors du chargement des données');
   }

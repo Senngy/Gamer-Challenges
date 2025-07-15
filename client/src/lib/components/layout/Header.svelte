@@ -13,19 +13,49 @@
 	let searchQuery = $state('');
 	let searchResults = $state([]);
 
-	onMount(async () => {
-		try {
-			userInfoJSON = localStorage.getItem('user');
-			userInfo = JSON.parse(userInfoJSON);
-			//console.log("userInfo", userInfo);
-			const user = await getUserById(userInfo.id);
-			// console.log("Utilisateur récupéré :", user);
-			userAvatar = user.avatar;
-			// console.log("Avatar récupéré :", userAvatar);
-		} catch (error) {
-			console.error("Erreur lors de la récupération de l'avatar :", error);
-		}
-	});
+
+	// onMount(async () => {
+	// 	try {
+	// 		userInfoJSON = localStorage.getItem('user');
+	// 		userInfo = JSON.parse(userInfoJSON);
+	// 		//console.log("userInfo", userInfo);
+	// 		const user = await getUserById(userInfo.id);
+	// 		// console.log("Utilisateur récupéré :", user);
+	// 		userAvatar = user.avatar;
+	// 		// console.log("Avatar récupéré :", userAvatar);
+	// 	} catch (error) {
+	// 		console.error("Erreur lors de la récupération de l'avatar :", error);
+	// 	}
+	// });
+
+
+  onMount(async () => {
+  try {
+    userInfoJSON = localStorage.getItem("user");
+
+    if (!userInfoJSON) {
+      console.warn("Aucune donnée utilisateur trouvée dans le localStorage");
+      return; // ⛔ éviter l'erreur en quittant
+    }
+
+    userInfo = JSON.parse(userInfoJSON);
+
+    if (!userInfo || !userInfo.id) {
+      console.warn("userInfo invalide ou sans ID :", userInfo);
+      return;
+    }
+
+    const user = await getUserById(userInfo.id);
+
+    if (user && user.avatar) {
+      userAvatar = user.avatar;
+    } else {
+      console.warn("Aucun avatar trouvé pour l'utilisateur");
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'avatar :", error);
+  }
+});
 
 	$effect(() => {
 		//
