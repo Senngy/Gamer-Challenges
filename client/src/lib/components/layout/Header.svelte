@@ -137,9 +137,6 @@
           <li>
           <a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
           </li>
-          <li>
-          <a href="/about" class="mobile-link" sveltekit:prefetch>À propos</a>
-          </li>
         </ul>
       </div>
       
