@@ -10,10 +10,10 @@ export async function participationCreation(media_link, description, user_id, ch
   */
   try {
     const participationCreated = await api('/participations', "POST", { media_link, description, user_id, challenge_id });
-    console.log('Participation créée avec succès :', participationCreated);
+    console.log('SERVICE Participation créée avec succès :', participationCreated);
     return participationCreated; // ← on retourne bien la réponse
   } catch (error) {
-    console.error('Échec de création :', error);
+    console.error('SERVICE Échec de création :', error);
     throw error;
   }
 }
@@ -21,15 +21,15 @@ export async function participationCreation(media_link, description, user_id, ch
 
 export async function getParticipations(challenge_id) {
   if (!challenge_id) {
-    throw new Error('Challenge ID is required');
+    throw new Error('SERVICE Challenge ID is required');
   }
-  console.log("SERVICE variable", challenge_id)
+  //console.log("SERVICE variable", challenge_id)
   try {
     const res = await api(`/challenges/${challenge_id}/participations`, "GET");
-    console.log("SERVICE réponse", res)
+   // console.log("SERVICE réponse", res)
     return res;
   } catch (error) {
-    console.error(`[getParticipations] Failed to fetch participations for challenge ID ${challenge_id}:`, error);
+    console.error(`SERVICE [getParticipations] Failed to fetch participations for challenge ID ${challenge_id}:`, error);
     throw error;
   }
 }
@@ -37,15 +37,15 @@ export async function getParticipations(challenge_id) {
 // Fonction pour récupérer les informations de likes du challenge
 export async function getLikes(participationId) {
   if (!participationId) {
-    throw new Error('participation ID is required');
+    throw new Error('SERVICE participation ID is required');
   }
 
   try {
     const likes = await api(`/participations/${participationId}/likes`, "GET");
-    console.debug(`[getLikes] Likes retrieved:`, likes);
+    //console.debug(`[getLikes] Likes retrieved:`, likes);
     return likes;
   } catch (error) {
-    console.error(`[getLikes] Failed to fetch likes with ID ${participationId}:`, error);
+    console.error(`SERVICE [getLikes] Failed to fetch likes with ID ${participationId}:`, error);
     throw error;
   }
 }
@@ -53,27 +53,27 @@ export async function getLikes(participationId) {
 // Fonction d'ajout d'un like au participation
 export async function addLike(participationId) {
 
-  console.debug(`[addLike] Adding like to participation with ID: ${participationId}`);
+  //console.debug(`[addLike] Adding like to participation with ID: ${participationId}`);
   
   if (!participationId) {
-    throw new Error('participation ID is required');
+    throw new Error('SERVICE participation ID is required');
   }
 
   try {
     const likeAdded = await api(`/participations/${participationId}/likes`, "POST");
 
-    console.log('Like ajouté avec succès :', likeAdded);
+   // console.log('SERVICE Like ajouté avec succès :', likeAdded);
     return likeAdded;
 
   } catch (error) {
-    console.error('Échec d\'ajout du like :', error);
+    console.error('SERVICE Échec d\'ajout du like :', error);
     throw error;
   }
 }
 
 // Fonction toggle like sur un participation
 export async function toggleLike(participationId) {
-  console.debug(`[toggleLike] Toggle like for participation ID: ${participationId}`);
+  //console.debug(`[toggleLike] Toggle like for participation ID: ${participationId}`);
 
   if (!participationId) {
     throw new Error('participation ID is required');
@@ -83,19 +83,19 @@ export async function toggleLike(participationId) {
     // 1. Vérifie si l'utilisateur a déjà liké
     const statusRes = await api(`/participations/${participationId}/likes/status`, 'GET');
     const { hasLiked } = statusRes;
-    console.log("SERVICE response hasLiked", hasLiked)
+    //console.log("SERVICE response hasLiked", hasLiked)
 
     // 2. Ajoute ou supprime le like selon le statut
     const method = hasLiked ? 'DELETE' : 'POST';
-    console.log('SERVICE method: ', method)
+    //console.log('SERVICE method: ', method)
     const likeRes = await api(`/participations/${participationId}/likes`, method);
 
     const message = hasLiked ? 'Like supprimé avec succès' : 'Like ajouté avec succès';
-    console.log(message);
+    //console.log(message);
 
     return { message, likedNow: !hasLiked };
   } catch (error) {
-    console.error('Erreur toggleLike:', error);
+    console.error('SERVICE Erreur toggleLike:', error);
     throw error;
   }
 }

@@ -87,8 +87,6 @@ GET http://localhost:3000/games/search?query=T
 GET http://localhost:3000/games/top
 
 
-
-
 ## USERS
 
 ### All users
