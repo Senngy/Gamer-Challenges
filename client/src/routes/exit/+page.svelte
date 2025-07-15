@@ -17,6 +17,11 @@
   });
 </script>
 
+<svelte:head>
+  <title>Exit - GamerChallenges</title>
+  <meta name="description" content="Pourquoi partir ? On s'entendait si bien..." />
+</svelte:head>
+
 <div class="exit-container">
   <div class="exit-content">
     <h1>😢 Nous sommes désolés de vous voir partir...</h1>

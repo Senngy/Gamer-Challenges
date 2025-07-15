@@ -20,7 +20,7 @@
       name: "Thomas BRELOT",
       role: "Designer UI/UX",
       description: "Experte en design d'interface et expérience utilisateur, spécialisée dans l'univers gaming.",
-      skills: ["Figma", "UI Design", "UX Research", "Prototypage", "Design System"],
+      skills: ["Figma", "UI Design", "Responsive Design", "UX Research", "Prototypage", "Design System"],
       avatar: "/images/thomas.png"
     },
     {
@@ -33,8 +33,8 @@
     {
     name: "Samuel DUTHOIT",
     role: "Développeur Front-End",
-    description: "Expert en développement d'interfaces gaming interactives, spécialisé dans l'optimisation des performances et l'expérience utilisateur.",
-    skills: ["Svelte & SvelteKit", "JavaScript ES6+", "CSS & Animations", "WebGL", "Performance Web", "Progressive Web Apps", "Responsive Design", "Git"],
+    description: "Un chouïa de connsaissance en développement d'interfaces gaming interactives.",
+    skills: ["Svelte & SvelteKit", "JavaScript ES6+", "CSS & Animations", "WebGL", "Performance Web", "Progressive Web Apps", "Git"],
     avatar: "/images/samuel.png"
     }
   ];

@@ -13,7 +13,7 @@
   import { getCurrentUser } from '$lib/services/auth.service.js'; // Fonction pour récupérer
 	import { get } from 'svelte/store';
 
-   $effect(() => {
+    $effect(() => {
     getAuth();
   });
 
@@ -107,9 +107,20 @@
 getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
 
 </script>
+
+<svelte:head>
+  <title>Mon Profil - GamerChallenges</title>
+  <meta name="description" content="Gérez votre profil GamerChallenges, modifiez vos informations personnelles et consultez vos défis gaming." />
+</svelte:head>
+
 <div class="main-container">
 
-<h1 class="page-title">Mon compte</h1>
+<div class="hero-section">
+  <h1>Mon Profil</h1>
+  <p class="hero-subtitle">Gérez vos informations et consultez vos défis gaming</p>
+</div>
+
+
 <AuthContainer title="Mes informations personnelles">
     <div class="user-info">
   <div class="container email">
@@ -195,10 +206,26 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
   gap: 2em;
 }
 
-.page-title {
+.hero-section {
   text-align: center;
-  margin: 0.5em 0;
-  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+.hero-section h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+}
+.hero-subtitle {
+  font-size: 1rem;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .user-info {

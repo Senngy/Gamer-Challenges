@@ -8,6 +8,16 @@
 	let visibleCount = $state(6);
 </script>
 
+<svelte:head>
+  <title>Jeux - GamerChallenges</title>
+  <meta name="description" content="Découvrez tous les jeux disponibles sur GamerChallenges et explorez les défis gaming de la communauté." />
+</svelte:head>
+
+<div class="hero-section">
+  <h1>Jeux</h1>
+  <p class="hero-subtitle">Découvrez tous les jeux et explorez les défis gaming</p>
+</div>
+
 <section class="catalog" aria-labelledby="catalog-title">
 	<h1 class="catalog__title">Choisissez un jeu et lancez vous dans un défi !</h1>
 	<div class="catalog__grid" role="list">
@@ -23,3 +33,27 @@
 		</div>
 	{/if}
 </section>
+
+<style>
+	.hero-section {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.hero-section h1 {
+		font-size: 3rem;
+		font-weight: 700;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 1rem;
+	}
+	.hero-subtitle {
+		font-size: 1rem;
+		margin: 0 auto;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+</style>

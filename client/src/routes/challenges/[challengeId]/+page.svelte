@@ -197,7 +197,15 @@
 	});
 </script>
 
-<!-- Challenge details -->
+<svelte:head>
+  <title>Challenges - GamerChallenges</title>
+  <meta name="description" content="Découvrez les challenges créer par notre communauté." />
+</svelte:head>
+
+  <div class="hero-section">
+    <h1>Challenges</h1>
+    <p class="hero-subtitle">Découvrez les challenges créer par notre communauté</p>
+  </div>
 
 {#if challenge}
 	<section class="challenge-details" aria-labelledby="challenge-details">
@@ -218,7 +226,7 @@
 			{#if challenge.id}
 				{console.log('✅ challenge est prêt', challenge)}
 				
-				  <LikeItem classCSS="btn-from-challenge-page" {challenge} />
+					<LikeItem classCSS="btn-from-challenge-page" {challenge} />
 				
 			{:else}
 				<p>Chargement des Likes...</p>
@@ -293,6 +301,27 @@
 </Modal>
 
 <style>
+  .hero-section {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 	.error {
 		color: #ff6b6b;
 		text-align: center;
