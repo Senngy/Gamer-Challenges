@@ -1,56 +1,33 @@
 <script>
-	import { onMount } from 'svelte';
-	// export let challenge;
-	let { challenge } = $props();
-	import { createEventDispatcher } from 'svelte';
-
+	import { onMount, createEventDispatcher } from 'svelte';
+	import { getUserById } from '$lib/services/user.service.js'
 	import LikeItem from '$lib/components/ui/LikeItem.svelte';
 
+	const { challenge } = $props();
 	const dispatch = createEventDispatcher();
-
-	let challengeCreator = {
+	let challengeCreator = $state({
 		pseudo: '',
 		avatar: ''
-	};
+	});
 
 	onMount(async () => {
 		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
 		// Récupération des détails du challenge
 		try {
-			const { pseudo, avatar } = await getUserInfo(challenge.created_by); // Récupération des informations de l'utilisateur connecté
+			const { pseudo, avatar } = await getUserById(challenge.created_by); // Récupération des informations de l'utilisateur connecté
 			// console.log('onMount pseudo :', pseudo);
 			// console.log('onMount avatar :', avatar);
 
 			challengeCreator = {
 				// remplissage de l'objet challengeCreator avec les données de l'utilisateur
-				pseudo,
-				avatar
+				pseudo: pseudo,
+				avatar: avatar
 			};
 		} catch (err) {
 			console.error('Erreur récupération challenge :', err);
 		}
 	});
 
-	async function getUserInfo(userId) {
-		try {
-			const res = await fetch(`http://localhost:3000/users/${userId}`);
-			if (!res.ok) {
-				throw new Error(`Erreur HTTP ${res.status}`);
-			}
-			const user = await res.json();
-			// console.log('User info récupéré :', user);
-			return {
-				pseudo: user.pseudo, // ou user.username, selon ta structure
-				avatar: user.avatar // ou user.image, selon ta structure
-			};
-		} catch (err) {
-			console.error('Erreur getUserInfo :', err);
-			return null;
-		}
-	}
-
-	// Exemple : accès au titre
-	// challenge.title, challenge.description, etc.
 </script>
 
 <div class="challenge__item">
