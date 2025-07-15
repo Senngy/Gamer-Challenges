@@ -248,7 +248,7 @@ export const addLike = async (req, res) => {
         .json({ message: "Vous avez déjà liké ce contenu." });
     }
 
-    // Incrémente le compteur de likes si nouveau
+    // Incrémente le compteur de likes si nouveau pour la table challenges
     await Challenge.increment("challenge_likes", {
       where: { id: challengeId },
     });
@@ -323,29 +323,6 @@ export const checkIfLiked = async (req, res) => {
     });
 
     return res.status(200).json({ hasLiked: !!liked });
-  } catch (err) {
-    console.error("Erreur dans checkIfLiked:", err);
-    return res.status(500).json({ error: "Erreur serveur." });
-  }
-};
-
-export const addLikeToChallenge = async (req, res) => {
-  const challengeId = parseInt(req.params.id, 10);
-  console.log(`Challenge ID: ${challengeId}`); // Doit afficher l'ID du challenge
-
-  if (isNaN(challengeId)) {
-    return res.status(400).json({ error: "Paramètres invalides." });
-  }
-  try {
-    const hasLiked = await Like.findOne({
-      where: {
-        user_id: userId,
-        target_type: "challenge",
-        target_id: challengeId,
-      },
-    });
-
-    return res.status(200).json({ hasLiked: !!hasLiked });
   } catch (err) {
     console.error("Erreur dans checkIfLiked:", err);
     return res.status(500).json({ error: "Erreur serveur." });

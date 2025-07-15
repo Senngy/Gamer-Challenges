@@ -1,5 +1,7 @@
 <script>
-    export let participation;
+	import LikeItemParticipaton from "$lib/components/ui/LikeItemParticipaton.svelte";
+
+    const { participation } = $props();
     console.log("Lien media :", participation.media_link)
     console.log("user avatar :", participation.user.avatar)
     console.log("user pseudo :", participation.user.pseudo)
@@ -23,8 +25,14 @@
             <h3 class="participation__user">{participation.user.pseudo}</h3>
             
         </div>
-
-        <div class="participation__like-count" aria-label="Nombre de likes">Like | Nombre de like</div>
+      <!---->
+        {#if participation.id}
+			{console.log('✅ participation est prêt', participation)}
+			<LikeItemParticipaton classCSS="btn-from-participation" {participation} />
+		{:else}
+			<p>Chargement...</p>
+		{/if}
+        
     </div>
 </div>
 
