@@ -1,9 +1,13 @@
 <script>
   export let variant = '';
-  console.log('🔍 Variant reçu par Btn:', variant);
+  export let disabled = false;
+  function log () {
+    console.log('🔍 Variant reçu par Btn:', variant, disabled);
+  }
+
 </script>
  
- <button type="submit" class={"btn " + variant} on:click>
+ <button type="submit" class={"btn " + variant}  disabled={disabled} on:click>
    <slot></slot> 
  </button>
 
