@@ -67,3 +67,32 @@ export async function addLike(challengeId) {
     throw error;
   }
 }
+
+// Fonction toggle like sur un challenge
+export async function toggleLike(challengeId) {
+  console.debug(`[toggleLike] Toggle like for challenge ID: ${challengeId}`);
+
+  if (!challengeId) {
+    throw new Error('Challenge ID is required');
+  }
+
+  try {
+    // 1. Vérifie si l'utilisateur a déjà liké
+    const statusRes = await api(`/challenges/${challengeId}/likes/status`, 'GET');
+    const { hasLiked } = statusRes;
+    console.log("SERVICE response hasLiked", hasLiked)
+
+    // 2. Ajoute ou supprime le like selon le statut
+    const method = hasLiked ? 'DELETE' : 'POST';
+    console.log('SERVICE method: ', method)
+    const likeRes = await api(`/challenges/${challengeId}/likes`, method);
+
+    const message = hasLiked ? 'Like supprimé avec succès' : 'Like ajouté avec succès';
+    console.log(message);
+
+    return { message, likedNow: !hasLiked };
+  } catch (error) {
+    console.error('Erreur toggleLike:', error);
+    throw error;
+  }
+}

@@ -1,4 +1,5 @@
 import { Participation } from '../database/models/participation.model.js';
+import { Like } from "../database/models/index.js"
 
 export async function addParticipation(req, res) {
   const { media_link, description, challenge_id, user_id } = req.body;
@@ -38,4 +39,163 @@ export async function addParticipation(req, res) {
     console.error('Erreur lors de la création de la participation :', error);
     res.status(500).json({ success: false, message: 'Erreur serveur lors de la création de la participation.' });
   };
+}
+
+export const getLikes = async (req, res) => {
+  const target_id = parseInt(req.params.id, 10);
+  const target_type = "participation";
+
+  let user_id = null;
+
+  if (isNaN(target_id)) {
+    return res.status(400).json({ error: "ID de participation invalide." });
+  }
+
+  try {
+    const totalLikes = await Like.count({ where: { target_id, target_type } });
+    return res.json({ likes: totalLikes });
+  } catch (err) {
+    console.error("Erreur getLikes :", err);
+    return res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
+//
+
+export const addLike = async (req, res) => {
+  const participationId = parseInt(req.params.id, 10);
+  console.log(`Participation ID: ${participationId}`); // Doit afficher l'ID de la participation
+  const userId = req.user_id;
+  console.log(`User ID: ${userId}`); // Doit afficher l'ID de l'utilisateur
+
+  const target_type = "participation"; // On sait que c’est une participation via l’URL
+  const target_id = participationId;
+
+  if (!userId || isNaN(participationId)) {
+    return res.status(400).json({ error: "Paramètres requis manquants." });
+  }
+
+  try {
+    // Vérifie que la participation existe
+    const participation = await Participation.findByPk(participationId);
+    if (!participation) {
+      return res.status(404).json({ error: "Participation introuvable." });
+    }
+
+    // Vérifie et ajoute le like
+    const [like, created] = await Like.findOrCreate({
+      where: {
+        user_id: userId,
+        target_id,
+        target_type,
+      },
+    });
+
+    if (!created) {
+      return res.status(400).json({ message: "Vous avez déjà liké ce contenu." });
+    }
+    
+    // Incrémente le compteur de likes si nouveau
+    await Participation.increment('participation_likes', {
+      where: { id: participationId }
+    });
+
+    return res.status(201).json({ message: "Like ajouté avec succès." });
+  } catch (err) {
+    console.error("Erreur lors de l’ajout du like :", err);
+    return res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
+export const deleteLike = async (req, res) => {
+  const participationId = parseInt(req.params.id, 10);
+  console.log(`Participation ID: ${participationId}`); // Doit afficher l'ID de la participation
+  const userId = req.user_id;
+  console.log(`User ID: ${userId}`); // Doit afficher l'ID de l'utilisateur
+
+  const target_type = "participation"; // On sait que c’est une participation via l’URL
+  const target_id = participationId;
+
+  if (!userId || isNaN(participationId)) {
+    return res.status(400).json({ error: "Paramètres requis manquants." });
+  }
+
+  try {
+    // Vérifie que la participation existe
+    const participation = await Participation.findByPk(participationId);
+    if (!participation) {
+      return res.status(404).json({ error: "Participation introuvable." });
+    }
+
+    // Supprime le like
+    const deleted = await Like.destroy({
+      where: {
+        user_id: userId,
+        target_id: target_id,
+        target_type: target_type,
+      },
+    });
+    if (deleted === 0) {
+      return res.status(404).json({ error: "Like non trouvé." });
+    }
+    // Supprime le like pour le participation
+        await Participation.decrement("participation_likes", {
+          where: { id: participationId },
+        });
+    
+
+    return res.status(200).json({ message: "Like enlevé avec succès." });
+  } catch (err) {
+    console.error("Erreur lors de la suppression du like :", err);
+    return res.status(500).json({ error: "Erreur serveur." });
+  }
+};
+
+export const checkIfLiked = async (req, res) => {
+  const userId = req.user_id;
+  const participationId = parseInt(req.params.id, 10);
+  console.log(`Participation ID: ${participationId}`); // Doit afficher l'ID de la participation
+  console.log(`User ID: ${userId}`); // Doit afficher l'ID de l'utilisateur
+
+  if (!userId || isNaN(participationId)) {
+    return res.status(400).json({ error: 'Paramètres invalides.' });
+  }
+
+  try {
+    const liked = await Like.findOne({
+      where: {
+        user_id: userId,
+        target_type: 'participation',
+        target_id: participationId,
+      }
+    });
+
+    return res.status(200).json({ hasLiked: !!liked });
+  } catch (err) {
+    console.error('Erreur dans checkIfLiked:', err);
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
+};
+
+export const addLikeToParticipation = async (req, res) => {
+  const participationId = parseInt(req.params.id, 10);
+  console.log(`Participation ID: ${participationId}`); // Doit afficher l'ID de la participation
+  
+   if (isNaN(participationId)) {
+    return res.status(400).json({ error: 'Paramètres invalides.' });
+  }
+  try {
+    const hasLiked = await Like.findOne({
+      where: {
+        user_id: userId,
+        target_type: 'participation',
+        target_id: participationId
+      }
+    });
+
+    return res.status(200).json({ hasLiked: !!hasLiked });
+  } catch (err) {
+    console.error('Erreur dans checkIfLiked:', err);
+    return res.status(500).json({ error: 'Erreur serveur.' });
+  }
 }

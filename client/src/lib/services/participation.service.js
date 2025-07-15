@@ -33,3 +33,69 @@ export async function getParticipations(challenge_id) {
     throw error;
   }
 }
+
+// Fonction pour récupérer les informations de likes du challenge
+export async function getLikes(participationId) {
+  if (!participationId) {
+    throw new Error('participation ID is required');
+  }
+
+  try {
+    const likes = await api(`/participations/${participationId}/likes`, "GET");
+    console.debug(`[getLikes] Likes retrieved:`, likes);
+    return likes;
+  } catch (error) {
+    console.error(`[getLikes] Failed to fetch likes with ID ${participationId}:`, error);
+    throw error;
+  }
+}
+
+// Fonction d'ajout d'un like au participation
+export async function addLike(participationId) {
+
+  console.debug(`[addLike] Adding like to participation with ID: ${participationId}`);
+  
+  if (!participationId) {
+    throw new Error('participation ID is required');
+  }
+
+  try {
+    const likeAdded = await api(`/participations/${participationId}/likes`, "POST");
+
+    console.log('Like ajouté avec succès :', likeAdded);
+    return likeAdded;
+
+  } catch (error) {
+    console.error('Échec d\'ajout du like :', error);
+    throw error;
+  }
+}
+
+// Fonction toggle like sur un participation
+export async function toggleLike(participationId) {
+  console.debug(`[toggleLike] Toggle like for participation ID: ${participationId}`);
+
+  if (!participationId) {
+    throw new Error('participation ID is required');
+  }
+
+  try {
+    // 1. Vérifie si l'utilisateur a déjà liké
+    const statusRes = await api(`/participations/${participationId}/likes/status`, 'GET');
+    const { hasLiked } = statusRes;
+    console.log("SERVICE response hasLiked", hasLiked)
+
+    // 2. Ajoute ou supprime le like selon le statut
+    const method = hasLiked ? 'DELETE' : 'POST';
+    console.log('SERVICE method: ', method)
+    const likeRes = await api(`/participations/${participationId}/likes`, method);
+
+    const message = hasLiked ? 'Like supprimé avec succès' : 'Like ajouté avec succès';
+    console.log(message);
+
+    return { message, likedNow: !hasLiked };
+  } catch (error) {
+    console.error('Erreur toggleLike:', error);
+    throw error;
+  }
+}
