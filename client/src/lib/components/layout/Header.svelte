@@ -1,5 +1,3 @@
-
-<!-- Header.svelte -->
 <script>
 	import { authStore, getAuth, isAuthenticated, clearAuth } from '$lib/store/authStore.svelte';
 	import { getUserById } from '$lib/services/user.service';
@@ -13,7 +11,6 @@
 	let userAvatar = null;
 	let searchQuery = $state('');
 	let searchResults = $state([]);
-
 
 	// onMount(async () => {
 	// 	try {
@@ -29,34 +26,33 @@
 	// 	}
 	// });
 
+	onMount(async () => {
+		try {
+			userInfoJSON = localStorage.getItem('user');
 
-  onMount(async () => {
-  try {
-    userInfoJSON = localStorage.getItem("user");
+			if (!userInfoJSON) {
+				console.warn('Aucune donnée utilisateur trouvée dans le localStorage');
+				return; // ⛔ éviter l'erreur en quittant
+			}
 
-    if (!userInfoJSON) {
-      console.warn("Aucune donnée utilisateur trouvée dans le localStorage");
-      return; // ⛔ éviter l'erreur en quittant
-    }
+			userInfo = JSON.parse(userInfoJSON);
 
-    userInfo = JSON.parse(userInfoJSON);
+			if (!userInfo || !userInfo.id) {
+				console.warn('userInfo invalide ou sans ID :', userInfo);
+				return;
+			}
 
-    if (!userInfo || !userInfo.id) {
-      console.warn("userInfo invalide ou sans ID :", userInfo);
-      return;
-    }
+			const user = await getUserById(userInfo.id);
 
-    const user = await getUserById(userInfo.id);
-
-    if (user && user.avatar) {
-      userAvatar = user.avatar;
-    } else {
-      console.warn("Aucun avatar trouvé pour l'utilisateur");
-    }
-  } catch (error) {
-    console.error("Erreur lors de la récupération de l'avatar :", error);
-  }
-});
+			if (user && user.avatar) {
+				userAvatar = user.avatar;
+			} else {
+				console.warn("Aucun avatar trouvé pour l'utilisateur");
+			}
+		} catch (error) {
+			console.error("Erreur lors de la récupération de l'avatar :", error);
+		}
+	});
 
 	$effect(() => {
 		//
@@ -112,175 +108,117 @@
 	}
 </script>
 
-<header class="header" aria-label="En-tête du site Gamer Challenge">
+<header class="header" aria-label="En-tête principal du site Gamer Challenge">
+	<!-- Logo du site -->
+	<a href="/" class="header__logo" aria-label="Retour à l’accueil (logo Gamer Challenge)">GC</a>
 
-  <!-- Logo du site -->
-    <div class="header__logo" aria-label="Logo Gamer Challenge"><a href="/">GC</a></div>
-  <!-- Barre de recherche -->
-  <div class="header__search-bar" aria-label="Barre de recherche">
-    <form on:submit|preventDefault={onSearch}>
-    <label for="search" class="visually-hidden">Rechercher un jeu</label>
-    <input
-      type="search"
-      id="search"
-      name="search"
-      class="search-input"
-      bind:value={searchQuery}
-      placeholder="Rechercher votre jeu... 🔍"
-      aria-label="Rechercher un jeu"
-    />
-    </form>
-    {#if searchResults.length > 0}
-    <ul class="search-results">
-    {#each searchResults as game}
-      <li class="result-game" >
-        <button type="button" class="btn-result" on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button>
-      </li>
-    {/each}
-    </ul>
-  {:else if searchQuery.trim() !== ""}
-    <p class="no-result">Aucun résultat trouvé</p>
-  {/if}   
-  </div>
-  
+	<!-- Barre de recherche -->
+	<div class="header__search-bar" aria-label="Barre de recherche de jeux">
+		<form on:submit|preventDefault={onSearch}>
+			<label for="search" class="visually-hidden">Rechercher un jeu</label>
+			<input
+				type="search"
+				id="search"
+				name="search"
+				class="search-input"
+				bind:value={searchQuery}
+				placeholder="Rechercher votre jeu... 🔍"
+				aria-label="Rechercher un jeu"
+			/>
+		</form>
+		{#if searchResults.length > 0}
+			<ul class="search-results" role="list" aria-label="Résultats de recherche">
+				{#each searchResults as game}
+					<li class="result-game">
+						<button
+							type="button"
+							class="btn-result"
+							on:click={() => redirectSearch(`/games/${game.id}`)}
+						>
+							{game.title}
+						</button>
+					</li>
+				{/each}
+			</ul>
+		{:else if searchQuery.trim() !== ''}
+			<p class="no-result" role="status" aria-live="polite">Aucun résultat trouvé</p>
+		{/if}
+	</div>
 
-  <!-- Bouton menu burger -->
-  <button
-    class="burger"
-    id="burger"
-    aria-label="Ouvrir le menu"
-    aria-controls="mobileMenu"
-    aria-expanded="false"
-  >
-    &#9776;
-  </button>
-  <!-- Menu de navigation mobile -->
-  <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
-    <button id="closeMenu" class="mobile-menu__close">×</button>
-    <div>
-      <div class="mobile-menu__container">
-        <span class="text-logo">Gamer<br />Challenges</span>
-      </div>
+	<!-- Navigation desktop -->
+	<nav class="desktop-nav" role="navigation" aria-label="Menu principal">
+		<ul class="desktop-nav__list">
+			<li class="desktop-nav__item">
+				<a href="/" class="nav-link">Accueil</a>
+			</li>
+			<li class="desktop-nav__item">
+				<a href="/games" class="nav-link">Catalogue</a>
+			</li>
+			<li class="desktop-nav__item">
+				<a href="/about" class="nav-link">À propos</a>
+			</li>
 
-      <div class="mobile-menu__container">
-        <ul>
-          <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
-          <li><a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue de jeux</a></li>
-          <li><a href="/contact" class="mobile-link" sveltekit:prefetch>Contact</a></li>
-        </ul>
-      </div>
-      
-      <div class="mobile-menu__container user-section">
-        {#if isAuthenticated()}
-          <a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
-          <p class="connected-user">Vous êtes connecté en tant que : <span class="connected-user__pseudo">{userInfo.pseudo}</span></p>
-        {:else}
-          <ul>
-            <li><a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a></li>
-            <li><a href="/auth/register" class="mobile-link strong" sveltekit:prefetch>Créer un compte</a></li>
-          </ul>
-        {/if}
-      </div>
-    </div>
+			{#if isAuthenticated()}
+				<li class="desktop-nav__item">
+					<a href="/me" class="nav-link">Mon compte</a>
+				</li>
+			{:else}
+				<li class="desktop-nav__item">
+					<a href="/auth/login" class="nav-link">Connexion</a>
+				</li>
+				<li class="desktop-nav__item">
+					<a href="/auth/register" class="nav-link strong">Créer un compte</a>
+				</li>
+			{/if}
+		</ul>
+	</nav>
+
+	<!-- Bouton menu burger (mobile) -->
+	<button
+		class="burger"
+		id="burger"
+		aria-label="Ouvrir le menu mobile"
+		aria-controls="mobileMenu"
+		aria-expanded="false"
+	>
+		&#9776;
+	</button>
+
+	<!-- Menu de navigation mobile -->
+	<nav class="mobile-menu" id="mobileMenu" aria-label="Menu de navigation mobile">
+		<button id="closeMenu" class="mobile-menu__close" aria-label="Fermer le menu">×</button>
+		<div>
+			<div class="mobile-menu__container">
+				<span class="text-logo">Gamer<br />Challenges</span>
+			</div>
+
+			<div class="mobile-menu__container">
+				<ul>
+					<li><a href="/" class="mobile-link">Accueil</a></li>
+					<li><a href="/games" class="mobile-link">Catalogue</a></li>
+					<li><a href="/about" class="mobile-link">À propos</a></li>
+				</ul>
+			</div>
+
+			<div class="mobile-menu__container user-section">
+				{#if isAuthenticated()}
+					<a href="/me" class="mobile-link">Mon compte</a>
+					<p class="connected-user">
+						Vous êtes connecté en tant que : <span class="connected-user__pseudo"
+							>{userInfo.pseudo}</span
+						>
+					</p>
+				{:else}
+					<ul>
+						<li><a href="/auth/login" class="mobile-link">Me connecter</a></li>
+						<li><a href="/auth/register" class="mobile-link strong">Créer un compte</a></li>
+					</ul>
+				{/if}
+			</div>
+		</div>
+
 		<div>
 			<p class="copyright">Tous droits GamerChallenges 2025</p>
 		</div>
 	</nav>
 </header>
-<style>
-	.button {
-		display: flex;
-		justify-content: center;
-		margin: 1rem auto;
-	}
-	.search-input {
-		color: white;
-	}
-	.search-results {
-		position: absolute;
-		z-index: 11000;
-	}
-	.btn-result {
-		border-left: none;
-		border-right: none;
-		border-top: none;
-		margin-left: 1rem;
-		min-width: 279px;
-		text-align: left;
-		padding: 0.7rem 4px;
-		font-size: 1.2rem;
-		color: rgba(51, 50, 50, 0.877);
-		font-weight: bold;
-	}
-	.btn-result:hover {
-		border-radius: 2px;
-		backdrop-filter: blur(10px);
-		-webkit-backdrop-filter: blur(10px);
-		background: linear-gradient(135deg, #ffffff 0%, #636363 100%);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-		box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-		color: white;
-	}
-
-	.mobile-menu__container {
-		border-top: 1px solid rgba(255, 255, 255, 0.3);
-		padding: 1em;
-		text-align: center;
-	}
-
-	.text-logo {
-		font-size: 4vh;
-		font-weight: bold;
-		color: #eee;
-		margin-bottom: 1em;
-		font-family: 'Orbitron', sans-serif;
-	}
-
-	.connected-user {
-		font-size: 0.8em;
-		margin-top: 0.8em;
-	}
-
-	.connected-user__pseudo {
-		font-weight: bold;
-		color: #8b1e1e;
-		transition: color 0.2s;
-	}
-
-	.copyright {
-		font-size: 0.8em;
-		color: #ccc;
-		margin-bottom: 2em;
-		text-align: center;
-	}
-
-	@media (min-width: 0px) and (max-width: 380.98px) {
-		.btn-result {
-			min-width: 290px;
-			font-size: 0.6rem;
-		}
-	}
-
-	@media (min-width: 381px) and (max-width: 567.98px) {
-		.btn-result {
-			min-width: 340px;
-			font-size: 0.8rem;
-		}
-	}
-
-	/* Tablettes et plus (>= 768px) : 2 colonnes */
-	@media (min-width: 568px) {
-		.btn-result {
-			min-width: 370px;
-			font-size: 1rem;
-		}
-	}
-
-	/* Desktop (>= 1024px) : 3 colonnes */
-	@media (min-width: 1024px) {
-		.btn-result {
-			min-width: 500px;
-			font-size: 1.2rem;
-		}
-	}
-</style>
