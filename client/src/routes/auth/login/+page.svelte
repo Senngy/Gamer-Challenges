@@ -74,15 +74,24 @@
 </script>
 
 <svelte:head>
-  <title>Connexion | GamerChallenges</title>
+  <title>Connexion - GamerChallenges</title>
+  <meta name="description" content="Connectez-vous à votre compte GamerChallenges pour accéder à vos défis gaming et rejoindre la communauté." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
+
+  <div class="hero-section">
+    <h1>Connexion</h1>
+    <p class="hero-subtitle">Connectez-vous pour accéder à vos défis gaming</p>
+  </div>
 
 <AuthContainer title="Connexion">
   <!-- Affichage des erreurs générales -->
   {#if generalError}
     <div class="error general-error">{generalError}</div>
   {/if}
-  
+
   <AuthForm onSubmit={handleSubmitLogin}>
     <!-- Champ Email avec validation -->
     <div class="input-group">
@@ -134,6 +143,31 @@
 </AuthContainer>
 
 <style>
+
+  .hero-section {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .error {
     color: #ff6b6b;
     text-align: center;

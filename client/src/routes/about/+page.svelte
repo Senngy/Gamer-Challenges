@@ -20,7 +20,7 @@
       name: "Thomas BRELOT",
       role: "Designer UI/UX",
       description: "Experte en design d'interface et expérience utilisateur, spécialisée dans l'univers gaming.",
-      skills: ["Figma", "UI Design", "UX Research", "Prototypage", "Design System"],
+      skills: ["Figma", "UI Design", "Responsive Design", "UX Research", "Prototypage", "Design System"],
       avatar: "/images/thomas.png"
     },
     {
@@ -33,8 +33,8 @@
     {
     name: "Samuel DUTHOIT",
     role: "Développeur Front-End",
-    description: "Expert en développement d'interfaces gaming interactives, spécialisé dans l'optimisation des performances et l'expérience utilisateur.",
-    skills: ["Svelte & SvelteKit", "JavaScript ES6+", "CSS & Animations", "WebGL", "Performance Web", "Progressive Web Apps", "Responsive Design", "Git"],
+    description: "Un chouïa de connsaissance en développement d'interfaces gaming interactives.",
+    skills: ["Svelte & SvelteKit", "JavaScript ES6+", "CSS & Animations", "WebGL", "Performance Web", "Progressive Web Apps", "Git"],
     avatar: "/images/samuel.png"
     }
   ];
@@ -86,6 +86,9 @@
   <title>À propos - GamerChallenges</title>
   <meta name="description" content="Découvrez GamerChallenges, la plateforme communautaire dédiée aux passionnés de jeux vidéo. Créez, relevez et partagez des challenges gaming avec une communauté active." />
   <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="about-container">

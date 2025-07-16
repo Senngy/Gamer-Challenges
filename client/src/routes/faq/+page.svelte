@@ -130,6 +130,9 @@
 <svelte:head>
   <title>FAQ - GamerChallenges</title>
   <meta name="description" content="Foire aux questions de GamerChallenges. Trouvez toutes les réponses à vos questions sur notre plateforme de défis gaming." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <main class="faq-container">
@@ -206,13 +209,11 @@
     padding: 2rem 1rem;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
-
   .hero-section {
     text-align: center;
     margin-bottom: 3rem;
     padding: 2rem 0;
   }
-
   .hero-section h1 {
     font-size: 3rem;
     font-weight: 700;
@@ -222,7 +223,6 @@
     background-clip: text;
     margin-bottom: 1rem;
   }
-
   .hero-subtitle {
     font-size: 1.2rem;
     color: #666;
@@ -230,17 +230,14 @@
     margin: 0 auto;
     line-height: 1.6;
   }
-
   .search-section {
     margin-bottom: 3rem;
   }
-
   .search-box {
     position: relative;
     max-width: 500px;
     margin: 0 auto;
   }
-
   .search-input {
     width: 100%;
     padding: 1rem 3rem 1rem 1rem;
@@ -250,13 +247,11 @@
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-
   .search-input:focus {
     outline: none;
     border-color: #667eea;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
   }
-
   .search-icon {
     position: absolute;
     right: 1rem;
@@ -265,15 +260,12 @@
     font-size: 1.2rem;
     color: #999;
   }
-
   .faq-content {
     margin-bottom: 4rem;
   }
-
   .faq-category {
     margin-bottom: 3rem;
   }
-
   .category-title {
     font-size: 1.5rem;
     font-weight: 600;
@@ -283,7 +275,6 @@
     border-bottom: 3px solid #667eea;
     display: inline-block;
   }
-
   .faq-item {
     margin-bottom: 1rem;
     border: 1px solid #e2e8f0;
@@ -293,17 +284,14 @@
     opacity: 0;
     transform: translateY(20px);
   }
-
   .faq-item:global(.animate-fade-in) {
     opacity: 1;
     transform: translateY(0);
   }
-
   .faq-item:hover {
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-color: #cbd5e0;
   }
-
   .question-button {
     width: 100%;
     background: white;
@@ -319,39 +307,32 @@
     align-items: center;
     transition: all 0.3s ease;
   }
-
   .question-button:hover {
     background: #f7fafc;
   }
-
   .question-button.active {
     background: #edf2f7;
     color: #667eea;
   }
-
   .question-text {
     flex: 1;
     padding-right: 1rem;
   }
-
   .toggle-icon {
     font-size: 1.5rem;
     font-weight: bold;
     color: #667eea;
     transition: transform 0.3s ease;
   }
-
   .question-button.active .toggle-icon {
     transform: rotate(180deg);
   }
-
   .answer-container {
     padding: 0 1.5rem 1.5rem;
     background: #f8fafc;
     border-top: 1px solid #e2e8f0;
     animation: slideDown 0.3s ease-out;
   }
-
   @keyframes slideDown {
     from {
       opacity: 0;
@@ -366,20 +347,17 @@
       padding-bottom: 1.5rem;
     }
   }
-
   .answer-text {
     color: #4a5568;
     line-height: 1.7;
     margin: 0;
     font-size: 0.95rem;
   }
-
   .contact-section {
     margin-top: 4rem;
     padding-top: 3rem;
     border-top: 2px solid #e2e8f0;
   }
-
   .contact-card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -388,26 +366,22 @@
     text-align: center;
     box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
   }
-
   .contact-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     font-weight: 600;
   }
-
   .contact-card p {
     font-size: 1rem;
     margin-bottom: 2rem;
     opacity: 0.9;
   }
-
   .contact-buttons {
     display: flex;
     gap: 1rem;
     justify-content: center;
     flex-wrap: wrap;
   }
-
   .btn {
     padding: 0.75rem 1.5rem;
     border-radius: 8px;
@@ -417,83 +391,37 @@
     border: 2px solid transparent;
     display: inline-block;
   }
-
   .btn-primary {
     background: white;
     color: #667eea;
   }
-
   .btn-primary:hover {
     background: #f7fafc;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
-
   .btn-secondary {
     background: transparent;
     color: white;
     border-color: white;
   }
-
   .btn-secondary:hover {
     background: white;
     color: #667eea;
     transform: translateY(-2px);
   }
-
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .faq-container {
-      padding: 1rem;
-    }
-
-    .hero-section h1 {
-      font-size: 2rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-
-    .question-button {
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-
-    .answer-container {
-      padding: 0 1rem 1rem;
-    }
-
-    .contact-card {
-      padding: 2rem 1rem;
-    }
-
-    .contact-buttons {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .btn {
-      width: 100%;
-      max-width: 200px;
-    }
-  }
-
   @media (max-width: 480px) {
     .hero-section h1 {
       font-size: 1.5rem;
     }
-
     .category-title {
       font-size: 1.2rem;
     }
-
     .question-button {
       flex-direction: column;
       align-items: flex-start;
       gap: 0.5rem;
     }
-
     .toggle-icon {
       align-self: flex-end;
     }

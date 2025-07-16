@@ -199,9 +199,17 @@
 </script>
 
 <svelte:head>
-  <title>{challenge.title} | GamerChallenges</title>
-</svelte:head>
 
+  <title>Challenges - GamerChallenges</title>
+  <meta name="description" content="Découvrez les challenges créer par notre communauté." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</svelte:head>
+  <div class="hero-section">
+    <h1>Challenges</h1>
+    <p class="hero-subtitle">Découvrez les challenges créer par notre communauté</p>
+  </div>
 <section class="intro">
 	<!-- Game infos -->
 	<section class="game-info">
@@ -323,6 +331,29 @@
 </Modal>
 
 <style>
+
+  .hero-section {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .hero-section h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
 	.intro {
 		display: flex;
 		flex-direction: column;

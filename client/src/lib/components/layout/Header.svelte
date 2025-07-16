@@ -113,97 +113,80 @@
 </script>
 
 <header class="header" aria-label="En-tête du site Gamer Challenge">
-	<!-- Logo du site -->
-	<div class="header__logo" aria-label="Logo Gamer Challenge">GC</div>
 
-	<!-- Barre de recherche -->
-	<div class="header__search-bar" aria-label="Barre de recherche">
-		<form on:submit|preventDefault={onSearch}>
-			<label for="search" class="visually-hidden">Rechercher un jeu</label>
-			<input
-				type="search"
-				id="search"
-				name="search"
-				class="search-input"
-				bind:value={searchQuery}
-				placeholder="Rechercher votre jeu... 🔍"
-				aria-label="Rechercher un jeu"
-			/>
-		</form>
-		{#if searchResults.length > 0}
-			<ul class="search-results">
-				{#each searchResults as game}
-					<li class="result-game">
-						<button
-							type="button"
-							class="btn-result"
-							on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button
-						>
-					</li>
-				{/each}
-			</ul>
-		{:else if searchQuery.trim() !== ''}
-			<p class="no-result">Aucun résultat trouvé</p>
-		{/if}
-	</div>
+  <!-- Logo du site -->
+    <div class="header__logo" aria-label="Logo Gamer Challenge"><a href="/">GC</a></div>
+  <!-- Barre de recherche -->
+  <div class="header__search-bar" aria-label="Barre de recherche">
+    <form on:submit|preventDefault={onSearch}>
+    <label for="search" class="visually-hidden">Rechercher un jeu</label>
+    <input
+      type="search"
+      id="search"
+      name="search"
+      class="search-input"
+      bind:value={searchQuery}
+      placeholder="Rechercher votre jeu... 🔍"
+      aria-label="Rechercher un jeu"
+    />
+    </form>
+    {#if searchResults.length > 0}
+    <ul class="search-results">
+    {#each searchResults as game}
+      <li class="result-game" >
+        <button type="button" class="btn-result" on:click={() => redirectSearch(`/games/${game.id}`)}>{game.title}</button>
+      </li>
+    {/each}
+    </ul>
+  {:else if searchQuery.trim() !== ""}
+    <p class="no-result">Aucun résultat trouvé</p>
+  {/if}   
+  </div>
+  
 
-	<!-- Bouton menu burger -->
-	<button
-		class="burger"
-		id="burger"
-		aria-label="Ouvrir le menu"
-		aria-controls="mobileMenu"
-		aria-expanded="false"
-	>
-		&#9776;
-	</button>
-	<!-- Menu de navigation mobile -->
-	<nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
-		<button id="closeMenu" class="mobile-menu__close">×</button>
-		<div>
-			<div class="mobile-menu__container">
-				<span class="text-logo">Gamer<br />Challenges</span>
-			</div>
+  <!-- Bouton menu burger -->
+  <button
+    class="burger"
+    id="burger"
+    aria-label="Ouvrir le menu"
+    aria-controls="mobileMenu"
+    aria-expanded="false"
+  >
+    &#9776;
+  </button>
+  <!-- Menu de navigation mobile -->
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Menu mobile">
+    <button id="closeMenu" class="mobile-menu__close">×</button>
+    <div>
+      <div class="mobile-menu__container">
+        <a href="/" class="mobile-link" sveltekit:prefetch><span class="text-logo">Gamer<br />Challenges</span></a>
+      </div>
 
-			<div class="mobile-menu__container">
-				<ul>
-					<li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
-					<li>
-						<a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a>
-					</li>
-					<li>
-						<a href="/about" class="mobile-link" sveltekit:prefetch>À propos</a>
-					</li>
-				</ul>
-			</div>
-			<div class="mobile-menu__container user-section">
-				{#if isAuthenticated()}
-					<a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
-					<p class="connected-user">
-						Vous êtes connecté en tant que : <span class="connected-user__pseudo"
-							>{userInfo.pseudo}</span
-						>
-					</p>
-				{:else}
-					<ul>
-						<li>
-							<a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a>
-						</li>
-						<li>
-							<a href="/auth/register" class="mobile-link strong" sveltekit:prefetch
-								>Créer un compte</a
-							>
-						</li>
-					</ul>
-				{/if}
-			</div>
-		</div>
+      <div class="mobile-menu__container">
+        <ul>
+          <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
+          <li><a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a></li>
+          <li><a href="/contact" class="mobile-link" sveltekit:prefetch>Contact</a></li>
+        </ul>
+      </div>
+      
+      <div class="mobile-menu__container user-section">
+        {#if isAuthenticated()}
+          <a href="/me" class="mobile-link" sveltekit:prefetch>Mon compte</a>
+          <p class="connected-user">Vous êtes connecté en tant que : <span class="connected-user__pseudo">{userInfo.pseudo}</span></p>
+        {:else}
+          <ul>
+            <li><a href="/auth/login" class="mobile-link" sveltekit:prefetch>Me connecter</a></li>
+            <li><a href="/auth/register" class="mobile-link strong" sveltekit:prefetch>Créer un compte</a></li>
+          </ul>
+        {/if}
+      </div>
+    </div>
 		<div>
 			<p class="copyright">Tous droits GamerChallenges 2025</p>
 		</div>
 	</nav>
 </header>
-
 <style>
 	.button {
 		display: flex;
