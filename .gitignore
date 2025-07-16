@@ -2,7 +2,7 @@
 node_modules/
 
 # Svelte files
-client/.svelte-kit/
+**/.svelte-kit/
 
 # Logs
 logs/
