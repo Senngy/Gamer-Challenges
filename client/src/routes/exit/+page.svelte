@@ -18,6 +18,7 @@
 </script>
 
 <svelte:head>
+
   <title>Exit - GamerChallenges</title>
   <meta name="description" content="Pourquoi partir ? On s'entendait si bien..." />
   <link rel="preconnect" href="https://fonts.googleapis.com">

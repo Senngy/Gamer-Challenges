@@ -7,15 +7,15 @@
 	import FilterText from '$lib/components/ui/FilterText.svelte';
 	import LikeItem from '$lib/components/ui/LikeItem.svelte';
 	import { getChallenge } from '$lib/services/challenge.service.js';
-	import { getParticipations } from '$lib/services/participation.service.js';
-	import { participationCreation } from '$lib/services/participation.service.js';
+	import { getParticipations, participationCreation } from '$lib/services/participation.service.js';
+	import { getUserById } from '$lib/services/user.service.js';
+	import { getGameInfos } from '$lib/services/game.service.js';
 	import { goto } from '$app/navigation';
-	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
+	import { getAuth, isAuthenticated, authStore } from '$lib/store/authStore.svelte.js';
 
 	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
 	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
-	//console.log(`PAGE Bonjour je suis le ${challengeId}`);
 
 	const challenge_id = challengeId;
 
@@ -28,49 +28,100 @@
 		game_by: ''
 	});
 
-	let challengeCreator = $state({
+	let participationCreator = $state({
+		id: '',
 		pseudo: '',
 		avatar: ''
 	});
-
-	
-
+	let game = $state({
+		id: '',
+		title: '',
+		image: ''
+	});
+	let challengeCreator = $state({
+		id: '',
+		pseudo: '',
+		avatar: ''
+	});
 	let participations = $state([]); // Initialisation de la liste des participations
 	let showModal = $state(false); // État pour contrôler l'affichage du modal
 	let error = $state(''); // État pour les messages d'erreur
 	let success = $state(''); // État pour les messages de succès
 	let media_link = $state(''); // État pour le lien du média
 	let description = $state(''); // État pour la description de la participation
-	let user_id = 3; // Remplacez par l'ID de l'utilisateur connecté
-	// console.log(`user_id: ${user_id}`)
+	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
 
 	onMount(async () => {
-		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
-		// Récupération des détails du challenge
-		try {
-			const challengeDetails = await getChallenge(challenge_id); // Appel à la fonction pour récupérer les détails du challenge
-			if (!challengeDetails) throw new Error('Pas de challenge trouvé');
+		// 🟢 Code exécuté une seule fois lorsque le composant est monté (équivalent à componentDidMount)
+		getAuth();
+		user_id = authStore.user?.id ?? null;
 
-			const { id, title, description, rules, created_by, game_by } = challengeDetails; // Récupération des détails du challenge
-			const image = await getGameImage(game_by); // Appel à la fonction pour récupérer l'image du jeu associé au challenge
-			const { pseudo, avatar } = await getUserInfo(created_by); // Récupération des informations de l'utilisateur connecté
-			console.log('onMount pseudo :', pseudo);
-			console.log('onMount avatar :', avatar);
-			// remplissage de l'objet challenge avec les données récupérées
-			challenge = { id, title, description, rules, created_by, game_by, image }; // ✅ Injecte ici l’image récupérée
-			challengeCreator = { pseudo, avatar }; // remplissage de l'objet challengeCreator avec les données de l'utilisateur
-			await getParticipationsList(); // Récupération des participations du challenge
+		try {
+			// 🔁 Appel parallèle : on récupère les détails du challenge + toutes les participations
+			const [{ id, title, description, rules, created_by, game_by }, participationsList] =
+				await Promise.all([getChallenge(challenge_id), getParticipations(challenge_id)]);
+
+			console.log('Challenge récupéré :', { id, title, description, rules, created_by, game_by });
+
+			// 🔁 Appel parallèle : on récupère les infos du jeu + l'utilisateur connecté
+			const [gameInfo, userInfo] = await Promise.all([getGameInfos(game_by), getUserInfo(user_id)]);
+
+			console.log('Game info récupéré :', gameInfo);
+			console.log('User info récupéré :', userInfo);
+
+			// 👤 Récupération des infos du créateur du challenge (attention, appel en plus !)
+			const creatorChallengeInfos = await getUserInfo(created_by);
+
+			// Mise à jour des variables réactives avec les données obtenues
+			challenge = {
+				id,
+				title,
+				description,
+				rules,
+				created_by,
+				game_by
+				// image: gameInfo.image
+			};
+
+			game = {
+				id: gameInfo.id,
+				title: gameInfo.title,
+				image: gameInfo.image,
+			};
+
+			if (creatorChallengeInfos) {
+				challengeCreator = {
+					id: creatorChallengeInfos.id,
+					pseudo: creatorChallengeInfos.pseudo,
+					avatar: creatorChallengeInfos.avatar
+				};
+			}
+
+			// Si user connecté, on récupère ses infos pour la participation
+			if (user_id) {
+				const userInfo = await getUserInfo(user_id);
+				if (userInfo) {
+					participationCreator = {
+						pseudo: userInfo.pseudo,
+						avatar: userInfo.avatar
+					};
+				}
+			}
+			// Mise à jour participations
+			participations = participationsList;
 		} catch (err) {
+			// ❌ Gestion des erreurs en cas d’échec de récupération
 			console.error('Erreur récupération challenge :', err);
+			error = 'Impossible de charger les données';
 		}
 	});
 
-	async function getGameImage(gameId) {
+	async function getGameInfo(gameId) {
 		// Fonction pour récupérer l'image du jeu associé au challenge
 		try {
-			const res = await fetch(`http://localhost:3000/games/${gameId}`);
-			const game = await res.json();
-			return game.image;
+			game = await getGameInfos(gameId);
+			console.log('Game info récupéré :', game);
+			return game;
 		} catch (err) {
 			console.error('Erreur getGameImage :', err);
 			return null;
@@ -78,16 +129,14 @@
 	}
 
 	async function getUserInfo(userId) {
+		if (!userId) return null;
 		try {
-			const res = await fetch(`http://localhost:3000/users/${userId}`);
-			if (!res.ok) {
-				throw new Error(`Erreur HTTP ${res.status}`);
-			}
-			const user = await res.json();
-			console.log('User info récupéré :', user);
+			const user = await getUserById(userId);
+			//console.log('User info récupéré :', user);
 			return {
 				pseudo: user.pseudo, // ou user.username, selon ta structure
-				avatar: user.avatar // ou user.image, selon ta structure
+				avatar: user.avatar, // ou user.image, selon ta structure
+				user_id: user.id
 			};
 		} catch (err) {
 			console.error('Erreur getUserInfo :', err);
@@ -95,61 +144,18 @@
 		}
 	}
 
-	const getChallengeDetails = async () => {
-		// Fonction pour récupérer les détails du challenge
-		try {
-			const challengeDetails = await getChallenge(challenge_id);
-			console.log('Données du challenge récupérées :', challengeDetails);
-
-			if (!challengeDetails) {
-				throw new Error('Réponse inattendue : pas de détails disponibles');
-			}
-
-			const { id, title, description, rules, created_by, game_by } = challengeDetails;
-
-			challenge = {
-				id: challengeDetails.id,
-				title: challengeDetails.title,
-				description: challengeDetails.description,
-				rules: challengeDetails.rules,
-				created_by: challengeDetails.created_by,
-				game_by: challengeDetails.game_by
-			};
-			console.log('CHALLENGE', challenge);
-			return getGameImage(challenge.game_by);
-		} catch (error) {
-			console.error('Erreur lors de la récupération des informations du challenge :', error);
-		}
-	};
-
-	const getParticipationsList = async () => {
-		try {
-			const participationsList = await getParticipations(challenge_id);
-			console.log('Liste des participations du challenge récupérées :', participationsList);
-
-			if (!participationsList) {
-				throw new Error('Réponse inattendue : pas de participations disponibles');
-			}
-
-			participations = participationsList;
-		} catch (error) {
-			console.error('Erreur lors de la récupération des participations du challenge :', error);
-		}
-	};
-
 	const handleSubmitParticipation = async (e) => {
 		console.log('handleSubmitParticipation called');
 		e.preventDefault();
-
+		console.log('handleSubmit user_id', user_id);
+		if (!isAuthenticated()) {
+			error = 'Veuillez vous connecter pour créer un challenge';
+			return;
+		}
 		if (!media_link.trim() || !description.trim()) {
 			error = 'Veuillez remplir tous les champs.';
 			return;
 		}
-
-		console.log('media_link:', media_link);
-		console.log('description:', description);
-		console.log('challenge_id:', challenge_id);
-		console.log('user_id:', user_id);
 
 		try {
 			const response = await participationCreation(media_link, description, user_id, challenge_id); //
@@ -163,8 +169,8 @@
 				const newParticipation = response.participation;
 
 				newParticipation.user = {
-					pseudo: challengeCreator.pseudo,
-					avatar: challengeCreator.avatar
+					pseudo: participationCreator.pseudo,
+					avatar: participationCreator.avatar
 				};
 				participations = [...participations, newParticipation]; // Ajout immédiat sans re-fetch
 				error = '';
@@ -173,7 +179,7 @@
 					success = '';
 					showModal = false; // Fermer la modale après succès
 				}, 3000); // Ferme la modale après 2 secondes
-				await getParticipations(challenge_id); // Rafraîchir la liste des participations
+				//await getParticipations(challenge_id); // Rafraîchir la liste des participations
 			}
 		} catch (err) {
 			console.error('Erreur de création :', err);
@@ -190,77 +196,94 @@
 	function openModal() {
 		showModal = true;
 	}
-
-	$effect(() => {
-		getChallengeDetails();
-		getParticipationsList();
-	});
 </script>
 
 <svelte:head>
+
   <title>Challenges - GamerChallenges</title>
   <meta name="description" content="Découvrez les challenges créer par notre communauté." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
-
   <div class="hero-section">
     <h1>Challenges</h1>
     <p class="hero-subtitle">Découvrez les challenges créer par notre communauté</p>
   </div>
+<section class="intro">
+	<!-- Game infos -->
+	<section class="game-info">
+		<div class="game-info__bloc">
+			<img class="game-info__image" src={`${game.image}`} alt={game.title} />
+		</div>
 
-{#if challenge}
-	<section class="challenge-details" aria-labelledby="challenge-details">
-		<img src={`${challenge.image}`} alt={challenge.title} class="slide__image" />
-
-		<div class="challenge-details__content">
-			<h1 class="challenge-details__title">{challenge.title}</h1>
-			<p class="challenge-details__description">Objectif : {challenge.description}</p>
-			<p class="challenge-details__rules">Règle : {challenge.rules}</p>
-
-			<div class="challenge_created-by">
-				<p>Challenge created by</p>
-				<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
-				<p class="challenge__user-name">{challengeCreator.pseudo}</p>
-			</div>
-
-			<button class="btn btn--primary" onclick={openModal}> Participer au défi maintenant </button>
-			{#if challenge.id}
-				{console.log('✅ challenge est prêt', challenge)}
-				
-					<LikeItem classCSS="btn-from-challenge-page" {challenge} />
-				
-			{:else}
-				<p>Chargement des Likes...</p>
-			{/if}
+		<div class="game-info__bloc">
+			<p>Challenge pour le jeu</p>
+			<p class="game-info__title">"{game.title}"</p>
 		</div>
 	</section>
-{:else}
-	<p>Challenge introuvable.</p>
-{/if}
+
+	<!-- Challenge details -->
+
+	{#if challenge && challengeCreator}
+		<section class="challenge-details" aria-labelledby="challenge-details">
+			<div class="challenge-details__content">
+				{#if challenge.id}
+					{console.log('✅ challenge est prêt', challenge)}
+					<LikeItem classCSS="btn-from-challenge-page" {challenge} />
+				{:else}
+					<p>Chargement des Likes...</p>
+				{/if}
+				<h1 class="challenge-details__title">{challenge.title}</h1>
+				<p class="challenge-details__description">Objectif : {challenge.description}</p>
+				<p class="challenge-details__rules">Règle : {challenge.rules}</p>
+				<div class="challenge_created-by">
+					<p>Challenge créé par</p>
+					<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
+					<p class="challenge__user-name">{challengeCreator.pseudo}</p>
+				</div>
+				<button class="btn btn--primary" onclick={openModal}>
+					Participer au défi maintenant
+				</button>
+				{#if challenge.id}
+					{console.log('✅ challenge est prêt', challenge)}
+				{:else}
+					<p>Chargement des challenges</p>
+				{/if}
+			</div>
+		</section>
+	{:else}
+		<p>Challenge introuvable.</p>
+	{/if}
+</section>
 
 <!-- Participations Section -->
 <section class="catalog" aria-labelledby="catalog-title">
-	<h2>
-		Voici les meilleures participations de la communauté ! <span
-			>{participations.length} participations en cours…</span
-		>
-	</h2>
+	{#if participations.length > 0}
+		<p class="catalog-intro-text">
+			Déjà
+			<span>{participations.length}</span>
+			{#if participations.length === 1}
+				participation !
+			{:else}
+				participations !
+			{/if}
+		</p>
 
-	<div class="catalog__grid" role="list">
-		{#if participations.length > 0}
+		<div class="catalog__grid" role="list">
 			{#each participations as participation}
 				<ParticipationItem {participation} />
 			{/each}
-		{:else}
-			<p>Aucune participation pour ce challenge pour le moment.</p>
-		{/if}
-	</div>
+		</div>
+	{:else}
+		<p>Aucune participation pour ce challenge pour le moment.</p>
+	{/if}
 
-	<div class="load-more-container">
-		<button class="btn secundary" id="load-more"> Voir plus de participations </button>
-	</div>
+	<!-- <div class="load-more-container">
+		<button class="btn secundary" id="load-more">
+			Voir plus de participations
+		</button>
+	</div> -->
 </section>
 
 <!-- Participation Creation Form -->
@@ -282,6 +305,7 @@
 			placeholder="Entrez un lien"
 			bind:value={media_link}
 			required
+			disabled={!isAuthenticated()}
 		/>
 		<Input
 			id="description"
@@ -290,20 +314,24 @@
 			placeholder="Entrez une description"
 			bind:value={description}
 			required
+			disabled={!isAuthenticated()}
 		/>
 
 		<Btn>Valider</Btn>
 	</ParticipationForm>
-	<div class="already-account">
-		<span>Pas encore de compte ? Créez en un simplement !</span>
-		<a href="/auth/register">Cliquez ici</a>
-	</div>
+	{#if !isAuthenticated()}
+		<div class="already-account">
+			<span>Pas encore de compte ? Créez en un simplement !</span>
+			<a href="/auth/register">Cliquez ici</a>
+		</div>
+	{/if}
 	{#if success}
 		<p class="success">{success}</p>
 	{/if}
 </Modal>
 
 <style>
+
   .hero-section {
     text-align: center;
     margin-bottom: 3rem;
@@ -325,6 +353,63 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+	.intro {
+		display: flex;
+		flex-direction: column;
+
+		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	}
+	.game-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
+		padding: 1em;
+
+		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
+	}
+	.game-info__bloc {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+	}
+	.game-info__title {
+		color: #eee;
+		/* color: #8B1E1E; */
+		font-weight: bold;
+		margin: 0.5em 0;
+		font-size: 1.2em;
+	}
+	.game-info__image {
+		width: auto;
+		height: auto;
+		border-radius: 5%;
+		object-fit: cover;
+		max-height: 100px;
+	}
+
+	/* Pour les écrans ≥ 768px (tablettes et plus) */
+	@media (min-width: 768px) {
+		.intro {
+			flex-direction: row;
+		}
+		.game-info {
+			flex-direction: column;
+		}
+		.game-info__bloc {
+			align-items: center;
+			text-align: center;
+		}
+	}
+
+	.catalog-intro-text {
+		font-size: 1.2em;
+		margin-bottom: 1em;
+	}
+
 	.error {
 		color: #ff6b6b;
 		text-align: center;
@@ -333,7 +418,7 @@
 	.already-account {
 		margin-top: 1.5rem;
 		text-align: center;
-		font-size: 1rem;
+		font-size: 1.5rem;
 	}
 	.already-account a {
 		color: #4f8cff;
@@ -350,5 +435,4 @@
 		text-align: center;
 		margin-bottom: 1rem;
 	}
-	
 </style>

@@ -1,4 +1,5 @@
 <script>
+
   import { onMount } from 'svelte';
 
   // Fonction de navigation fluide pour les ancres

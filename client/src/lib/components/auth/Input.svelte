@@ -5,6 +5,9 @@
   export let value;
   export let placeholder = '';
   export let name = '';
+  export let disabled = false;
+    // Pour debug :
+  console.log('Input disabled prop =', disabled);
 </script>
 
 <div>
@@ -16,6 +19,7 @@
     bind:value
     required
     placeholder={placeholder}
+    disabled={disabled}
   />
 </div>
 

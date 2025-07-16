@@ -1,10 +1,9 @@
 <script>
-
 </script>
 
-  <button type="submit" class="btn" on:click>
-    <slot></slot> 
-  </button>
+<button type="submit" class="btn" on:click>
+  <slot></slot> 
+</button>
 
 <style>
   .btn {
