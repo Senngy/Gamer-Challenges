@@ -2,6 +2,7 @@
 	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
+	import LeaderBoard from '$lib/components/LeaderBoard/LeaderBoard.svelte';
 
 	let games = [];
 	let randomGames = [];
@@ -58,7 +59,7 @@
 						<div class="popular-games__text">
 							<span class="popular-games__tag">🔥 Populaires</span>
 							<h2 class="popular-games__title">{game.title}</h2>
-							<p class="popular-games__description">{truncateWords(game.description, 40)}</p>
+							<p class="game-details__description popular-games__description">{truncateWords(game.description, 40)}</p>
 							<a href={`/games/${game.id}`} class="btn btn--primary popular-games__btn">
 								Voir le jeu et ses challenges
 							</a>
@@ -90,7 +91,7 @@
 
 	<!-- ========================== -->
 	<!-- Leaderboard -->
-	<!-- ========================== -->
+	<!-- ========================== 
 	<aside class="leaderboard" aria-labelledby="leaderboard-title">
 		<div>
 			<h2 class="leaderboard__title" id="leaderboard-title">Top challengers 🏆</h2>
@@ -122,6 +123,9 @@
 			{/if}
 		{/each}
 	</aside>
+	-->
+	<LeaderBoard />
+
 </div>
 
 <!-- ========================== -->

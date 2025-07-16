@@ -11,7 +11,7 @@
        return text.replace(/<[^>]*>/g, '');
     }
 
-    const { text = '', max = 200 } = $props(); // Récupération des propriétés passées au composant, avec des valeurs par défaut
+    const { text = '', max = 500 } = $props(); // Récupération des propriétés passées au composant, avec des valeurs par défaut
     const displayText = $derived.by(() => {
 
         const decoded = decodeHtmlEntities(text);

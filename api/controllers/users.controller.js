@@ -28,6 +28,7 @@ export const getTopUsersByChallengeLikes = async (req, res) => {
     const result = await User.findAll({
       attributes: [
         'id',
+        'avatar',
         'pseudo',
         [
           sequelize.literal(`(
