@@ -159,13 +159,13 @@
     <button id="closeMenu" class="mobile-menu__close">×</button>
     <div>
       <div class="mobile-menu__container">
-        <a href="/" class="mobile-link" sveltekit:prefetch><span class="text-logo">Gamer<br />Challenges</span></a>
+        <span class="text-logo">Gamer<br />Challenges</span>
       </div>
 
       <div class="mobile-menu__container">
         <ul>
           <li><a href="/" class="mobile-link" sveltekit:prefetch>Accueil</a></li>
-          <li><a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue</a></li>
+          <li><a href="/games" class="mobile-link" sveltekit:prefetch>Catalogue de jeux</a></li>
           <li><a href="/contact" class="mobile-link" sveltekit:prefetch>Contact</a></li>
         </ul>
       </div>

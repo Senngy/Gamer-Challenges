@@ -199,17 +199,9 @@
 </script>
 
 <svelte:head>
-
-  <title>Challenges - GamerChallenges</title>
-  <meta name="description" content="Découvrez les challenges créer par notre communauté." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <title>{challenge.title} | GamerChallenges</title>
 </svelte:head>
-  <div class="hero-section">
-    <h1>Challenges</h1>
-    <p class="hero-subtitle">Découvrez les challenges créer par notre communauté</p>
-  </div>
+
 <section class="intro">
 	<!-- Game infos -->
 	<!-- <section class="game-info">
