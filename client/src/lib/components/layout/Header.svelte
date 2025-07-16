@@ -130,6 +130,9 @@
 			<ul class="search-results" role="list" aria-label="Résultats de recherche">
 				{#each searchResults as game}
 					<li class="result-game">
+						<a href={`/games/${game.id}`} class="result-media" role="button">
+							<span class="result-cover" role="button" style={`background-image: url(${game.image})`}></span>
+						</a>
 						<button
 							type="button"
 							class="btn-result"
@@ -155,7 +158,7 @@
 				<a href="/games" class="nav-link">Catalogue</a>
 			</li>
 			<li class="desktop-nav__item">
-				<a href="/about" class="nav-link">À propos</a>
+				<a href="/contact" class="nav-link">Contact</a>
 			</li>
 
 			{#if isAuthenticated()}
@@ -196,7 +199,7 @@
 				<ul>
 					<li><a href="/" class="mobile-link">Accueil</a></li>
 					<li><a href="/games" class="mobile-link">Catalogue</a></li>
-					<li><a href="/about" class="mobile-link">À propos</a></li>
+					<li><a href="/contact" class="mobile-link">Contact</a></li>
 				</ul>
 			</div>
 

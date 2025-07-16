@@ -44,6 +44,15 @@
   <title>Accueil | GamerChallenges</title>
 </svelte:head>
 
+<!-- Introduction -->
+<section class="homepage-intro" aria-labelledby="homepage-intro-title">
+	<h1 id="homepage-intro-title" class="homepage-intro__title">Bienvenue sur Gamer Challenges</h1>
+	<p class="homepage-intro__text">
+		Rejoins les joueuses et joueurs du monde entier ! Parcours notre sélection de défis, crée les
+		tiens en un clic et affronte la communauté dans une ambiance aussi fun que compétitive.
+	</p>
+</section>
+
 <!-- ========================== -->
 <!-- Hero / Populaires -->
 <!-- ========================== -->

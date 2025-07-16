@@ -204,9 +204,11 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 <style>
 .main-container {
   padding: 0 1em;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2em;
+  max-width: 600px;
 }
 
 .hero-section {

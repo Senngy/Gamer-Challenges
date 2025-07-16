@@ -1,5 +1,6 @@
 // src/routes/games/[gameId]/+page.server.js
 import { error } from '@sveltejs/kit';
+import api from '$lib/api.js';
 
 export async function load({ fetch, params }) {
   const { gameId } = params;

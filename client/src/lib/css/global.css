@@ -248,19 +248,18 @@ h3 {
 	border-left: none;
 	border-right: none;
 	border-top: none;
-	margin-left: 1rem;
-	min-width: 279px;
+	min-width: 360px;
 	text-align: left;
-	padding: 0.7rem 4px;
-	font-size: 1.2rem;
-	color: rgba(51, 50, 50, 0.877);
+	padding: 0.5em;
+	font-size: 1.2em;
+	color: white;
 	font-weight: bold;
+	background-color: rgba(0, 0, 0, 0.719);
 }
 .btn-result:hover {
 	border-radius: 2px;
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
-	background: linear-gradient(135deg, #ffffff 0%, #636363 100%);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 	color: white;
@@ -307,15 +306,13 @@ h3 {
 }
 
 .homepage-intro__title {
-	text-decoration: underline;
 	font-weight: 800;
 	margin-bottom: 0.6em;
 	line-height: 1;
 }
 
 .homepage-intro__text {
-	line-height: 1.5;
-	text-align: start;
+	line-height: 1.5;	
 	max-width: 40rem;
 	margin: 0 auto;
 }
