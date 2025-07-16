@@ -11,3 +11,11 @@ export async function getUserById(userId) {
     throw error;
   }
 }
+
+export async function getTopByChallengeLikes() {
+  return await api('/users/topUsersByChallengeLikes', 'GET');
+}
+
+export async function getTopByParticipationLikes() {
+  return await api('/users/topUsersByParticipationLikes', 'GET');
+}

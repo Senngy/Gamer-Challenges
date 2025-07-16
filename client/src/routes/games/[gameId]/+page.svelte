@@ -147,6 +147,10 @@
 			error = 'Une erreur est survenue lors de la création.';
 		}
 	};
+	function truncateWords(text = '', max = 40) {
+		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
+		return words.slice(0, max).join(' ') + (words.length > max ? '…' : '');
+	}
 
 	// UI
 	function openModal() {
@@ -174,7 +178,7 @@
 			</div>
 
 			<h1 class="game-details__title">{game.title}</h1>
-			<FilterText text={game.description} max={200} />
+			<FilterText text={truncateWords(game.description)} max={1000} />
 
 			<button class="btn btn--primary btn-game-card" on:click={openModal}>
 				Lancer un nouveau défi maintenant
