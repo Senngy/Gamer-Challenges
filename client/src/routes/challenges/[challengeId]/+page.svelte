@@ -212,7 +212,7 @@
   </div>
 <section class="intro">
 	<!-- Game infos -->
-	<section class="game-info">
+	<!-- <section class="game-info">
 		<div class="game-info__bloc">
 			<img class="game-info__image" src={`${game.image}`} alt={game.title} />
 		</div>
@@ -221,7 +221,22 @@
 			<p>Challenge pour le jeu</p>
 			<p class="game-info__title">"{game.title}"</p>
 		</div>
-	</section>
+	</section> -->
+
+	<a
+	href={`/games/${game.id}`}
+	class="game-info"
+	aria-label={`Voir le jeu ${game.title}`}
+>
+	<div class="game-info__bloc">
+		<img class="game-info__image" src={game.image} alt={game.title} />
+	</div>
+
+	<div class="game-info__bloc">
+		<p>Challenge pour le jeu</p>
+		<p class="game-info__title">"{game.title}"</p>
+	</div>
+</a>
 
 	<!-- Challenge details -->
 
@@ -360,7 +375,7 @@
 
 		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 	}
-	.game-info {
+	/* .game-info {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -369,7 +384,24 @@
 		padding: 1em;
 
 		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
-	}
+	} */
+
+a.game-info {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+	padding: 1em;
+	background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
+	text-decoration: none;
+	color: inherit;
+}
+
+a.game-info:hover {
+	background: linear-gradient(to bottom, #1a1d1f 0%, #a02020 100%);
+}
+
 	.game-info__bloc {
 		display: flex;
 		flex-direction: column;
@@ -396,7 +428,7 @@
 		.intro {
 			flex-direction: row;
 		}
-		.game-info {
+		a.game-info {
 			flex-direction: column;
 		}
 		.game-info__bloc {
