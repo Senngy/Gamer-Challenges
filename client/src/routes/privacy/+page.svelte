@@ -22,6 +22,9 @@
   <title>Politique de confidentialité - GamerChallenges</title>
   <meta name="description" content="Découvrez comment GamerChallenges protège vos données personnelles. Notre politique de confidentialité détaille la collecte, l'utilisation et la protection de vos informations." />
   <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="privacy-container">

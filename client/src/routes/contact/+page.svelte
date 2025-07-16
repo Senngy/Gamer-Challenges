@@ -68,6 +68,9 @@
 <svelte:head>
   <title>Contact - GamerChallenges</title>
   <meta name="description" content="Contactez l'équipe GamerChallenges. Posez vos questions, signalez des problèmes ou proposez des améliorations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <main class="contact-container">

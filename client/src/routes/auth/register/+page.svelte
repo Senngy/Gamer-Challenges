@@ -57,6 +57,9 @@
 <svelte:head>
   <title>Inscription - GamerChallenges</title>
   <meta name="description" content="Rejoignez la communauté GamerChallenges pour accéder à vos défis gaming." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
   <div class="hero-section">

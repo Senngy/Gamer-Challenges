@@ -22,6 +22,9 @@
   <title>Conditions générales d'utilisation - GamerChallenges</title>
   <meta name="description" content="Consultez les conditions générales d'utilisation de GamerChallenges. Découvrez vos droits et obligations en utilisant notre plateforme de défis gaming." />
   <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="terms-container">

@@ -86,6 +86,9 @@
   <title>À propos - GamerChallenges</title>
   <meta name="description" content="Découvrez GamerChallenges, la plateforme communautaire dédiée aux passionnés de jeux vidéo. Créez, relevez et partagez des challenges gaming avec une communauté active." />
   <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="about-container">

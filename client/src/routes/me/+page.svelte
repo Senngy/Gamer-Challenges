@@ -111,6 +111,9 @@ getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur a
 <svelte:head>
   <title>Mon Profil - GamerChallenges</title>
   <meta name="description" content="Gérez votre profil GamerChallenges, modifiez vos informations personnelles et consultez vos défis gaming." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
 <div class="main-container">

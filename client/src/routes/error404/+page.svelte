@@ -19,35 +19,92 @@
             }, 200);
         }, 3000 + Math.random() * 2000);
         
-        // Génération de particules
-        for (let i = 0; i < 50; i++) {
-            particles.push({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                size: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 2,
-                speedY: (Math.random() - 0.5) * 2,
-                opacity: Math.random() * 0.5 + 0.2
-            });
-        }
-        
-        // Animation des particules
-        const animateParticles = () => {
-            particles.forEach(particle => {
-                particle.x += particle.speedX;
-                particle.y += particle.speedY;
-                
-                if (particle.x < 0) particle.x = window.innerWidth;
-                if (particle.x > window.innerWidth) particle.x = 0;
-                if (particle.y < 0) particle.y = window.innerHeight;
-                if (particle.y > window.innerHeight) particle.y = 0;
-            });
+        // Génération d'éclairs - BEAUCOUP plus d'éclairs
+        const createLightning = () => {
+            const lightning = {
+                id: Math.random(),
+                x1: Math.random() * window.innerWidth,
+                y1: 0,
+                x2: Math.random() * window.innerWidth,
+                y2: window.innerHeight,
+                opacity: 1,
+                duration: 150 + Math.random() * 100,
+                branches: Math.floor(Math.random() * 3) + 1
+            };
             
+            particles.push(lightning);
             particles = [...particles];
-            requestAnimationFrame(animateParticles);
+            
+            setTimeout(() => {
+                particles = particles.filter(p => p.id !== lightning.id);
+            }, lightning.duration);
         };
         
-        animateParticles();
+        // Éclairs principaux - TRÈS fréquents
+        const lightningInterval = setInterval(() => {
+            if (Math.random() < 0.95) { // Presque tout le temps
+                createLightning();
+                // Créer plusieurs éclairs simultanés
+                if (Math.random() < 0.8) {
+                    setTimeout(() => createLightning(), 30);
+                }
+                if (Math.random() < 0.6) {
+                    setTimeout(() => createLightning(), 60);
+                }
+                if (Math.random() < 0.4) {
+                    setTimeout(() => createLightning(), 90);
+                }
+                if (Math.random() < 0.3) {
+                    setTimeout(() => createLightning(), 120);
+                }
+            }
+        }, 300 + Math.random() * 500); // Très fréquent : 300-800ms
+        
+        // Second générateur d'éclairs courts
+        const microLightningInterval = setInterval(() => {
+            if (Math.random() < 0.9) {
+                const microLightning = {
+                    id: Math.random(),
+                    x1: Math.random() * window.innerWidth,
+                    y1: Math.random() * window.innerHeight * 0.4,
+                    x2: Math.random() * window.innerWidth,
+                    y2: Math.random() * window.innerHeight * 0.6 + window.innerHeight * 0.4,
+                    opacity: 0.7,
+                    duration: 80 + Math.random() * 40,
+                    branches: 1
+                };
+                
+                particles.push(microLightning);
+                particles = [...particles];
+                
+                setTimeout(() => {
+                    particles = particles.filter(p => p.id !== microLightning.id);
+                }, microLightning.duration);
+            }
+        }, 200 + Math.random() * 400); // Très fréquent : 200-600ms
+        
+        // Troisième générateur d'éclairs horizontaux
+        const horizontalLightningInterval = setInterval(() => {
+            if (Math.random() < 0.7) {
+                const hLightning = {
+                    id: Math.random(),
+                    x1: 0,
+                    y1: Math.random() * window.innerHeight,
+                    x2: window.innerWidth,
+                    y2: Math.random() * window.innerHeight,
+                    opacity: 0.5,
+                    duration: 100 + Math.random() * 50,
+                    branches: 1
+                };
+                
+                particles.push(hLightning);
+                particles = [...particles];
+                
+                setTimeout(() => {
+                    particles = particles.filter(p => p.id !== hLightning.id);
+                }, hLightning.duration);
+            }
+        }, 600 + Math.random() * 800); // Moins fréquent : 600-1400ms
         
         // Suivi de la souris
         const handleMouseMove = (e) => {
@@ -59,6 +116,9 @@
         
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
+            clearInterval(lightningInterval);
+            clearInterval(microLightningInterval);
+            clearInterval(horizontalLightningInterval);
         };
     });
     
@@ -92,6 +152,43 @@
         </div>
     {/if}
     
+    <!-- Éclairs d'arrière-plan -->
+    {#if mounted}
+        <div class="lightning-container">
+            {#each particles as lightning (lightning.id)}
+                <svg class="lightning-bolt" style="opacity: {lightning.opacity};">
+                    <defs>
+                        <linearGradient id="lightningGradient-{lightning.id}" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                            <stop offset="30%" style="stop-color:#c62828;stop-opacity:0.8" />
+                            <stop offset="70%" style="stop-color:#8b1e1e;stop-opacity:0.6" />
+                            <stop offset="100%" style="stop-color:#330000;stop-opacity:0.2" />
+                        </linearGradient>
+                    </defs>
+                    <path 
+                        d="M {lightning.x1} {lightning.y1} 
+                           L {lightning.x1 + (Math.random() - 0.5) * 100} {lightning.y1 + window.innerHeight * 0.3}
+                           L {lightning.x1 + (Math.random() - 0.5) * 150} {lightning.y1 + window.innerHeight * 0.6}
+                           L {lightning.x2} {lightning.y2}"
+                        stroke="url(#lightningGradient-{lightning.id})"
+                        stroke-width="2"
+                        fill="none"
+                        class="lightning-path"
+                    />
+                    <!-- Branches secondaires -->
+                    <path 
+                        d="M {lightning.x1 + (Math.random() - 0.5) * 100} {lightning.y1 + window.innerHeight * 0.3}
+                           L {lightning.x1 + (Math.random() - 0.5) * 200} {lightning.y1 + window.innerHeight * 0.5}"
+                        stroke="url(#lightningGradient-{lightning.id})"
+                        stroke-width="1"
+                        fill="none"
+                        class="lightning-branch"
+                    />
+                </svg>
+            {/each}
+        </div>
+    {/if}
+    
     <!-- Effet de curseur -->
     <div 
         class="cursor-glow"
@@ -117,7 +214,10 @@
             <h1 class="main-title">GAME OVER</h1>
             <h2 class="sub-title">Page Non Trouvée</h2>
             <p class="description">
-                Oops ! Il semblerait que cette page ait été détruite par un boss final... 
+                Oops ! Il semblerait que le haki perturbe cette page... 
+                <br>
+                🏴‍☠️ Shanks doit être non loin d'ici 🏴‍☠️
+                <br>
                 <br>
                 Ou peut-être qu'elle n'a jamais existé dans cet univers !
             </p>
@@ -127,7 +227,7 @@
         <div class="suggestions">
             <h3>Que faire maintenant ?</h3>
             <ul>
-                <li>🎮 Retourner à l'<button on:click={navigateHome} class="link-btn">accueil</button></li>
+                <li>🎮 Retourner à l' <button on:click={navigateHome} class="link-btn">accueil</button></li>
                 <li>🔙 Revenir à la <button on:click={navigateBack} class="link-btn">page précédente</button></li>
                 <li>🎯 Découvrir nos <a href="/challenges" class="link">défis gaming</a></li>
                 <li>🎲 Explorer nos <a href="/games" class="link">jeux</a></li>
@@ -164,27 +264,9 @@
   padding: 2rem;
   color: var(--text-color, #eeeeee);
   font-family: 'Orbitron', sans-serif; /* Ajoutez cette ligne */
-}    
-/* Effet de glitch */
-    .glitch {
-        animation: glitch 0.3s ease-in-out;
-        filter: hue-rotate(280deg) saturate(1.1) brightness(0.8) contrast(1.4);
-    }
-    @keyframes glitch {
-      0%, 100% { transform: translate(0) skew(0deg); }
-      10% { transform: translate(-8px, 5px) skew(-2deg); }
-      20% { transform: translate(-5px, -8px) skew(1deg); }
-      30% { transform: translate(6px, 3px) skew(-1deg); }
-      40% { transform: translate(-4px, -6px) skew(2deg); }
-      50% { transform: translate(7px, -2px) skew(-1.5deg); }
-      60% { transform: translate(3px, 8px) skew(1deg); }
-      70% { transform: translate(-6px, -4px) skew(-0.5deg); }
-      80% { transform: translate(5px, -7px) skew(1.5deg); }
-      90% { transform: translate(-3px, 4px) skew(-1deg); }
-    }
-    
-    /* Particules */
-    .particles {
+}  
+    /* Éclairs */
+    .lightning-container {
         position: absolute;
         top: 0;
         left: 0;
@@ -193,17 +275,40 @@
         pointer-events: none;
         z-index: 1;
     }
-    
-    .particle {
+
+    .lightning-bolt {
         position: absolute;
-        background: linear-gradient(45deg, #c62828, #8b1e1e);
-        border-radius: 50%;
-        animation: float 6s ease-in-out infinite;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        animation: lightning-flash 0.15s ease-in-out;
     }
-    
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(180deg); }
+
+    .lightning-path {
+        filter: drop-shadow(0 0 15px #c62828) drop-shadow(0 0 30px #8b1e1e) drop-shadow(0 0 5px #ffffff);
+        animation: lightning-flicker 0.1s ease-in-out;
+    }
+
+    .lightning-branch {
+        filter: drop-shadow(0 0 8px #c62828) drop-shadow(0 0 15px #8b1e1e);
+        opacity: 0.8;
+    }
+
+    @keyframes lightning-flash {
+        0% { opacity: 0; }
+        5% { opacity: 1; }
+        15% { opacity: 0.2; }
+        25% { opacity: 1; }
+        35% { opacity: 0.4; }
+        45% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    @keyframes lightning-flicker {
+        0%, 100% { opacity: 1; }
+        30% { opacity: 0.8; }
+        60% { opacity: 1; }
     }
     
     /* Effet de curseur */
@@ -246,7 +351,7 @@
     -webkit-text-fill-color: transparent;
     text-shadow: 0 0 30px rgba(198, 40, 40, 0.5);
     animation: pulse 2s ease-in-out infinite;
-  }
+    }
     
     .zero-container {
         position: relative;
