@@ -16,7 +16,7 @@
 
 	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
 	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
-
+	const API_URL = import.meta.env.VITE_API_URL;
 	const challenge_id = challengeId;
 
 	let challenge = $state({
@@ -86,7 +86,7 @@
 			game = {
 				id: gameInfo.id,
 				title: gameInfo.title,
-				image: gameInfo.image,
+				image: gameInfo.image
 			};
 
 			if (creatorChallengeInfos) {
@@ -199,7 +199,7 @@
 </script>
 
 <svelte:head>
-  <title>{challenge.title} | GamerChallenges</title>
+	<title>{challenge.title} | GamerChallenges</title>
 </svelte:head>
 
 <section class="intro">
@@ -215,20 +215,16 @@
 		</div>
 	</section> -->
 
-	<a
-	href={`/games/${game.id}`}
-	class="game-info"
-	aria-label={`Voir le jeu ${game.title}`}
->
-	<div class="game-info__bloc">
-		<img class="game-info__image" src={game.image} alt={game.title} />
-	</div>
+	<a href={`/games/${game.id}`} class="game-info" aria-label={`Voir le jeu ${game.title}`}>
+		<div class="game-info__bloc">
+			<img class="game-info__image" src={game.image} alt={game.title} />
+		</div>
 
-	<div class="game-info__bloc">
-		<p>Challenge pour le jeu</p>
-		<p class="game-info__title">"{game.title}"</p>
-	</div>
-</a>
+		<div class="game-info__bloc">
+			<p>Challenge pour le jeu</p>
+			<p class="game-info__title">"{game.title}"</p>
+		</div>
+	</a>
 
 	<!-- Challenge details -->
 
@@ -246,7 +242,13 @@
 				<p class="challenge-details__rules">Règle : {challenge.rules}</p>
 				<div class="challenge_created-by">
 					<p>Challenge créé par</p>
-					<div class="challenge__user-avatar" aria-hidden="true">{challengeCreator.avatar}</div>
+					<div class="challenge__user-avatar avatar" aria-hidden="true">
+						<img
+							src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
+							alt="Avatar"
+							class="avatar-image"
+						/>
+					</div>	
 					<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 				</div>
 				<button class="btn btn--primary" onclick={openModal}>
@@ -338,28 +340,27 @@
 </Modal>
 
 <style>
-
-  .hero-section {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .hero-section h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-  }
-  .hero-subtitle {
-    font-size: 1rem;
-    margin: 0 auto;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
+	.hero-section {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.hero-section h1 {
+		font-size: 3rem;
+		font-weight: 700;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+		margin-bottom: 1rem;
+	}
+	.hero-subtitle {
+		font-size: 1rem;
+		margin: 0 auto;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
 
 	.intro {
 		display: flex;
@@ -378,21 +379,21 @@
 		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
 	} */
 
-a.game-info {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	gap: 1em;
-	padding: 1em;
-	background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
-	text-decoration: none;
-	color: inherit;
-}
+	a.game-info {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
+		padding: 1em;
+		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
+		text-decoration: none;
+		color: inherit;
+	}
 
-a.game-info:hover {
-	background: linear-gradient(to bottom, #1a1d1f 0%, #a02020 100%);
-}
+	a.game-info:hover {
+		background: linear-gradient(to bottom, #1a1d1f 0%, #a02020 100%);
+	}
 
 	.game-info__bloc {
 		display: flex;
@@ -458,5 +459,16 @@ a.game-info:hover {
 		color: #a3cca4;
 		text-align: center;
 		margin-bottom: 1rem;
+	}
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		border-radius: 50%;
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+	}
+	.challenge__user-name {
+		font-size: 1.1rem;
 	}
 </style>
