@@ -81,13 +81,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
 
-  <div class="hero-section">
-    <h1>Connexion</h1>
-    <p class="hero-subtitle">Connectez-vous pour accéder à vos défis gaming</p>
-  </div>
+ 
 
-<AuthContainer title="Connexion">
+<AuthContainer title="Connexion" classCSS="log-container">
   <!-- Affichage des erreurs générales -->
+  
+    <p class="hero-subtitle">Connectez-vous pour accéder à vos défis gaming</p>
+  
   {#if generalError}
     <div class="error general-error">{generalError}</div>
   {/if}
@@ -144,21 +144,6 @@
 
 <style>
 
-  .hero-section {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-
-  .hero-section h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-  }
-
   .hero-subtitle {
     font-size: 1rem;
     margin: 0 auto;
@@ -166,6 +151,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    padding: 0 0 1rem 0;
   }
 
   .error {
@@ -221,4 +207,5 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
+ 
 </style>
