@@ -31,11 +31,11 @@
       avatar: "/images/sylvain.png"
     },
     {
-    name: "Samuel DUTHOIT",
-    role: "Développeur Front-End",
-    description: "Un chouïa de connsaissance en développement d'interfaces gaming interactives.",
-    skills: ["Svelte & SvelteKit", "JavaScript ES6+", "CSS & Animations", "WebGL", "Performance Web", "Progressive Web Apps", "Git"],
-    avatar: "/images/samuel.png"
+    name: "Samuel",
+    role: "Développeur Full-Stack",
+    description: "Gestion de projet, Expérience Utilisateur et Architecture Logicielle",
+    skills: ["Node.js", "Express", "PostgreSQL", "API REST", "Svelte & SvelteKit", "JavaScript ES6+", "CSS", "Sequelize", "Git & GitHub"],
+    avatar: "/images/avatar.gif"
     }
   ];
 
