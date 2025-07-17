@@ -10,7 +10,7 @@ export async function load({ params }) {
   //   return {};
   // }
   try {
-    const challangeRes = await fetch(`http://localhost:3000/challenges/${challengeId}`)
+    const challengeRes = await fetch(`http://localhost:3000/challenges/${challengeId}`)
     const challenge = await challengeRes.json();
     return { challenge, challengeId };
   } catch (err) {

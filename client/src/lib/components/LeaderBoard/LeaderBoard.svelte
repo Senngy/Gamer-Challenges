@@ -80,7 +80,13 @@
 				role="listitem"
 				aria-label={`Joueur ${i + 1} : ${user.pseudo}, ${user.totalParticipationLikes} likes, ${i + 1}e place`}
 			>
-				<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
+				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
+					<img
+						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+						alt="Avatar"
+						class="avatar-image"
+					/>
+				</div>
 				<div class="leaderboard__player-info">
 					<h3 class="leaderboard__player-name">{user.pseudo}</h3>
 					<div class="leaderboard__player-stats">

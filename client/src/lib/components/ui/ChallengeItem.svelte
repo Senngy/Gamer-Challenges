@@ -1,10 +1,11 @@
 <script>
 	import { onMount, createEventDispatcher } from 'svelte';
-	import { getUserById } from '$lib/services/user.service.js'
+	import { getUserById } from '$lib/services/user.service.js';
 	import LikeItem from '$lib/components/ui/LikeItem.svelte';
 
 	const { challenge } = $props();
 	const dispatch = createEventDispatcher();
+	const API_URL = import.meta.env.VITE_API_URL;
 	let challengeCreator = $state({
 		pseudo: '',
 		avatar: ''
@@ -27,7 +28,6 @@
 			console.error('Erreur récupération challenge :', err);
 		}
 	});
-
 </script>
 
 <div class="challenge__item">
@@ -47,7 +47,13 @@
 		<p class="challenge__description">{challenge.description}</p>
 		<div class="challenge_created-by">
 			<p>Challenge created by</p>
-			<div class="challenge__user-avatar">{challengeCreator.avatar}</div>
+			<div class="leaderboard__player-avatar avatar" aria-hidden="true">
+				<img
+					src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
+					alt="Avatar"
+					class="avatar-image"
+				/>
+			</div>
 			<p class="challenge__user-name">{challengeCreator.pseudo}</p>
 		</div>
 		{#if challenge}
@@ -62,5 +68,23 @@
 <style>
 	.challenge__image {
 		background-image: url('/images/genericChallenge.png');
+	}
+	.avatar {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+		gap: 0.5rem;
+	}
+
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		border-radius: 50%;
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+	}
+	.challenge__user-name {
+		font-size: 1.3rem;
 	}
 </style>
