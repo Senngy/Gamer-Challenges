@@ -66,6 +66,7 @@ export const getTopUsersByParticipationLikes = async (req, res) => {
       attributes: [
         "id",
         "pseudo",
+        "avatar",
         [
           Sequelize.fn(
             "COALESCE",

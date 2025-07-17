@@ -6,6 +6,8 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
+	const API_URL = import.meta.env.VITE_API_URL;
+
 	let leadersByChallenge = $state([]);
 	let leadersByParticipation = $state([]);
 	let mode = $state('challenge'); // ← 'challenge' ou 'participation'
@@ -41,59 +43,61 @@
 		<span class="leaderboard__highlight" aria-hidden="true">#Gamerchallenges</span>
 	</div>
 	{#if mode === 'challenge'}
-		
-			{#each leadersByChallenge.slice(0, 3) as user, i (user.id)}
-				<div
-					class="leaderboard__item"
-					role="listitem"
-					aria-label={`Joueur ${i + 1} : ${user.pseudo}, ${user.totalChallengeLikes} likes, ${i + 1}e place`}
-				>
-					<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-					<div class="leaderboard__player-info">
-						<h3 class="leaderboard__player-name">{user.pseudo}</h3>
-						<div class="leaderboard__player-stats">
-							<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
-							<span class="leaderboard__player-stat-likes"> {user.totalChallengeLikes}</span>
-						</div>
-					</div>
-					<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
-						{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
-						{i + 1}
+		{#each leadersByChallenge.slice(0, 3) as user, i (user.id)}
+			<div
+				class="leaderboard__item"
+				role="listitem"
+				aria-label={`Joueur ${i + 1} : ${user.pseudo}, ${user.totalChallengeLikes} likes, ${i + 1}e place`}
+			>
+				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
+					<img
+						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+						alt="Avatar"
+						class="avatar-image"
+					/>
+				</div>
+				<div class="leaderboard__player-info">
+					<h3 class="leaderboard__player-name">{user.pseudo}</h3>
+					<div class="leaderboard__player-stats">
+						<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
+						<span class="leaderboard__player-stat-likes"> {user.totalChallengeLikes}</span>
 					</div>
 				</div>
+				<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
+					{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
+					{i + 1}
+				</div>
+			</div>
 
-				{#if i < 2}
-					<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
-				{/if}
-			{/each}
-		
+			{#if i < 2}
+				<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
+			{/if}
+		{/each}
 	{:else}
-		
-			{#each leadersByParticipation.slice(0, 3) as user, i (user.id)}
-				<div
-					class="leaderboard__item"
-					role="listitem"
-					aria-label={`Joueur ${i + 1} : ${user.pseudo}, ${user.totalParticipationLikes} likes, ${i + 1}e place`}
-				>
-					<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-					<div class="leaderboard__player-info">
-						<h3 class="leaderboard__player-name">{user.pseudo}</h3>
-						<div class="leaderboard__player-stats">
-							<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
-							<span class="leaderboard__player-stat-likes"> {user.totalParticipationLikes}</span>
-						</div>
-					</div>
-					<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
-						{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
-						{i + 1}
+		{#each leadersByParticipation.slice(0, 3) as user, i (user.id)}
+			<div
+				class="leaderboard__item"
+				role="listitem"
+				aria-label={`Joueur ${i + 1} : ${user.pseudo}, ${user.totalParticipationLikes} likes, ${i + 1}e place`}
+			>
+				<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
+				<div class="leaderboard__player-info">
+					<h3 class="leaderboard__player-name">{user.pseudo}</h3>
+					<div class="leaderboard__player-stats">
+						<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
+						<span class="leaderboard__player-stat-likes"> {user.totalParticipationLikes}</span>
 					</div>
 				</div>
+				<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
+					{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
+					{i + 1}
+				</div>
+			</div>
 
-				{#if i < 2}
-					<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
-				{/if}
-			{/each}
-		
+			{#if i < 2}
+				<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
+			{/if}
+		{/each}
 	{/if}
 </aside>
 
@@ -117,9 +121,26 @@
 	.leaderboard__player-name {
 		font-size: 1rem;
 	}
+	/*
 	.leaderboard__player-avatar {
 		width: 2.5rem;
 		height: 2.5rem;
+	}
+		*/
+	.avatar {
+		display: flex;
+		flex-direction: column;
+		align-items: start;
+		gap: 0.5rem;
+	}
+
+	.avatar-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+		border-radius: 50%;
+		box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
 	}
 	@keyframes fadeInUp {
 		from {

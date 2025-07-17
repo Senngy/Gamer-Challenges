@@ -197,7 +197,7 @@
 				<label for="avatar">Avatar :</label>
 				<div class="avatar-container">
 					<img
-						src={previewUrl || `${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
 						alt="Avatar"
 						class="avatar-image"
 					/>
