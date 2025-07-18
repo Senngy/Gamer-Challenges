@@ -1,8 +1,6 @@
 <script>
 	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
 
-	// export let data;
-	// let games = data.games;
 	const { data } = $props();
 	const { games } = data;
 

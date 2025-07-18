@@ -10,8 +10,9 @@ function addAvatarUrl(user) {
 		avatar: user.avatar ? `${API_URL}${user.avatar}` : null
 	};
 }
+
 export async function load() {
-    //console.log('load called')
+
     try {
         const [randomGames, topGames] = await Promise.all([
 			getRandomGames(),
@@ -21,10 +22,7 @@ export async function load() {
 			getTopByChallengeLikes(),
             getTopByParticipationLikes()
 		]);
-        //console.log('page server Random games:', randomGames); // Debug log
-        //console.log('page server Top games:', topGames); // Debug log
-        //console.log('page server leadersByChallenge', leadersByChallenge)
-        //console.log('page server leadersByParticipation', leadersByParticipation)
+
         const leadersByChallenge = rawLeadersByChallenge.map(addAvatarUrl);
 		const leadersByParticipation = rawLeadersByParticipation.map(addAvatarUrl);
         return {
@@ -33,13 +31,10 @@ export async function load() {
             leadersByChallenge,
             leadersByParticipation
         };
-    } catch (err) {
-        console.error('Erreur chargement jeux :', err);
-        return {
-            randomGames: [],
-            topGames: [],
-            leadersByChallenge: [],
-            leadersByParticipation: []
-        };
-    }
+	} catch (error) {
+		console.error('Erreur chargement jeux :', error);
+
+		// ✅ Déclenche la page d'erreur SvelteKit
+		throw error(500, 'Échec du chargement des données');
+	}
 }
