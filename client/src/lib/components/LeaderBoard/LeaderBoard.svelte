@@ -1,26 +1,10 @@
 <script>
-	import {
-		getTopByChallengeLikes,
-		getTopByParticipationLikes
-	} from '$lib/services/user.service.js';
+	//LeaderBoard.svelte
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	const API_URL = import.meta.env.VITE_API_URL;
-
-	let leadersByChallenge = $state([]);
-	let leadersByParticipation = $state([]);
+	const { leadersByChallenge, leadersByParticipation } = $props()
 	let mode = $state('challenge'); // ← 'challenge' ou 'participation'
-	onMount(async () => {
-		try {
-			leadersByChallenge = await getTopByChallengeLikes();
-			leadersByParticipation = await getTopByParticipationLikes();
-			console.log('onMount leadersByChallenge', leadersByChallenge);
-			console.log('onMount leadersByParticipation ', leadersByParticipation);
-		} catch (err) {
-			console.error('Erreur chargement des top users :', err);
-		}
-	});
 	function switchMode(m) {
 		mode = m;
 	}
@@ -51,7 +35,7 @@
 			>
 				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 					<img
-						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+						src={ user.avatar || 'https://via.placeholder.com/100'}
 						alt="Avatar"
 						class="avatar-image"
 					/>
@@ -82,7 +66,7 @@
 			>
 				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 					<img
-						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+						src={ user.avatar || 'https://via.placeholder.com/100'}
 						alt="Avatar"
 						class="avatar-image"
 					/>

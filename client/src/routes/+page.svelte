@@ -1,29 +1,13 @@
 <script>
 	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
-	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 	import LeaderBoard from '$lib/components/LeaderBoard/LeaderBoard.svelte';
 
-	let games = [];
-	let randomGames = [];
-
-	let topGames = [];
+	let { data } = $props();
+	const { randomGames, topGames, leadersByChallenge, leadersByParticipation } = data;
+	
 	let slideIndex = 0;
 
-	onMount(async () => {
-		try {
-			const resGames = await fetch('http://localhost:3000/games');
-			games = await resGames.json();
-			randomGames =
-				games.length >= 4 ? [...games].sort(() => Math.random() - 0.5).slice(0, 4) : games;
-
-			const resTop = await fetch('http://localhost:3000/games/top');
-			topGames = await resTop.json();
-			console.log('Top games:', topGames); // Debug log
-		} catch (err) {
-			console.error('Erreur chargement jeux :', err);
-		}
-	});
 
 	function truncateWords(text = '', max = 40) {
 		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
@@ -31,11 +15,11 @@
 	}
 
 	function next() {
-		if (topGames.length) slideIndex = (slideIndex + 1) % topGames.length;
+		if (topGames?.length) slideIndex = (slideIndex + 1) % topGames.length;
 	}
 
 	function prev() {
-		if (topGames.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
+		if (topGames?.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
 	}
 
 </script>
@@ -48,7 +32,7 @@
 <section class="homepage-intro" aria-labelledby="homepage-intro-title">
 	<h1 id="homepage-intro-title" class="homepage-intro__title">Bienvenue sur Gamer Challenges</h1>
 	<p class="homepage-intro__text">
-		Rejoins les joueuses et joueurs du monde entier ! Parcours notre sélection de défis, crée les
+		Rejoins les joueuses et joueurs du monde entier ! Parcours notre sélection de défis, crée les
 		tiens en un clic et affronte la communauté dans une ambiance aussi fun que compétitive.
 	</p>
 </section>
@@ -57,7 +41,7 @@
 <!-- Hero / Populaires -->
 <!-- ========================== -->
 <div class="block__content__populaires-top">
-	{#if topGames.length}
+	{#if topGames?.length}
 		<section
 			class="popular-games"
 			aria-labelledby="popular-games-title"
@@ -103,42 +87,11 @@
 		<p>Chargement des jeux populaires…</p>
 	{/if}
 
-	<!-- ========================== -->
-	<!-- Leaderboard -->
-	<!-- ========================== 
-	<aside class="leaderboard" aria-labelledby="leaderboard-title">
-		<div>
-			<h2 class="leaderboard__title" id="leaderboard-title">Top challengers 🏆</h2>
-			<span class="leaderboard__highlight" aria-hidden="true">#Gamerchallenges</span>
-		</div>
+<!-- ========================== -->
+<!-- Leaderboard -->
+<!-- ========================== -->
 
-		{#each [1, 2, 3] as rank}
-			<div
-				class="leaderboard__item"
-				role="listitem"
-				aria-label={`Joueur ${rank} : Babyloto, 12 likes, ${rank}e place`}
-			>
-				<div class="leaderboard__player-avatar" aria-hidden="true">B</div>
-				<div class="leaderboard__player-info">
-					<h3 class="leaderboard__player-name">Babyloto</h3>
-					<div class="leaderboard__player-stats">
-						<span class="leaderboard__player-stat-heart" aria-hidden="true">❤️</span>
-						<span class="leaderboard__player-stat-likes">12 likes</span>
-					</div>
-				</div>
-				<div class="leaderboard__player-level" aria-label={`${rank}e place`}>
-					{rank === 1 ? '🏆' : rank === 2 ? '🥈' : '🥉'}
-					{rank}
-				</div>
-			</div>
-
-			{#if rank !== 3}
-				<span class="leaderboard__divider" role="separator" aria-hidden="true"></span>
-			{/if}
-		{/each}
-	</aside>
-	-->
-	<LeaderBoard />
+<LeaderBoard {leadersByChallenge} {leadersByParticipation} />
 
 </div>
 

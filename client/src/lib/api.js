@@ -1,5 +1,5 @@
 // api.js
-export default async function api(endpoint, method = "GET", body = null, useAuth = true) {
+export default async function api(endpoint, method = "GET", body = null, useAuth = false) {
   const headers = {};
 
   const isFormData = body instanceof FormData;

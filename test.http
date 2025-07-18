@@ -72,8 +72,11 @@ Authorization: Bearer {{token}}
 ### 🕹️ Liste des jeux
 GET http://localhost:3000/games
 
+### 🕹️ Liste des jeux
+GET http://localhost:3000/games/random
+
 ### 🕹️ TOP 3 des jeux
-GET http://localhost:3000/games/top3
+GET http://localhost:3000/games/top
 
 ### 🕹️ Détails d'un jeu spécifique
 GET http://localhost:3000/games/16

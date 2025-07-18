@@ -25,6 +25,7 @@ import { Op, Sequelize } from 'sequelize';
 
 // ✅ GET /games - Récupérer tous les jeux classés par popularité
 export async function getAll(req, res) {
+   console.log('getAll games controller called')
   try {
     const games = await Game.findAll({
       attributes: {
@@ -58,7 +59,7 @@ export async function getAll(req, res) {
         error: 'Aucun jeu trouvé',
       });
     }
-
+     console.log('getAll games controller ok')
     return res.status(StatusCodes.OK).json(games);
   } catch (error) {
     console.error('Erreur lors de la récupération des jeux populaires :', error);
@@ -69,40 +70,40 @@ export async function getAll(req, res) {
 }
 
 // ✅ GET /games/top3 - Récupérer le TOP 3 des jeux classés par popularité
-export async function getTop3(req, res) {
-  try {
-    const games = await Game.findAll({
-      attributes: {
-        include: [
-          [
-            Sequelize.literal(`(
-              SELECT COUNT(*)
-              FROM challenges AS c
-              INNER JOIN participations AS p ON p.challenge_id = c.id
-              WHERE c.game_id = "Game".id
-            )`),
-            'popularity'
-          ]
-        ]
-      },
-      order: [[Sequelize.literal('popularity'), 'DESC']],
-      limit: 3
-    });
+// export async function getTop3(req, res) {
+//   try {
+//     const games = await Game.findAll({
+//       attributes: {
+//         include: [
+//           [
+//             Sequelize.literal(`(
+//               SELECT COUNT(*)
+//               FROM challenges AS c
+//               INNER JOIN participations AS p ON p.challenge_id = c.id
+//               WHERE c.game_id = "Game".id
+//             )`),
+//             'popularity'
+//           ]
+//         ]
+//       },
+//       order: [[Sequelize.literal('popularity'), 'DESC']],
+//       limit: 3
+//     });
 
-    if (!games || games.length === 0) {
-      return res.status(StatusCodes.NOT_FOUND).json({
-        error: 'Aucun jeu trouvé',
-      });
-    }
+//     if (!games || games.length === 0) {
+//       return res.status(StatusCodes.NOT_FOUND).json({
+//         error: 'Aucun jeu trouvé',
+//       });
+//     }
 
-    return res.status(StatusCodes.OK).json(games);
-  } catch (error) {
-    console.error('Erreur lors de la récupération des jeux populaires :', error);
-    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      error: 'Erreur serveur lors de la récupération des jeux',
-    });
-  }
-}
+//     return res.status(StatusCodes.OK).json(games);
+//   } catch (error) {
+//     console.error('Erreur lors de la récupération des jeux populaires :', error);
+//     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+//       error: 'Erreur serveur lors de la récupération des jeux',
+//     });
+//   }
+// }
 
 // ✅ GET /games/top - Récupérer les 3 jeux avec le plus de participations
 export async function getTopGames(req, res) {
@@ -213,6 +214,55 @@ export async function getChallengesByGameId(req, res) {
     });
   }
 }
+
+
+// ✅ GET /games - Récupérer tous les jeux classés par popularité
+export async function getRandomGames(req, res) {
+  try {
+    const games = await Game.findAll({
+      attributes: {
+        include: [
+          [
+            Sequelize.fn('COUNT', Sequelize.col('challenges.participations.id')),
+            'popularity'
+          ]
+        ]
+      },
+      include: [
+        {
+          model: Challenge,
+          as: 'challenges',
+          attributes: [], // on ne veut pas les détails ici
+          include: [
+            {
+              model: Participation,
+              as: 'participations',
+              attributes: [], // idem
+            }
+          ]
+        }
+      ],
+      group: ['Game.id'],
+      order: [[Sequelize.literal('popularity'), 'DESC']]
+    });
+
+    const randomGames = games.length >= 4 ? [...games].sort(() => Math.random() - 0.5).slice(0, 4) : games;
+
+    if (!randomGames || randomGames.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        error: 'Aucun jeu trouvé',
+      });
+    }
+
+    return res.status(StatusCodes.OK).json(randomGames);
+  } catch (error) {
+    console.error('Erreur lors de la récupération des jeux populaires :', error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      error: 'Erreur serveur lors de la récupération des jeux',
+    });
+  }
+}
+
 
 // ✅ GET /games/search - Rechercher des jeux par nom
 export async function searchGames(req, res) {
