@@ -13,9 +13,35 @@ export async function getUserById(userId) {
 }
 
 export async function getTopByChallengeLikes() {
-  return await api('/users/topUsersByChallengeLikes', 'GET');
+  try {
+    const data = await api('/users/topUsersByChallengeLikes', 'GET');
+    return data;
+  } catch (error) {
+    console.error('SERVICE getTopByChallengeLikes failed:', error);
+    throw error;
+  }
 }
 
 export async function getTopByParticipationLikes() {
-  return await api('/users/topUsersByParticipationLikes', 'GET');
+  try {
+    const data = await api('/users/topUsersByParticipationLikes', 'GET');
+    return data;
+  } catch (error) {
+    console.error('SERVICE getTopByParticipationLikes failed:', error);
+    throw error;
+  }
+}
+
+
+export async function uploadAvatar(userId, imageFile) {
+  try {
+    const formData = new FormData();
+    formData.append('avatar', imageFile); // 'avatar' doit correspondre au champ attendu côté backend
+    console.log('SERVICE uploadAvatar formData: ', formData)
+    const avatarUploaded = await api(`/users/${userId}/avatar`, "POST", formData)
+    return avatarUploaded;
+  } catch (error) {
+    console.error('SERVICE Avatar upload failed: ', error);
+    throw error;
+  }
 }

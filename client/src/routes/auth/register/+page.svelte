@@ -62,11 +62,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 </svelte:head>
-  <div class="hero-section">
-    <h1>Inscription</h1>
-    <p class="hero-subtitle">Rejoignez-nous pour accéder à vos défis gaming</p>
-  </div>
-<AuthContainer title="Inscription">
+
+<AuthContainer title="Inscription" classCSS="log-container">
+  <p class="hero-subtitle">Rejoignez-nous pour accéder à vos défis gaming</p>
   {#if error}
     <div class="error">{error}</div>
   {/if}
@@ -88,22 +86,10 @@
 </AuthContainer>
 
 <style>
-  .hero-section {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .hero-section h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-  }
   .hero-subtitle {
     font-size: 1rem;
     margin: 0 auto;
+    padding: 0 0 1rem 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
