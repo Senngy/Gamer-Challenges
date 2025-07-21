@@ -23,13 +23,15 @@
 
 	// met à jour l’authentification de l’utilisateur en temps réel.
 	$effect(() => {
+		
 		getAuth();
+		getUserInfos();
 	});
 
 	let user = $state({
 		id: '',
 		username: '',
-    avatar:'',
+        avatar:'',
 		first_name: '',
 		last_name: '',
 		email: '',
@@ -45,12 +47,13 @@
 	const getUserInfos = async () => {
 		// Fonction pour récupérer les informations de l'utilisateur
 		// Vérifie si l'utilisateur est authentifié
+		console.log('getUserInfos');
 		if (!authStore.token) {
 			console.warn('Utilisateur non connecté. Redirection...');
 			goto('/login'); // ou une autre page publique
 			return;
 		}
-
+        console.log('getUserInfos2');
 		try {
 			const userInfos = await getCurrentUser(); // Appelle ton service
 			console.log('Données utilisateur récupérées :', userInfos);
@@ -60,7 +63,7 @@
 			console.log('User Infos:', userInfos);
 			const { id, pseudo, email, avatar, challenge_created } = userInfos;
 			user = { id, pseudo, email, avatar };
-      console.log('user:', user);
+            console.log('user:', user);
 			challenges = challenge_created?.length
 				? challenge_created // existe donc associé a challenges
 				: ['Aucun challenge créé']; // n'éxiste pas
@@ -166,9 +169,14 @@
 		goto(url);
 		window.location.href = url;
 	}
+	/*
 	onMount(() => {
-		getUserInfos(); // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
+		getAuth();
+		getUserInfos();
+		 // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
+		console.log('onMount User : ', user)
 	});
+	*/
 </script>
 
 <svelte:head>

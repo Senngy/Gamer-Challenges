@@ -49,7 +49,6 @@ export const getTopUsersByChallengeLikes = async (req, res) => {
       ],
       order: [[sequelize.literal(`"totalChallengeLikes"`), "DESC"]],
       limit: 10,
-      logging: console.log,
     });
 
     res.status(200).json(result);
@@ -90,7 +89,7 @@ export const getTopUsersByParticipationLikes = async (req, res) => {
       group: ["User.id", "User.pseudo"],
       order: [[Sequelize.literal(`"totalParticipationLikes"`), "DESC"]],
       limit: 10,
-      logging: console.log,
+      
     });
 
     return res.status(200).json(result);

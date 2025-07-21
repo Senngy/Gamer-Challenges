@@ -96,6 +96,7 @@ export async function me (req, res) {
             include: { model: Challenge, as: "challenge_created", attributes: ['id', 'title']}
         })
         // obtenir les infos du user connecté
+        console.log('user me', user)
         if (!user) {
             res.status(StatusCodes.NOT_FOUND).json({error: "Utilisateur non trouvé"})
         }

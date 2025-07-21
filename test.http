@@ -39,17 +39,21 @@ Content-Type: application/json
 
 ## PAGE "ME"
 
+### get User
+GET http://localhost:3000/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMSwiaWF0IjoxNzUzMDU3NzQwLCJleHAiOjE3NTMwNjQ5NDB9.kOtXCrjRHjiVPV2mcNAqlcjXYI7yAdjE9FfGoLsP1Hc
+Content-Type: application/json
 ### Inscription
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-    "email": "jules111@example.com",
-    "password": "Exemple@1234",
-    "pseudo": "juul101",
-    "birth_date": "1948/11/24",
-    "first_name": "ju",
-    "last_name": "les"
+  "pseudo": "Senngy",
+  "email": "senngy@exemple.com",
+  "password": "Motdepasse8&",
+  "birth_date": "11/10/1996",
+  "first_name": "Sylvain",
+  "last_name": "Marchal"
 }
 
 ### 📝 Mise à jour du mot de passe
@@ -64,7 +68,7 @@ Authorization: Bearer {{token}}
 ### 🗑️ Suppression du compte
 DELETE http://localhost:3000/auth/me
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo1LCJpYXQiOjE3NTMwNTcxODgsImV4cCI6MTc1MzA2NDM4OH0.DoOQF8aEXym54cnUGhkjDonqBPTjWBYC5TfIacK1CDQ
 
 
 ## GAMES

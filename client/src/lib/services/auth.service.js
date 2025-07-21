@@ -1,6 +1,7 @@
 // auth.service.js
 import api from '../api.js'; // Importe la fonction api pour faire les requêtes HTTP
 import { validateLoginData, sanitizeLoginData } from '../verification/validation.form.login.js';
+import { authStore } from '$lib/store/authStore.svelte.js';
 
 export const login = async (credentials) => {
   try {
@@ -52,8 +53,10 @@ export async function register(pseudo, email, password, birth_date, first_name, 
 
 // Fonction pour récupérer les informations de l'utilisateur connecté
 export const getCurrentUser = async () => {
+  console.log('getCurrentUser')
+  console.log("SERVICE getCurrentUser authstore.token",authStore.token)
   try {
-    const user = await api('/auth/me', "GET"); // Appel API pour récupérer les infos utilisateur
+    const user = await api('/auth/me', "GET", null, true); // Appel API pour récupérer les infos utilisateur
     console.log('getCurrentUser user:', user); // Affiche les infos récupérées
     return user; // Retourne l'utilisateur
   } catch (error) {
@@ -65,7 +68,7 @@ export const getCurrentUser = async () => {
 // Fonction pour récupérer les informations modifiées par l'utilisateur (pseudo)
 export async function updatePseudo(newPseudo) {
   try {
-    const response = await api('/auth/me/pseudo', "PATCH", {newPseudo}); // Envoie le nouveau pseudo à l'API
+    const response = await api('/auth/me/pseudo', "PATCH", {newPseudo}, true); // Envoie le nouveau pseudo à l'API
     console.log('Update pseudo auth.service.js successful:', response); // Affiche la réponse
     return; // Pas de retour spécifique
   } catch (error) {
@@ -77,7 +80,7 @@ export async function updatePseudo(newPseudo) {
 // Fonction pour récupérer les informations modifiées par l'utilisateur (mot de passe)
 export async function updatePassword(currentPassword, newPassword) {
   try {
-    const response = await api('/auth/me/password', "PATCH", { currentPassword, newPassword }); // Envoie ancien et nouveau mot de passe à l'API
+    const response = await api('/auth/me/password', "PATCH", { currentPassword, newPassword }, true); // Envoie ancien et nouveau mot de passe à l'API
     console.log('Update password auth.service.js successful:', response); // Affiche la réponse
     return; // Pas de retour spécifique
   } catch (error) {

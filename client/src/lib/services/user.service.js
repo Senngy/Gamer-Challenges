@@ -38,7 +38,7 @@ export async function uploadAvatar(userId, imageFile) {
     const formData = new FormData();
     formData.append('avatar', imageFile); // 'avatar' doit correspondre au champ attendu côté backend
     console.log('SERVICE uploadAvatar formData: ', formData)
-    const avatarUploaded = await api(`/users/${userId}/avatar`, "POST", formData)
+    const avatarUploaded = await api(`/users/${userId}/avatar`, "POST", formData, true)
     return avatarUploaded;
   } catch (error) {
     console.error('SERVICE Avatar upload failed: ', error);
