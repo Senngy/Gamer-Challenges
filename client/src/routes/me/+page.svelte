@@ -50,7 +50,7 @@
 		console.log('getUserInfos');
 		if (!authStore.token) {
 			console.warn('Utilisateur non connecté. Redirection...');
-			goto('/login'); // ou une autre page publique
+			goto('/'); // ou une autre page publique
 			return;
 		}
         console.log('getUserInfos2');
