@@ -20,7 +20,7 @@ export async function getChallenge(challengeId) {
 // Fonction de création d'un challenge
 export async function challengeCreation(title, description, rules, created_by, game_by) {
   try {
-    const challengeCreated = await api('/challenges', "POST", { title, description, rules, created_by, game_by });
+    const challengeCreated = await api('/challenges', "POST", { title, description, rules, created_by, game_by }, true);
 
     console.log('SERVICE Challenge créé avec succès :', challengeCreated);
     return challengeCreated;
@@ -78,14 +78,14 @@ export async function toggleLike(challengeId) {
 
   try {
     // 1. Vérifie si l'utilisateur a déjà liké
-    const statusRes = await api(`/challenges/${challengeId}/likes/status`, 'GET');
+    const statusRes = await api(`/challenges/${challengeId}/likes/status`, 'GET', null, true);
     const { hasLiked } = statusRes;
     //console.log("SERVICE response hasLiked", hasLiked)
 
     // 2. Ajoute ou supprime le like selon le statut
     const method = hasLiked ? 'DELETE' : 'POST';
     //console.log('SERVICE method: ', method)
-    const likeRes = await api(`/challenges/${challengeId}/likes`, method);
+    const likeRes = await api(`/challenges/${challengeId}/likes`, method, null, true);
 
     const message = hasLiked ? 'Like supprimé avec succès' : 'Like ajouté avec succès';
     //console.log(message);

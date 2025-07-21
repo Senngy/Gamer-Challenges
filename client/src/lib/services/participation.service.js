@@ -9,7 +9,7 @@ export async function participationCreation(media_link, description, user_id, ch
   console.log("SERVICE challenge_id", challenge_id)
   */
   try {
-    const participationCreated = await api('/participations', "POST", { media_link, description, user_id, challenge_id });
+    const participationCreated = await api('/participations', "POST", { media_link, description, user_id, challenge_id }, true);
     console.log('SERVICE Participation créée avec succès :', participationCreated);
     return participationCreated; // ← on retourne bien la réponse
   } catch (error) {
@@ -81,14 +81,14 @@ export async function toggleLike(participationId) {
 
   try {
     // 1. Vérifie si l'utilisateur a déjà liké
-    const statusRes = await api(`/participations/${participationId}/likes/status`, 'GET');
+    const statusRes = await api(`/participations/${participationId}/likes/status`, 'GET', null, true);
     const { hasLiked } = statusRes;
     //console.log("SERVICE response hasLiked", hasLiked)
 
     // 2. Ajoute ou supprime le like selon le statut
     const method = hasLiked ? 'DELETE' : 'POST';
     //console.log('SERVICE method: ', method)
-    const likeRes = await api(`/participations/${participationId}/likes`, method);
+    const likeRes = await api(`/participations/${participationId}/likes`, method, null, true);
 
     const message = hasLiked ? 'Like supprimé avec succès' : 'Like ajouté avec succès';
     //console.log(message);
