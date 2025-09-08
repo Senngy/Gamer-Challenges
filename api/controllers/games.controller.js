@@ -246,7 +246,7 @@ export async function getRandomGames(req, res) {
       order: [[Sequelize.literal('popularity'), 'DESC']]
     });
 
-    const randomGames = games.length >= 4 ? [...games].sort(() => Math.random() - 0.5).slice(0, 4) : games;
+    const randomGames = games.length >= 4 ? [...games].sort(() => Math.random() - 0.5).slice(0, 32) : games; // changer le 2eme paramètre de slice pour choisir le nombre de jeux aléatoires renvoyés
 
     if (!randomGames || randomGames.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({

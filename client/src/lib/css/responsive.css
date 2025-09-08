@@ -147,7 +147,7 @@
 		grid-template-columns: 2fr 1fr;
 		gap: 2em;
 		align-items: stretch;
-		margin-top: 3em;
+		/*margin-top: 3em;*/
 	}
 
 	.slide__image {

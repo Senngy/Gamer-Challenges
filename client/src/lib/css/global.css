@@ -281,6 +281,29 @@ h3 {
 .desktop-nav {
 	display: none; /* sera activé en media query */
 }
+/* =========================== */
+/* HERO SECTION */
+.hero-section {
+	text-align: center;
+}
+.hero-section h1 {
+	font-size: 3rem;
+	font-weight: 700;
+	background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	margin-bottom: 1rem;
+	padding: 0 0.5rem;
+}
+.hero-subtitle {
+	font-size: 1rem;
+	margin: 0 auto;
+	background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
 
 /* ===========================
 ✅ CONTENU PRINCIPAL
@@ -561,6 +584,7 @@ h3 {
 .catalog__grid {
 	display: grid;
 	grid-template-columns: 1fr;
+	/* grid-template-columns: repeat(4, 1fr); /* desktop : 4 colonnes */
 	gap: 3em;
 }
 .catalog__item {

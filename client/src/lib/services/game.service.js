@@ -19,9 +19,9 @@ export async function searchGames(query) {
 
 export async function getGameInfos(game_id) {
     try {
-        console.log('game SERVICE game_id:', game_id)
+      //  console.log('game SERVICE game_id:', game_id)
         const game = await api(`/games/${game_id}`, "GET")
-        console.log('game SERVICE response:', game)
+     //   console.log('game SERVICE response:', game)
         return game;
     } catch(error) {
         console.error('Error fetching search results:', error);
@@ -30,10 +30,10 @@ export async function getGameInfos(game_id) {
 }
 
 export async function getRandomGames() {
-    console.log('SERVICE randomGames called')
+   // console.log('SERVICE randomGames called')
     try {
         const randomGames = await api('/games/random', "GET")
-        console.log('SERVICE randomGames:', randomGames)
+       // console.log('SERVICE randomGames:', randomGames)
         return randomGames;
     } catch(error) {
         console.error('Error fetching get games:', error)
@@ -42,10 +42,10 @@ export async function getRandomGames() {
 }
 
 export async function getTopGames() {
-    console.log('SERVICE topGames called')
+   // console.log('SERVICE topGames called')
     try {
         const topGames = await api('/games/top', "GET")
-        console.log('SERVICE topGames:', topGames)
+        //console.log('SERVICE topGames:', topGames)
         return topGames;
     } catch(error) {
         console.error('Error fetching get games:', error)

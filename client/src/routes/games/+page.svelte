@@ -4,7 +4,7 @@
 	const { data } = $props();
 	const { games } = data;
 
-	let visibleCount = $state(6);
+	let visibleCount = $state(4);
 </script>
 
 <svelte:head>
@@ -25,7 +25,7 @@
 	</div>
 	{#if visibleCount < games.length}
 		<div class="load-more-container">
-			<button class="btn" id="load-more" onclick={() => (visibleCount += 6)}>
+			<button class="btn" id="load-more" onclick={() => (visibleCount += 8)}>
 				Voir plus de jeux
 			</button>
 		</div>
@@ -33,25 +33,5 @@
 </section>
 
 <style>
-	.hero-section {
-		text-align: center;
-		margin-bottom: 3rem;
-	}
-	.hero-section h1 {
-		font-size: 3rem;
-		font-weight: 700;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin-bottom: 1rem;
-	}
-	.hero-subtitle {
-		font-size: 1rem;
-		margin: 0 auto;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
+	
 </style>

@@ -176,6 +176,7 @@
 
     <!-- Informations de contact -->
     <div class="info-section">
+      <!--
       <div class="info-card">
         <div class="info-header">
           <div class="info-icon">
@@ -188,6 +189,7 @@
         </div>
         <p>123 Rue du Gaming<br>75001 Paris, France</p>
       </div>
+      -->
 
       <div class="info-card">
         <div class="info-header">
@@ -213,7 +215,7 @@
           </div>
           <h3>Horaires de support</h3>
         </div>
-        <p>Lundi - Vendredi: 9h - 18h<br>Weekend: 10h - 16h</p>
+        <p>Lundi - Vendredi: 9h - 18h</p>
       </div>
 
       <div class="info-card">
@@ -273,35 +275,12 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  .hero-section {
-    text-align: center;
-    margin-bottom: 4rem;
-    padding: 2rem 0;
-  }
-
-  .hero-section h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 1rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.2rem;
-    color: #666;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
   .contact-content {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 3rem;
     margin-bottom: 4rem;
+    margin-top: 2rem;
   }
 
   .contact-card {

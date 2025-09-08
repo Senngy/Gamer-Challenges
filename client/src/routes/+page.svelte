@@ -6,8 +6,8 @@
 	let { data } = $props();
 	const { randomGames, topGames, leadersByChallenge, leadersByParticipation } = data;
 	
-	let slideIndex = 0;
-
+	let slideIndex = $state(0); // Index en state pour effectuer le changement de slide
+    let visibleCount = $state(4);
 
 	function truncateWords(text = '', max = 40) {
 		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
@@ -103,8 +103,15 @@
 		Découvrez les autres jeux disponibles ou vous pouvez participez a votre propre challenge ou defier la communitaie.
 	</h2>
 	<div class="catalog__grid" role="list">
-		{#each randomGames as game (game.id)}
+	{#each randomGames.slice(0, visibleCount) as game}
 			<CatalogItem {game} />
 		{/each}
 	</div>
+	{#if visibleCount < randomGames.length}
+		<div class="load-more-container">
+			<button class="btn" id="load-more" on:click={() => (visibleCount += 8)}>
+				Voir plus de jeux
+			</button>
+		</div>
+	{/if}
 </section>
