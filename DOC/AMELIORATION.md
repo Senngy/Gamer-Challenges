@@ -12,6 +12,7 @@
 
 ## Liste des améliorations secondaires 
 
+- Améliorer l'UI des boutons du classement
 - Améliorer le gradient de couleur du background du site (Il y a une sorte de séparation linéaire en bas de page peu génante)
 - Afficher l'effet déjà liké sur les éléments déjà liké (remplissage blanc) 
 - Revoir peut-être le design du classement pour qu'il ressemble + a ce qui était fait sur la maquette

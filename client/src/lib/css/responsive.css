@@ -1,0 +1,253 @@
+/* ===========================
+📱 RESPONSIVE / MEDIA QUERIES
+=========================== */
+@media (min-width: 200px) and (max-width: 767.9px) {
+	.catalog__grid {
+		grid-template-columns: repeat(1, 1fr);
+		gap: 1em;
+	}
+
+	footer.footer {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.footer__brand {
+		justify-content: space-around;
+	}
+	.footer__logo {
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.footer__nav ul {
+		text-align: center;
+		flex-direction: column;
+	}
+	.footer__nav li {
+		margin-bottom: 0;
+	}
+
+	.footer__contact {
+		margin-top: 0.6rem;
+		text-align: center;
+	}
+
+	/*
+	.footer__copyright {
+		align-items: flex-start;
+		text-align: left;
+	}
+        */
+}
+
+/* Pour tablettes et écrans ≥ 768px */
+@media (min-width: 768px) {
+	.catalog__grid {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1em;
+	}
+
+	footer.footer {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.footer__brand {
+		justify-content: space-around;
+	}
+	.footer__logo {
+		width: 50px;
+		height: 50px;
+		border-radius: 10px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.footer__nav ul {
+		display: flex;
+		justify-content: space-around;
+		text-align: center;
+	}
+
+	.footer__contact {
+		margin-top: 1rem;
+		text-align: center;
+	}
+
+	.footer__copyright {
+		align-items: flex-start;
+		text-align: left;
+	}
+}
+
+/* Pour desktop et écrans ≥ 900px */
+@media (min-width: 900px) {
+	/* Header desktop */
+	.header {
+		margin: 0.8em 4em;
+	}
+	.desktop-nav {
+		display: block;
+	}
+	.desktop-nav__list {
+		display: flex;
+		gap: 1.5rem;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.desktop-nav__item {
+		display: flex;
+		align-items: center;
+	}
+	.nav-link {
+		padding: 8px 12px;
+		border-radius: 8px;
+		transition:
+			background 0.3s ease,
+			color 0.3s ease;
+	}
+	.nav-link:hover {
+		background: var(--text-color-red);
+		color: white;
+	}
+	.nav-link.strong {
+		font-weight: bold;
+		border: 1px solid #fff;
+		background: #0c0e0f;
+	}
+	.nav-link.strong:hover {
+		background: rgba(255, 255, 255, 0.9);
+		color: #0c0e0f;
+	}
+
+	/* Masque le menu burger mobile */
+	.burger,
+	.mobile-menu {
+		display: none;
+	}
+
+	.homepage-intro__text {
+		max-width: 45rem;
+		margin: 0 auto;
+	}
+
+	.main-content {
+		margin-top: 6em;
+	}
+
+	.block__content__populaires-top {
+		display: grid;
+		grid-template-columns: 2fr 1fr;
+		gap: 2em;
+		align-items: stretch;
+		margin-top: 3em;
+	}
+
+	.slide__image {
+		border-radius: var(--general-border-radius);
+	}
+
+	.popular-games {
+		height: 500px;
+		margin: 0 1em;
+	}
+
+	.leaderboard {
+		margin-top: 0 !important;
+		margin: 0 1em 0 0;
+		justify-content: space-between;
+		height: 500px;
+	}
+
+	.catalog {
+		margin-top: 2em;
+	}
+	.catalog__grid {
+		grid-template-columns: repeat(4, 1fr);
+		gap: 2em;
+	}
+	.catalog__title {
+		text-align: center;
+		font-weight: bold;
+		font-size: 24px;
+		margin-bottom: 1.6em;
+	}
+
+	section.block__information {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.game-details {
+		height: 500px;
+	}
+	.game-details__title {
+		font-size: 36px;
+		margin-top: 0.4em;
+		margin-bottom: 0.5em;
+	}
+	.game-details__description {
+		font-size: 16px;
+	}
+
+	/* FOOTER */
+	.footer {
+		color: #ecf0f1;
+		margin-top: 4em auto;
+		backdrop-filter: blur(1.25em) saturate(1.6);
+		-webkit-backdrop-filter: blur(1.25em) saturate(1.6);
+		-webkit-backdrop-filter: blur(1.25em) saturate(1.6);
+	}
+	.footer__container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 3rem 2rem 1rem;
+	}
+	.footer__main {
+		display: grid;
+		grid-template-columns: 2fr 1fr 1fr;
+		gap: 0.5rem;
+		margin-bottom: 2rem;
+	}
+
+	/* Section Brand */
+	.footer__brand {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+	}
+	.footer__logo {
+		width: 60px;
+		height: 60px;
+		background: linear-gradient(135deg, #d82f2f 0%, #3a0a6b 100%);
+		border-radius: 12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-weight: bold;
+		font-size: 1.5rem;
+		color: white;
+		box-shadow: 0 4px 15px rgba(209, 44, 44, 0.3);
+	}
+
+	.footer__title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		margin: 0;
+		color: #ea6666;
+	}
+
+	.footer__socials {
+		display: flex;
+		gap: 1rem;
+		margin-top: 0.5rem;
+	}
+}
