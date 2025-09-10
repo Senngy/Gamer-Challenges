@@ -47,7 +47,7 @@
       <address class="footer__contact" aria-label="Informations de contact">
 				<p>
 					<strong>Email :</strong>
-					<a href="mailto:GameChallenge@gmail.com">GameChallenges@gmail.com</a>
+					<a href="mailto:GameChallenge@gmail.com">gamerchallenges@yandex.com</a>
 				</p>
 			</address>
 		</div>

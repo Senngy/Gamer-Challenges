@@ -19,11 +19,13 @@
 	import { uploadAvatar } from '$lib/services/user.service.js';
 
 	/// JS
-  const API_URL = import.meta.env.VITE_API_URL
+	const API_URL = import.meta.env.VITE_API_URL;
+
+	let { data } = $props();
+	const { userInfos } = data;
 
 	// met à jour l’authentification de l’utilisateur en temps réel.
 	$effect(() => {
-		
 		getAuth();
 		getUserInfos();
 	});
@@ -31,7 +33,7 @@
 	let user = $state({
 		id: '',
 		username: '',
-        avatar:'',
+		avatar: '',
 		first_name: '',
 		last_name: '',
 		email: '',
@@ -53,17 +55,21 @@
 			goto('/'); // ou une autre page publique
 			return;
 		}
-        console.log('getUserInfos2');
+		console.log('getUserInfos2');
 		try {
-			const userInfos = await getCurrentUser(); // Appelle ton service
+			const userInfos = await getCurrentUser(); // Appel de la fonction pour obtenir les infos utilisateur
 			console.log('Données utilisateur récupérées :', userInfos);
 			if (!userInfos) {
 				throw new Error('Réponse inattendue : pas de userInfos');
 			}
 			console.log('User Infos:', userInfos);
 			const { id, pseudo, email, avatar, challenge_created } = userInfos;
-			user = { id, pseudo, email, avatar };
-            console.log('user:', user);
+			user.id = id;
+			user.pseudo = pseudo;
+			user.email = email;
+			user.avatar = avatar;
+			challenges = challenge_created?.length ? challenge_created : [];
+			console.log('user:', user);
 			challenges = challenge_created?.length
 				? challenge_created // existe donc associé a challenges
 				: ['Aucun challenge créé']; // n'éxiste pas
@@ -131,8 +137,8 @@
 		try {
 			isUploading = true;
 			uploadStatus = 'Téléchargement en cours...';
-      console.log('FRONT handleUpload userId', user.id)
-      console.log('FRONT handleUpload file', file)
+			console.log('FRONT handleUpload userId', user.id);
+			console.log('FRONT handleUpload file', file);
 			const result = await uploadAvatar(user.id, file); // Appel au backend
 			console.log("Résultat de l'upload :", result);
 
@@ -198,103 +204,111 @@
 		<h1>Mon Profil</h1>
 		<p class="hero-subtitle">Gérez vos informations et consultez vos défis gaming</p>
 	</div>
+	<div class="user__content">
+		<AuthContainer title="Mes informations personnelles">
+			<div class="user-info">
+				<div class="avatar">
+					<label for="avatar">Avatar :</label>
+					<div class="avatar-container">
+						<img
+							src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+							alt="Avatar"
+							class="avatar-image"
+						/>
+					</div>
+					<div class="container">
+						{#if isUploading}
+							<p class="uploading">Envoi en cours...</p>
+						{:else if uploadStatus}
+							<p class="upload-status">{uploadStatus}</p>
+						{/if}
 
-	<AuthContainer title="Mes informations personnelles">
-		<div class="user-info">
-			<div class="avatar">
-				<label for="avatar">Avatar :</label>
-				<div class="avatar-container">
-					<img
-						src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
-						alt="Avatar"
-						class="avatar-image"
-					/>
+						<label class="upload-btn" for="avatar-upload">Changer d’avatar</label>
+						<input
+							id="avatar-upload"
+							type="file"
+							accept="image/*"
+							on:change={handleFileChange}
+							hidden
+						/>
+					</div>
 				</div>
-				<div class="container">
-					{#if isUploading}
-						<p class="uploading">Envoi en cours...</p>
-					{:else if uploadStatus}
-						<p class="upload-status">{uploadStatus}</p>
+
+				<div class="container email">
+					<label for="email">Email :</label>
+					<div>{user.email}</div>
+				</div>
+
+				<div class="container pseudo">
+					<label for="pseudo" class="pseudo">Pseudo :</label>
+					<div>{user.pseudo}</div>
+					<button class="modify" on:click={() => open('modifyPseudo')}>Modifier le pseudo</button>
+				</div>
+
+				<div class="container password">
+					<label for="password">Mot de passe :</label>
+					<div>••••••••</div>
+					<button class="modify" style="cursor:pointer" on:click={() => open('modifyPassword')}
+						>Modifier le mot de passe</button
+					>
+				</div>
+
+				<div class="container delete-account">
+					<label for="delete">Suppression de compte :</label>
+					<Btn variant="delete" on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
+				</div>
+			</div>
+			{#if activeModal}
+				<!-- Wrapper qui gère l’ouverture/fermeture générale -->
+				<ProfilePopUp bind:open={activeModal} on:close={close}>
+					<!-- Utilisation de la popup -->
+					{#if activeModal === 'deletePassword'}
+						<!-- Popup de suppression de compte -->
+						<DeletePopUp on:close={close} />
+					{:else if activeModal === 'modifyPassword'}
+						<!-- Popup de modification de mot de passe -->
+						<ModifyPasswordPopUp
+							on:submit={(data) => {
+								console.log('Nouveau mot de passe :', data.newPassword);
+								close();
+							}}
+							on:close:{close}
+						/>
+					{:else if activeModal === 'modifyPseudo'}
+						<!-- Popup de modification de pseudo -->
+						<ModifyPseudoPopUp
+							on:submit={(data) => {
+								console.log('Nouveau pseudo :', data.newPseudo);
+								close();
+							}}
+							on:close={close}
+						/>
 					{/if}
+				</ProfilePopUp>
+			{/if}
+		</AuthContainer>
 
-					<label class="upload-btn" for="avatar-upload">Changer d’avatar</label>
-					<input id="avatar-upload" type="file" accept="image/*" on:change={handleFileChange} hidden/>
-				</div>
-			</div>
+		<AuthContainer title="Mes challenges">
+			<!--Challenges de l'utilisateur-->
 
-			<div class="container email">
-				<label for="email">Email :</label>
-				<div>{user.email}</div>
-			</div>
+			{#if !user.id || challenges.length === 0}
+				<!-- Si l'utilisateur n'a pas de challenges -->
+				<p>Aucun challenge créé pour le moment.</p>
+			{:else}
+				<ul class="challenges-list">
+					{#each challenges as challenge}
+						<li>
+							<span>Titre : {challenge.title}</span>
+							<span class="status">{challenge.status}</span>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+		</AuthContainer>
 
-			<div class="container pseudo">
-				<label for="pseudo" class="pseudo">Pseudo :</label>
-				<div>{user.pseudo}</div>
-				<button class="modify" on:click={() => open('modifyPseudo')}>Modifier le pseudo</button>
-			</div>
-
-			<div class="container password">
-				<label for="password">Mot de passe :</label>
-				<div>••••••••</div>
-				<button class="modify" style="cursor:pointer" on:click={() => open('modifyPassword')}
-					>Modifier le mot de passe</button
-				>
-			</div>
-
-			<div class="container delete-account">
-				<label for="delete">Suppression de compte :</label>
-				<Btn variant="delete" on:click={() => open('deletePassword')}>Supprimer mon compte</Btn>
-			</div>
-		</div>
-		{#if activeModal}
-			<!-- Wrapper qui gère l’ouverture/fermeture générale -->
-			<ProfilePopUp bind:open={activeModal} on:close={close}>
-				<!-- Utilisation de la popup -->
-				{#if activeModal === 'deletePassword'}
-					<!-- Popup de suppression de compte -->
-					<DeletePopUp on:close={close} />
-				{:else if activeModal === 'modifyPassword'}
-					<!-- Popup de modification de mot de passe -->
-					<ModifyPasswordPopUp
-						on:submit={(data) => {
-							console.log('Nouveau mot de passe :', data.newPassword);
-							close();
-						}}
-						on:close:{close}
-					/>
-				{:else if activeModal === 'modifyPseudo'}
-					<!-- Popup de modification de pseudo -->
-					<ModifyPseudoPopUp
-						on:submit={(data) => {
-							console.log('Nouveau pseudo :', data.newPseudo);
-							close();
-						}}
-						on:close={close}
-					/>
-				{/if}
-			</ProfilePopUp>
-		{/if}
-	</AuthContainer>
-
-	<AuthContainer title="Mes challenges">
-		<!--Challenges de l'utilisateur-->
-
-		{#if !user.id || challenges.length === 0}
-			<!-- Si l'utilisateur n'a pas de challenges -->
-			<p>Aucun challenge créé pour le moment.</p>
-		{:else}
-			<ul class="challenges-list">
-				{#each challenges as challenge}
-					<li>
-						<span>{challenge.title}</span>
-						<span class="status">{challenge.status}</span>
-					</li>
-				{/each}
-			</ul>
-		{/if}
-	</AuthContainer>
-
-	<!-- Bouton de déconnexion -->
+	
+	</div>
+		<!-- Bouton de déconnexion -->
 	<Btn
 		variant="logout"
 		on:click={() => {
@@ -308,20 +322,21 @@
 	.main-container {
 		padding: 0 1em;
 		margin: 0 auto;
+		/*
 		display: flex;
 		flex-direction: column;
 		gap: 2em;
-		max-width: 600px;
+		*/
+		max-width: 100%;
 	}
 
 	.hero-section {
 		text-align: center;
-		margin-bottom: 3rem;
 	}
 	.hero-section h1 {
 		font-size: 3rem;
 		font-weight: 700;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
@@ -330,10 +345,17 @@
 	.hero-subtitle {
 		font-size: 1rem;
 		margin: 0 auto;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-clip: text;
+	}
+	.user__content {
+		display: flex;
+		flex-direction: row;
+		gap: 2rem;
+		max-width: 100%;
+		margin: 1rem auto;
 	}
 
 	.user-info {
@@ -417,5 +439,10 @@
 	}
 	.upload-btn:hover {
 		background: #4338ca;
+	}
+	@media (max-width: 690px) {
+		.user__content {
+			flex-direction: column;
+		}
 	}
 </style>

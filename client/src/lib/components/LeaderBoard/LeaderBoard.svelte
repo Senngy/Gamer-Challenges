@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	const { leadersByChallenge, leadersByParticipation } = $props()
+	const { leadersByChallenge, leadersByParticipation } = $props();
 	let mode = $state('challenge'); // ← 'challenge' ou 'participation'
 	function switchMode(m) {
 		mode = m;
@@ -14,17 +14,28 @@
 <!-- Leaderboard -->
 <!-- ========================== -->
 <aside class="leaderboard" aria-labelledby="leaderboard-title">
+	<h2 class="leaderboard__title" id="leaderboard-title">Top tiers de Gamer Challenge par : </h2>
 	<div class="tabs">
-		<button class:active={mode === 'challenge'} on:click={() => switchMode('challenge')}>
-			Challenges
-		</button>
-		<button class:active={mode === 'participation'} on:click={() => switchMode('participation')}>
-			Participations
-		</button>
+		<div class="btn-container">
+			<div class="btn-background">
+				<button class:active={mode === 'challenge'} on:click={() => switchMode('challenge')}>
+					Challenges
+				</button>
+			</div>
+
+			<div class="btn-background">
+				<button
+					class:active={mode === 'participation'}
+					on:click={() => switchMode('participation')}
+				>
+					Participations
+				</button>
+			</div>
+		</div>
 	</div>
 	<div>
-		<h2 class="leaderboard__title" id="leaderboard-title">Top challengers 🏆</h2>
-		<span class="leaderboard__highlight" aria-hidden="true">#Gamerchallenges</span>
+		
+		<span class="leaderboard__highlight" aria-hidden="true">🏆 #LeVoteDeLaCommu</span>
 	</div>
 	{#if mode === 'challenge'}
 		{#each leadersByChallenge.slice(0, 3) as user, i (user.id)}
@@ -35,7 +46,7 @@
 			>
 				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 					<img
-						src={ user.avatar || 'https://via.placeholder.com/100'}
+						src={user.avatar || 'https://via.placeholder.com/100'}
 						alt="Avatar"
 						class="avatar-image"
 					/>
@@ -48,8 +59,7 @@
 					</div>
 				</div>
 				<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
-					{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
-					{i + 1}
+					{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}				
 				</div>
 			</div>
 
@@ -66,7 +76,7 @@
 			>
 				<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 					<img
-						src={ user.avatar || 'https://via.placeholder.com/100'}
+						src={user.avatar || 'https://via.placeholder.com/100'}
 						alt="Avatar"
 						class="avatar-image"
 					/>
@@ -95,18 +105,41 @@
 	.tabs {
 		display: flex;
 		gap: 0.5rem;
-		margin-bottom: 1rem;
+		margin: 0.5rem auto;
 		justify-content: center;
 	}
 	.tabs button {
 		padding: 0.3rem 0.6rem;
 		cursor: pointer;
 		border-radius: var(--general-border-radius);
-		background: rgba(153, 60, 60, 0.1);
+		background: #00000000;
+		color: rgb(224, 214, 214);
+		font-family: 'Orbitron', sans-serif;
+		
+	}
+	.btn-container {
+		background: rgba(0, 0, 0, 0.185);
+		padding: 0.4rem;
+		border-radius: 25px;
+		display: flex;
+		gap: 0.5rem;
+		box-shadow: 2px 2px 5px rgba(255, 79, 79, 0.548);
+	}
+	.btn-background {
+		
+		border-radius: 25px;
+		
+	}
+	.btn-background button.active {
+		background: linear-gradient(45deg, #ff8d8d9f, #4110107e);
+		
 	}
 	.tabs button.active {
 		border-bottom: 2px solid #333;
 		font-weight: bold;
+		background: linear-gradient(45deg, #ff8d8d9f, #4110107e);
+		color: rgba(243, 240, 240, 0.911);
+		/*box-shadow: 2px 2px 5px rgba(255, 79, 79, 0.548);*/
 	}
 	.leaderboard__player-name {
 		font-size: 1rem;

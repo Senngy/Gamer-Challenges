@@ -1,10 +1,26 @@
 <script>
 	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+	import { onMount } from 'svelte';
 
 	const { data } = $props();
 	const { games } = data;
 
 	let visibleCount = $state(4);
+
+	onMount(() => {
+		// Animation d'apparition progressive des éléments
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('animate-fade-in');
+				}
+			});
+		});
+
+		document.querySelectorAll('h1, .hero-subtitle, .catalog').forEach((item) => {
+			observer.observe(item);
+		});
+	});
 </script>
 
 <svelte:head>
@@ -30,8 +46,27 @@
 			</button>
 		</div>
 	{/if}
+	
 </section>
 
 <style>
+	h1, .hero-subtitle, .catalog {
+		opacity: 0;
+		transform: translateY(20px);
+		transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+		}
+		
+	h1:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.hero-subtitle:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.catalog:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
 	
 </style>

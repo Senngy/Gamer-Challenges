@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { onMount } from 'svelte';
 
-	let { data, form} = $props(); // form provient de l'action de +page.server.js 
+	let { data, form } = $props(); // form provient de l'action de +page.server.js
 
 	let name = $state('');
 	let email = $state('');
@@ -194,21 +194,6 @@
 
 		<!-- Informations de contact -->
 		<div class="info-section">
-			<!--
-      <div class="info-card">
-        <div class="info-header">
-          <div class="info-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-          </div>
-          <h3>Nos bureaux</h3>
-        </div>
-        <p>123 Rue du Gaming<br>75001 Paris, France</p>
-      </div>
-      -->
-
 			<div class="info-card">
 				<div class="info-header">
 					<div class="info-icon">
@@ -228,8 +213,7 @@
 					</div>
 					<h3>Email</h3>
 				</div>
-				<a href="mailto:support@gamerchallenges.com">support@gamerchallenges.com</a>
-				<a href="mailto:contact@gamerchallenges.com">contact@gamerchallenges.com</a>
+				<a href="mailto:gamerchallenges@yandex.com">gamerchallenges@yandex.com</a>
 			</div>
 
 			<div class="info-card">
@@ -315,7 +299,6 @@
 	.contact-container {
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 2rem 1rem;
 		font-family:
 			'Inter',
 			-apple-system,
@@ -332,11 +315,14 @@
 	}
 
 	.contact-card {
-		background: white;
-		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: var(--general-border-radius);
+		
 		padding: 2.5rem;
 		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-		border: 1px solid #e2e8f0;
 		opacity: 0;
 		transform: translateY(20px);
 		transition: all 0.3s ease;
@@ -354,12 +340,12 @@
 	.card-header h2 {
 		font-size: 1.5rem;
 		font-weight: 600;
-		color: #2d3748;
+		color: white;
 		margin-bottom: 0.5rem;
 	}
 
 	.card-header p {
-		color: #666;
+		color: #a5a3a3;
 		line-height: 1.6;
 	}
 
@@ -383,7 +369,7 @@
 
 	.form-group label {
 		font-weight: 500;
-		color: #2d3748;
+		color: #a5a3a3;
 		font-size: 0.9rem;
 	}
 
@@ -468,7 +454,7 @@
 	}
 
 	.btn-primary {
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
 		color: white;
 	}
 
@@ -499,11 +485,13 @@
 	}
 
 	.info-card {
-		background: white;
-		border-radius: 12px;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: var(--general-border-radius);
 		padding: 1.5rem;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-		border: 1px solid #e2e8f0;
 		opacity: 0;
 		transform: translateY(20px);
 		transition: all 0.3s ease;
@@ -524,7 +512,7 @@
 	.info-icon {
 		width: 40px;
 		height: 40px;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		background: linear-gradient(135deg, #eccdcd 0%, #e65a5a 100%);
 		border-radius: 8px;
 		display: flex;
 		align-items: center;
@@ -536,7 +524,7 @@
 		margin: 0;
 		font-size: 1rem;
 		font-weight: 600;
-		color: #2d3748;
+		color: rgba(227, 228, 230, 0.904)
 	}
 
 	.info-card p {
@@ -579,8 +567,11 @@
 	}
 
 	.quick-faq {
-		background: #f8fafc;
-		border-radius: 16px;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		border-radius: var(--general-border-radius);
 		padding: 2.5rem;
 		text-align: center;
 	}
@@ -588,7 +579,7 @@
 	.quick-faq h2 {
 		font-size: 1.5rem;
 		font-weight: 600;
-		color: #2d3748;
+		color: white;
 		margin-bottom: 1rem;
 	}
 

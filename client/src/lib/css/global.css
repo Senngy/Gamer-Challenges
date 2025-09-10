@@ -17,9 +17,10 @@
 =========================== */
 body {
 	font-family: 'Inter', sans-serif;
-	background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
+	background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%) ;
 	color: var(--text-color);
-	height: 100vh;
+	min-height: 100vh;
+	height: 100%;
 	margin: 0;
 }
 a {
@@ -374,12 +375,14 @@ h3 {
 	content: '';
 	position: absolute;
 	inset: 0;
+	/*
 	background: linear-gradient(
 		to bottom,
 		rgba(0, 0, 0, 0) 0%,
 		rgba(0, 0, 0, 0.3) 50%,
 		rgba(0, 0, 0, 0.6) 100%
 	);
+	*/
 	z-index: 1;
 }
 
@@ -400,7 +403,16 @@ h3 {
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
-	color: #eeeeee;
+	color: #ffffff;
+}
+.glass__container {
+	padding: 0 0 0 1rem;
+	margin-top: 1rem;
+	border-radius: var(--general-border-radius);
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* === TAG "🔥 Populaires" === */
@@ -425,12 +437,13 @@ h3 {
 	font-size: 12px;
 	line-height: 1.5;
 	margin-bottom: 2em;
-	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+	/*text-shadow: 1px 1px 5px rgba(116, 29, 29, 0.7);*/
+	text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.822) !important;
 	max-width: 480px;
 }
 /* === BOUTON === */
 .popular-games__btn {
-	margin-bottom: 4em;
+	margin-bottom: 1em;
 	border-radius: 10px 100px 10px 100px;
 	background: var(--btn-color);
 	color: var(--text-color);
@@ -510,14 +523,15 @@ h3 {
 	margin: var(--espace-section);
 	padding: 1em;
 	border-radius: 20px;
-	background: rgba(255, 255, 255, 0.4);
+	background: linear-gradient(45deg, #ff8d8d9f, #4110107e);
+	/* background: linear-gradient(45deg, #ff8d8d9f, #d4acfa7e); */
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 	display: flex;
 	flex-direction: column;
 }
 .leaderboard__title {
-	font-size: 1.8rem;
+	font-size: 1.6rem;
 	font-weight: 700;
 	margin: 0;
 }
@@ -539,8 +553,9 @@ h3 {
 	padding: 1em 0.4em;
 }
 .leaderboard__player-avatar {
-	width: 4rem;
-	height: 4rem;
+	min-width: 3.5rem;
+	width: 3.5rem;
+	height: 3.5rem;
 	border-radius: 50%;
 	background: linear-gradient(45deg, #ff6b6b, #ffd700);
 	display: flex;
@@ -588,8 +603,12 @@ h3 {
 	gap: 3em;
 }
 .catalog__item {
-	background: rgba(255, 255, 255, 0.2);
-	border: 1px solid rgba(255, 255, 255, 0.5);
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	border-right: 1px solid rgba(255, 255, 255, 0.2);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
 	border-radius: var(--general-border-radius);
 	overflow: hidden;
 	transition: transform 0.3s ease;
@@ -611,11 +630,17 @@ h3 {
 	position: absolute;
 	top: 5px;
 	right: 10px;
-	background: var(--text-color);
-	color: #000;
+	background: rgba(255, 255, 255, 0.1);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	color:var(--text-color) ;
 	padding: 4px 12px;
 	border-radius: var(--general-border-radius);
-	font-size: 10px;
+	font-size: 11px;
+	font-family: 'Orbitron', sans-serif;
+	font-weight: 600;
+	letter-spacing: 1px;
 }
 .catalog__content {
 	padding: 20px;

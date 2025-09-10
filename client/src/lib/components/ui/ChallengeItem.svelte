@@ -46,7 +46,7 @@
 		<h3 class="challenge__title">{challenge.title}</h3>
 		<p class="challenge__description">{challenge.description}</p>
 		<div class="challenge_created-by">
-			<p>Challenge created by</p>
+			<p>Challenge créé par</p>
 			<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 				<img
 					src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
@@ -87,4 +87,25 @@
 	.challenge__user-name {
 		font-size: 1.3rem;
 	}
+	.challenge__description,
+	.challenge__title {
+		display: -webkit-box;
+		display: box; /* fallback "standard" (expérimental) */
+
+		-webkit-box-orient: vertical;
+		box-orient: vertical;
+		box-orient: vertical;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.challenge__title {
+		-webkit-line-clamp: 2; /* nombre de lignes max */
+		line-clamp: 2; /* futur standard */
+	}
+	.challenge__description {
+		-webkit-line-clamp: 1; /* nombre de lignes max */
+		line-clamp: 1; /* futur standard */
+	}
+	
 </style>

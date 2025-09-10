@@ -1,13 +1,14 @@
 <script>
+	import { onMount } from 'svelte';
 	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
 	import { fade } from 'svelte/transition';
 	import LeaderBoard from '$lib/components/LeaderBoard/LeaderBoard.svelte';
 
 	let { data } = $props();
 	const { randomGames, topGames, leadersByChallenge, leadersByParticipation } = data;
-	
+
 	let slideIndex = $state(0); // Index en state pour effectuer le changement de slide
-    let visibleCount = $state(4);
+	let visibleCount = $state(4);
 
 	function truncateWords(text = '', max = 40) {
 		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
@@ -21,19 +22,37 @@
 	function prev() {
 		if (topGames?.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
 	}
+	onMount(() => {
+		// Animation d'apparition progressive des éléments
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					entry.target.classList.add('animate-fade-in');
+				}
+			});
+		});
 
+		document
+			.querySelectorAll('.homepage-intro, .block__content__populaires-top, .catalog')
+			.forEach((item) => {
+				observer.observe(item);
+			});
+	});
 </script>
 
 <svelte:head>
-  <title>Accueil | GamerChallenges</title>
+	<title>Accueil | GamerChallenges</title>
 </svelte:head>
 
 <!-- Introduction -->
 <section class="homepage-intro" aria-labelledby="homepage-intro-title">
-	<h1 id="homepage-intro-title" class="homepage-intro__title">Bienvenue sur Gamer Challenges</h1>
+	<h1 id="homepage-intro-title" class="homepage-intro__title">
+		🎮 Bienvenue sur Gamer Challenges 🎮
+	</h1>
 	<p class="homepage-intro__text">
-		Rejoins les joueuses et joueurs du monde entier ! Parcours notre sélection de défis, crée les
-		tiens en un clic et affronte la communauté dans une ambiance aussi fun que compétitive.
+		Tes exploits ne méritent pas de rester dans l’ombre... Rejoins Gamer Challenges : découvres et
+		relève des défis, crées les tiens en 1 clic et flex tes skills en y participant. Prêt à défier
+		la commu ?
 	</p>
 </section>
 
@@ -56,11 +75,15 @@
 					<div class="popular-games__content slide active" data-index={i} transition:fade>
 						<div class="popular-games__text">
 							<span class="popular-games__tag">🔥 Populaires</span>
-							<h2 class="popular-games__title">{game.title}</h2>
-							<p class="game-details__description popular-games__description">{truncateWords(game.description, 40)}</p>
-							<a href={`/games/${game.id}`} class="btn btn--primary popular-games__btn">
-								Voir le jeu et ses challenges
-							</a>
+							<div class="glass__container">
+								<h2 class="popular-games__title">{game.title}</h2>
+								<p class="game-details__description popular-games__description">
+									{truncateWords(game.description, 40)}
+								</p>
+								<a href={`/games/${game.id}`} class="btn btn--primary popular-games__btn">
+									Voir le jeu et ses challenges
+								</a>
+							</div>
 						</div>
 						<img class="slide__image" src={game.image} alt={game.title} />
 					</div>
@@ -87,12 +110,11 @@
 		<p>Chargement des jeux populaires…</p>
 	{/if}
 
-<!-- ========================== -->
-<!-- Leaderboard -->
-<!-- ========================== -->
+	<!-- ========================== -->
+	<!-- Leaderboard -->
+	<!-- ========================== -->
 
-<LeaderBoard {leadersByChallenge} {leadersByParticipation} />
-
+	<LeaderBoard {leadersByChallenge} {leadersByParticipation} />
 </div>
 
 <!-- ========================== -->
@@ -100,10 +122,11 @@
 <!-- ========================== -->
 <section class="catalog" aria-labelledby="catalog-title">
 	<h2 class="catalog__title" id="catalog-title">
-		Découvrez les autres jeux disponibles ou vous pouvez participez a votre propre challenge ou defier la communitaie.
+		Flex sur ton jeu préféré et découvre d’autres terrains de jeu : défie la commu et partage tes
+		exploits !
 	</h2>
 	<div class="catalog__grid" role="list">
-	{#each randomGames.slice(0, visibleCount) as game}
+		{#each randomGames.slice(0, visibleCount) as game}
 			<CatalogItem {game} />
 		{/each}
 	</div>
@@ -115,3 +138,38 @@
 		</div>
 	{/if}
 </section>
+
+<style>
+	.homepage-intro,
+	.block__content__populaires-top,
+	.catalog {
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity 0.6s ease-out,
+			transform 0.6s ease-out;
+	}
+
+	.homepage-intro:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.block__content__populaires-top:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.catalog:global(.animate-fade-in) {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	.btn:hover {
+		background-color: var(--primary-color);
+		box-shadow: 5px 5px 10px rgba(255, 79, 79, 0.548);
+	}
+	.popular-games__arrow {
+		background-color: var(--btn-color);
+	}
+	.popular-games__arrow:hover {
+		background-color: var(--primary-color);
+	}
+</style>
