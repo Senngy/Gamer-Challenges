@@ -34,9 +34,15 @@ export default async function api(endpoint, method = "GET", body = null, useAuth
     try {
       errorData = await response.json();
     } catch {
-      errorData = { message: response.statusText };
+      //errorData = { message: response.statusText };
+      errorData = { error: response.statusText };
+      console.log('errorData 1', errorData.message);
     }
-    throw new Error(errorData.message || `Erreur HTTP ${response.status}`);
+    const errorMsg = errorData.error || errorData.message || `Erreur HTTP ${response.status}`;
+    console.error("API Error:", errorMsg);
+
+    throw new Error(errorMsg);
+    
   }
 
   const data = await response.json();

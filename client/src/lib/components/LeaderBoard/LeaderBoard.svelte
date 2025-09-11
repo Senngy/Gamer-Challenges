@@ -14,7 +14,7 @@
 <!-- Leaderboard -->
 <!-- ========================== -->
 <aside class="leaderboard" aria-labelledby="leaderboard-title">
-	<h2 class="leaderboard__title" id="leaderboard-title">Top tiers de Gamer Challenge par : </h2>
+	<h2 class="leaderboard__title" id="leaderboard-title">Les Héros de Gamer Challenges par : </h2>
 	<div class="tabs">
 		<div class="btn-container">
 			<div class="btn-background">

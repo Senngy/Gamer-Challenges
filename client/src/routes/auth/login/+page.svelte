@@ -8,6 +8,7 @@
   import { login } from "$lib/services/auth.service.js" // Importation de la fonction de connexion
   import { validateLoginData, sanitizeLoginData } from "$lib/verification/validation.form.login.js"; // Importation des fonctions de validation
   import { goto } from "$app/navigation"; // Importation de la fonction de navigation
+	import { toast } from "svelte-sonner";
   
   let email = $state(''); // Variable pour stocker l'email
   let password = $state(''); // Variable pour stocker le mot de passe
@@ -41,8 +42,11 @@
       setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store
       
       // Redirection vers la page d'accueil après une connexion réussie
-      alert('Connexion réussie !');
-      window.location.href = '/';
+       toast.success('Connexion réussie !', {
+        description: `Bienvenue, ${user.pseudo}!`,
+       } );
+     // window.location.href = '/';
+        goto('/');
     } catch (error) {
       console.error('Erreur de connexion:', error);
       
@@ -57,10 +61,11 @@
         } else if (error.message.includes('Token invalid')) {
           generalError = "Session expirée. Veuillez vous reconnecter.";
         } else {
-          generalError = error.message;
+          
         }
       } else {
-        generalError = "Une erreur inattendue s'est produite. Veuillez réessayer.";
+        generalError = error.message;
+       // generalError = "Une erreur inattendue s'est produite. Veuillez réessayer.";
       }
     } finally {
       isLoading = false;

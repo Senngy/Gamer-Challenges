@@ -5,6 +5,8 @@
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation'; // Pour la navigation
 
+	import { toast } from "svelte-sonner";
+
 	// Components
 	import AuthContainer from '$lib/components/auth/AuthContainer.svelte';
 	import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
@@ -51,6 +53,7 @@
 		// Vérifie si l'utilisateur est authentifié
 		console.log('getUserInfos');
 		if (!authStore.token) {
+			
 			console.warn('Utilisateur non connecté. Redirection...');
 			goto('/'); // ou une autre page publique
 			return;
@@ -82,14 +85,20 @@
 		// Fonction de déconnexion
 		// Logique de déconnexion ici
 		try {
-			await logout(); // Appel de la fonction de déconnexion
-			clearAuth(); // Nettoyage du store d'authentification
-			// Destruction du token d'authentification dans le back
-			console.log('Déconnexion réussie');
-			alert('Déconnexion !');
+			const logout = await logout(); // Appel de la fonction de déconnexion
+			if (logout.success) {
+				console.log('Logout successful:', logout.message);
+			} else {
+				console.warn('Logout response:', logout.message);
+			}
 		} catch (error) {
 			console.error('Erreur lors de la déconnexion :', error);
 		}
+		clearAuth(); // Nettoyage du store d'authentification
+		// Destruction du token d'authentification dans le back
+		toast.info('Déconnexion réussie ! À bientôt !');
+		console.log('Déconnexion réussie');
+		goto('/'); // Redirection vers la page d'accueil ou de connexion
 		// Nettoyer le localStorage
 		// Mettre à jour le store d'authentification
 	}
@@ -305,15 +314,13 @@
 				</ul>
 			{/if}
 		</AuthContainer>
-
-	
 	</div>
-		<!-- Bouton de déconnexion -->
+	<!-- Bouton de déconnexion -->
 	<Btn
 		variant="logout"
 		on:click={() => {
 			cleanLogout();
-			redirect('/');
+			toast.info('Déconnexion réussie ! À bientôt !');
 		}}>Se déconnecter</Btn
 	>
 </div>

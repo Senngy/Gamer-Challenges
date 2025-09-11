@@ -25,7 +25,7 @@ export const login = async (credentials) => {
     console.log('Login auth.service.js successful user:', user);
     return { token, user };
   } catch (error) {
-    console.error('Login failed:', error);
+    //console.error('Service Login échoué:', error);
     throw error;
   }
 };
