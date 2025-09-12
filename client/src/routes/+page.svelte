@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+	import CatalogItem from '$lib/components/ui/games/CatalogItem.svelte';
 	import { fade } from 'svelte/transition';
 	import LeaderBoard from '$lib/components/LeaderBoard/LeaderBoard.svelte';
 

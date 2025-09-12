@@ -1,5 +1,5 @@
 <script>
-	import CatalogItem from '$lib/components/ui/CatalogItem.svelte';
+	import CatalogItem from '$lib/components/ui/games/CatalogItem.svelte';
 	import { onMount } from 'svelte';
 
 	const { data } = $props();

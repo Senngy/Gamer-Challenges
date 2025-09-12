@@ -2,12 +2,12 @@
     export let title = "";
     export let classCSS ="";
 </script>
-<div class={`auth-container ${classCSS}`}>  
+<div class={`glass-container ${classCSS}`}>  
   <h2>{title}</h2>
   <slot></slot> <!-- This slot allows you to pass in the form content -->
 </div>
 <style>
-  .auth-container {
+  .glass-container {
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);

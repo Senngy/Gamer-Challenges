@@ -1,8 +1,8 @@
 <script>
   import AuthForm from "$lib/components/auth/AuthForm.svelte";
-  import Input from "$lib/components/auth/Input.svelte";  
-  import Btn from "$lib/components/auth/Btn.svelte";
-  import AuthContainer from "$lib/components/auth/AuthContainer.svelte";
+  import Input from "$lib/components/ui/Input.svelte";  
+  import Btn from "$lib/components/ui/Btn.svelte";
+  import GlassContainer from "$lib/components/ui/GlassContainer.svelte";
   import { register } from "$lib/services/auth.service.js";
   import { validateRegistrationForm } from "$lib/verification/validation.form.register.js";
   import { goto } from "$app/navigation";

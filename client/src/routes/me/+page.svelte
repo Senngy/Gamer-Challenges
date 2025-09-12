@@ -8,12 +8,12 @@
 	import { toast } from "svelte-sonner";
 
 	// Components
-	import AuthContainer from '$lib/components/auth/AuthContainer.svelte';
+	import GlassContainer from '$lib/components/ui/GlassContainer.svelte';
 	import ProfilePopUp from '$lib/components/me/PopUp/ProfilePopUp.svelte';
 	import DeletePopUp from '$lib/components/me/PopUp/DeletePopUp.svelte';
 	import ModifyPasswordPopUp from '$lib/components/me/PopUp/ModifyPasswordPopUp.svelte';
 	import ModifyPseudoPopUp from '$lib/components/me/PopUp/ModifyPseudoPopUp.svelte'; // Si vous avez besoin de modifier le pseudo
-	import Btn from '$lib/components/me/Btn.svelte';
+	import Btn from '$lib/components/ui/challenges/Btn.svelte';
 
 	// Service
 	import { logout, getCurrentUser } from '$lib/services/auth.service.js'; // Fonction de déconnexion

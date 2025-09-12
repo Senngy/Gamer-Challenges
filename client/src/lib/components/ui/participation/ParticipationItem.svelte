@@ -1,5 +1,5 @@
 <script>
-	import LikeItemParticipaton from '$lib/components/ui/LikeItemParticipaton.svelte';
+	import LikeItemParticipaton from '$lib/components/ui/likes/LikeItemParticipaton.svelte';
 	import { onMount } from 'svelte';
 	// import { get}
 	import { getUserById } from '$lib/services/user.service.js';

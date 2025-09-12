@@ -1,7 +1,7 @@
 <script>
 	import { onMount, createEventDispatcher } from 'svelte';
 	import { getUserById } from '$lib/services/user.service.js';
-	import LikeItem from '$lib/components/ui/LikeItem.svelte';
+	import LikeItem from '$lib/components/ui/likes/LikeItem.svelte';
 
 	const { challenge } = $props();
 	const dispatch = createEventDispatcher();

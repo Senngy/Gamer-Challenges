@@ -1,5 +1,5 @@
 <script>
-  import Input from '$lib/components/auth/Input.svelte';
+  import Input from '$lib/components/ui/Input.svelte';
   import { updatePassword } from "$lib/services/auth.service.js";
 
   let currentPassword =  $state(''); // Mot de passe actuel

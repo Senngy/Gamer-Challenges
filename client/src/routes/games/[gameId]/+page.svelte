@@ -1,15 +1,15 @@
 <!-- /games/[gameId] +page.svelte -->
 <script>
 	import { goto } from '$app/navigation';
-	import ChallengeItem from '$lib/components/ui/ChallengeItem.svelte';
-	import ChallengeForm from '$lib/components/challenge/ChallengeForm.svelte';
+	import ChallengeItem from '$lib/components/ui/challenges/ChallengeItem.svelte';
+	import ChallengeForm from '$lib/components/ui/challenges/ChallengeForm.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
-	import Btn from '$lib/components/auth/Btn.svelte';
-	import Input from '$lib/components/auth/Input.svelte';
+	import Btn from '$lib/components/ui/Btn.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 	import { challengeCreation } from '$lib/services/challenge.service.js';
 	import FilterText from '$lib/components/ui/FilterText.svelte';
 	import { page } from '$app/state';
-	import { getAuth, isAuthenticated, authStore } from "$lib/store/authStore.svelte.js"
+	import { getAuth, isAuthenticated, authStore } from '$lib/store/authStore.svelte.js';
 	import { onMount } from 'svelte';
 	//import { invalidateAll } from '$app/navigation';
 
@@ -52,7 +52,7 @@
 
 		user_id = currentUserId;
 	});
-/*
+	/*
 	onMount(async () => {
 		// Utilisation de onMount pour récupérer les données du challenge lors du chargement du composant
 		// Récupération des détails du challenge
@@ -80,9 +80,9 @@
 		console.log('handleSubmitChallenge called');
 		e.preventDefault();
 
-        if (!isAuthenticated()) {
-			error = 'Veuillez vous connecter pour créer un challenge'
-			return
+		if (!isAuthenticated()) {
+			error = 'Veuillez vous connecter pour créer un challenge';
+			return;
 		}
 		if (!title.trim() || !description.trim() || !rules.trim()) {
 			error = 'Veuillez remplir tous les champs.';
@@ -97,13 +97,13 @@
 			error = 'Veuillez respecter les longueurs maximales des champs.';
 			return;
 		}
-        created_by = user_id;
+		created_by = user_id;
 		console.log('handleSubmitChallenge title:', title);
 		console.log('handleSubmitChallengedescription:', description);
 		console.log('handleSubmitChallenge rules:', rules);
 		console.log('handleSubmitChallenge created_by:', created_by);
 		console.log('handleSubmitChallenge game_by:', game_by);
-         
+
 		try {
 			const challengeCreated = await challengeCreation(
 				title,
@@ -112,7 +112,10 @@
 				created_by,
 				game_by
 			);
-			 console.log('Response from challengeCreation called in handleSubmitChallenge:', challengeCreated);
+			console.log(
+				'Response from challengeCreation called in handleSubmitChallenge:',
+				challengeCreated
+			);
 
 			if (!challengeCreated) {
 				error = 'Une erreur est survenue lors de la création du challenge.';
@@ -121,7 +124,7 @@
 			// Mettre à jour la liste locale pour réafficher sans rechargement
 			localChallenges = [challengeCreated, ...localChallenges];
 			error = '';
-			
+
 			if (challengeCreated && challengeCreated.id) {
 				success = 'Challenge créé avec succès !';
 				// Fermer la modale après 2 secondes
@@ -162,7 +165,7 @@
 </script>
 
 <svelte:head>
-  <title>{game.title} | GamerChallenges</title>
+	<title>{game.title} | GamerChallenges</title>
 </svelte:head>
 
 <!-- Game details -->
@@ -269,17 +272,20 @@
 		<Btn disabled={!isAuthenticated()}>Valider</Btn>
 	</ChallengeForm>
 	{#if !isAuthenticated()}
-	<div class="already-account">
-		<span>Pas encore de compte ? Créez en un simplement !</span>
-		<a href="/auth/register">Cliquez ici</a>
-	</div>
-    {/if}
+		<div class="already-account">
+			<span>Pas encore de compte ? Créez en un simplement !</span>
+			<a href="/auth/register">Cliquez ici</a>
+		</div>
+	{/if}
 	{#if success}
 		<p class="success">{success}</p>
 	{/if}
 </Modal>
 
 <style>
+	.game-details__content {
+		margin : 0 2rem;
+	}
 	.error {
 		color: #ff6b6b;
 		text-align: center;
@@ -330,5 +336,7 @@
 	}
 	.btn-game-card {
 		margin-top: 1rem;
+		width: 50%;
+		align-self: center;
 	}
 </style>

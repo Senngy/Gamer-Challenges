@@ -1,5 +1,5 @@
 <script>
-  import Input from '$lib/components/auth/Input.svelte';
+  import Input from '$lib/components/ui/Input.svelte';
   import { updatePseudo } from '$lib/services/auth.service.js';
 
   let newPseudo = $state(''); // Nouveuau pseudo

@@ -1,17 +1,26 @@
 <script>
-	import ParticipationItem from '$lib/components/ui/ParticipationItem.svelte';
-	import Btn from '$lib/components/auth/Btn.svelte';
-	import Input from '$lib/components/auth/Input.svelte';
+	// Components
+	import ParticipationItem from '$lib/components/ui/participation/ParticipationItem.svelte';
+	import Btn from '$lib/components/ui/Btn.svelte';
+	import Input from '$lib/components/ui/Input.svelte';
 	import Modal from '$lib/components/ui/Modal.svelte';
-	import ParticipationForm from '$lib/components/participation/ParticipationForm.svelte';
+	import ParticipationForm from '$lib/components/ui/participation/ParticipationForm.svelte';
 	import FilterText from '$lib/components/ui/FilterText.svelte';
-	import LikeItem from '$lib/components/ui/LikeItem.svelte';
+	import LikeItem from '$lib/components/ui/likes/LikeItem.svelte';
+
+	// Services
 	import { getChallenge } from '$lib/services/challenge.service.js';
 	import { getParticipations, participationCreation } from '$lib/services/participation.service.js';
 	import { getUserById } from '$lib/services/user.service.js';
 	import { getGameInfos } from '$lib/services/game.service.js';
+
+	// Svelte
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	// Lib
+	import { toast } from 'svelte-sonner';
+
+	// Auth store
 	import { getAuth, isAuthenticated, authStore } from '$lib/store/authStore.svelte.js';
 
 	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
@@ -50,6 +59,34 @@
 	let media_link = $state(''); // État pour le lien du média
 	let description = $state(''); // État pour la description de la participation
 	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
+
+	async function getGameInfo(gameId) {
+		// Fonction pour récupérer l'image du jeu associé au challenge
+		try {
+			game = await getGameInfos(gameId);
+			console.log('Game info récupéré :', game);
+			return game;
+		} catch (err) {
+			console.error('Erreur getGameImage :', err);
+			return null;
+		}
+	}
+
+	async function getUserInfo(userId) {
+		if (!userId) return null;
+		try {
+			const user = await getUserById(userId);
+			//console.log('User info récupéré :', user);
+			return {
+				pseudo: user.pseudo, // ou user.username, selon ta structure
+				avatar: user.avatar, // ou user.image, selon ta structure
+				user_id: user.id
+			};
+		} catch (err) {
+			console.error('Erreur getUserInfo :', err);
+			return null;
+		}
+	}
 
 	onMount(async () => {
 		// 🟢 Code exécuté une seule fois lorsque le composant est monté (équivalent à componentDidMount)
@@ -116,33 +153,7 @@
 		}
 	});
 
-	async function getGameInfo(gameId) {
-		// Fonction pour récupérer l'image du jeu associé au challenge
-		try {
-			game = await getGameInfos(gameId);
-			console.log('Game info récupéré :', game);
-			return game;
-		} catch (err) {
-			console.error('Erreur getGameImage :', err);
-			return null;
-		}
-	}
-
-	async function getUserInfo(userId) {
-		if (!userId) return null;
-		try {
-			const user = await getUserById(userId);
-			//console.log('User info récupéré :', user);
-			return {
-				pseudo: user.pseudo, // ou user.username, selon ta structure
-				avatar: user.avatar, // ou user.image, selon ta structure
-				user_id: user.id
-			};
-		} catch (err) {
-			console.error('Erreur getUserInfo :', err);
-			return null;
-		}
-	}
+	
 
 	const handleSubmitParticipation = async (e) => {
 		console.log('handleSubmitParticipation called');

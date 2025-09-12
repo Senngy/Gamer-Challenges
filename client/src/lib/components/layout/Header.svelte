@@ -1,7 +1,7 @@
 <script>
 	import { authStore, getAuth, isAuthenticated, clearAuth } from '$lib/store/authStore.svelte';
 	import { getUserById } from '$lib/services/user.service';
-	import Btn from '$lib/components/me/Btn.svelte';
+	import Btn from '$lib/components/ui/challenges/Btn.svelte';
 	import { goto } from '$app/navigation';
 	import { logout } from '$lib/services/auth.service.js';
 	import { onMount } from 'svelte';

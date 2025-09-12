@@ -1,80 +1,78 @@
 <script>
-	// LikeItemParticipation.svelte
+	// LikeItem.svelte
 	import { onMount } from 'svelte';
-	import { getLikes, addLike, toggleLike } from '$lib/services/participation.service.js';
-  import { getAuth, isAuthenticated } from '$lib/store/authStore.svelte.js';
+	import { getLikes, addLike, toggleLike } from '$lib/services/challenge.service.js';
+	import { getAuth, isAuthenticated } from '$lib/store/authStore.svelte.js';
+	import { toast } from 'svelte-sonner';
 
-	let { participation, classCSS = '' } = $props();
+	let { challenge, classCSS = '' } = $props(); // Récuperation des propriétés passées au composant enfant
 
 	let likes = $state(0);
 	let liked = $state(false);
-
+	let error = $state('');
 	$effect(() => {
 		getAuth();
 	});
 
 	const handleToggleLike = async () => {
-        /*
+    /*
 		console.log('🔘 Bouton cliqué');
-		console.log('participation', participation);
-		console.log(participation.id, 'ID de la participation');
+		console.log('challenge', challenge);
+		console.log(challenge.id, 'ID du challenge');
 		console.log('CLASSCSS', classCSS);
-        */
+    */
 		if (!isAuthenticated()) {
-			alert('Veuillez vous connecter pour liker ce contenue');
+			toast.warning('Veuillez vous connecter pour liker ce contenue');
 			return;
 		}
 		try {
-			const { likedNow } = await toggleLike(participation.id); // Nous renvois true si l'utilisateur n'a pas encore liké et ajoute un like sinon supprime le like
-      liked = likedNow; // Met à jour l'état liked avec la valeur retournée
+			const { likedNow } = await toggleLike(challenge.id); // Nous renvois true si l'utilisateur n'a pas encore liké et ajoute un like sinon supprime le like
+			liked = likedNow; // Met à jour l'état liked avec la valeur retournée
 			if (likedNow) {
 				likes += 1;
 				//console.log('✅ Like ajouté');
 			}
 			if (!likedNow) {
 				likes -= 1;
-				//console.log('❌ Like supprimé');
+				//console.log('❌ like supprimé ');
 			}
 			//console.log('FRONT likedNow', likedNow);
 		} catch (err) {
-			console.error('❌ Erreur lors du like :', err.message);
-			alert('Oups.. Il y a eu un problème de notre côté lors du like');
+			console.error('❌ handleToggle Like - Erreur lors du like :', err.message);
+			alert('Oups.. Il y a un problème de notre côté lors du like');
 		}
 	};
 
 	async function refreshLikes() {
-		const res = await getLikes(participation.id);
+		const res = await getLikes(challengeId);
 		likes = res.likes;
 		liked = res.liked;
 	}
-
 	$effect(() => {
-		if (participation.user_id) refreshLikes();
+		if (challenge.user_id) refreshLikes();
 	});
-
 	// Récupération initiale des likes une fois le composant monté
 	onMount(() => {
 		const fetchLikes = async () => {
-			//console.log('📥 onMount Récupération des likes de la participation', participation.id);
+			//console.log('📥 onMount Récupération des likes pour le challenge', challenge.id);
 			try {
-				const data = await getLikes(participation.id);
+				const data = await getLikes(challenge.id);
 				likes = data.likes;
 			//	console.log('✔️ onMount Likes initiaux:', likes);
 			} catch (err) {
 				console.error('❌ onMount Erreur récupération des likes :', err);
 			}
 		};
-
 		fetchLikes();
 	});
 </script>
 
 <button type="button" class={`like-button ${classCSS}`} class:liked={liked} on:click={handleToggleLike}>
-    <span class="like-count">{likes}</span>
+  <span class="like-count">{likes}</span>
 </button>
 
 <style>
-.like-button {
+  .like-button {
     background-color: rgba(255, 255, 255, 0.1);
     border: 1px solid #ccc;
     padding: 8px 12px;
@@ -130,11 +128,14 @@
       transform: scale(1);
     }
   }
-
-  .like-count {
-    margin-left: 6px;
-  }
-
+	.like-count {
+		margin-left: 6px;
+	}
+	.error {
+		color: #ff6b6b;
+		text-align: center;
+		margin-bottom: 1rem;
+	}
   .like-button:disabled {
     opacity: 0.6;
     cursor: wait;
@@ -144,4 +145,3 @@
 		color:white;
   }
 </style>
-
