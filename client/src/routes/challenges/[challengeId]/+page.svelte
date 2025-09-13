@@ -23,54 +23,30 @@
 	// Auth store
 	import { getAuth, isAuthenticated, authStore } from '$lib/store/authStore.svelte.js';
 
-	const { data } = $props(); // Récupération des données passées par le routeur SvelteKit
-	const { challengeId } = data; // Récupération de l'ID du challenge depuis les données
+	let { data } = $props();
+	let { challengeId, challenge, game } = data; // Récupération des données passées par le routeur SvelteKit
+	let participations = $state(data.participations ?? []); // Déclaration avec state pour permettre la réactivité lors de l'ajout d'une participation
 	const API_URL = import.meta.env.VITE_API_URL;
 	const challenge_id = challengeId;
-
-	let challenge = $state({
-		id: '',
-		title: '',
-		description: '',
-		rules: '',
-		created_by: '',
-		game_by: ''
-	});
 
 	let participationCreator = $state({
 		id: '',
 		pseudo: '',
 		avatar: ''
 	});
-	let game = $state({
-		id: '',
-		title: '',
-		image: ''
-	});
+
 	let challengeCreator = $state({
 		id: '',
 		pseudo: '',
 		avatar: ''
 	});
-	let participations = $state([]); // Initialisation de la liste des participations
+
 	let showModal = $state(false); // État pour contrôler l'affichage du modal
 	let error = $state(''); // État pour les messages d'erreur
 	let success = $state(''); // État pour les messages de succès
 	let media_link = $state(''); // État pour le lien du média
 	let description = $state(''); // État pour la description de la participation
 	let user_id = $state(null); // Remplacez par l'ID de l'utilisateur connecté
-
-	async function getGameInfo(gameId) {
-		// Fonction pour récupérer l'image du jeu associé au challenge
-		try {
-			game = await getGameInfos(gameId);
-			console.log('Game info récupéré :', game);
-			return game;
-		} catch (err) {
-			console.error('Erreur getGameImage :', err);
-			return null;
-		}
-	}
 
 	async function getUserInfo(userId) {
 		if (!userId) return null;
@@ -94,38 +70,14 @@
 		user_id = authStore.user?.id ?? null;
 
 		try {
-			// 🔁 Appel parallèle : on récupère les détails du challenge + toutes les participations
-			const [{ id, title, description, rules, created_by, game_by }, participationsList] =
-				await Promise.all([getChallenge(challenge_id), getParticipations(challenge_id)]);
-
-			console.log('Challenge récupéré :', { id, title, description, rules, created_by, game_by });
-
-			// 🔁 Appel parallèle : on récupère les infos du jeu + l'utilisateur connecté
-			const [gameInfo, userInfo] = await Promise.all([getGameInfos(game_by), getUserInfo(user_id)]);
-
-			console.log('Game info récupéré :', gameInfo);
-			console.log('User info récupéré :', userInfo);
-
-			// 👤 Récupération des infos du créateur du challenge (attention, appel en plus !)
-			const creatorChallengeInfos = await getUserInfo(created_by);
-
-			// Mise à jour des variables réactives avec les données obtenues
-			challenge = {
-				id,
-				title,
-				description,
-				rules,
-				created_by,
-				game_by
-				// image: gameInfo.image
-			};
-
-			game = {
-				id: gameInfo.id,
-				title: gameInfo.title,
-				image: gameInfo.image
-			};
-
+			// 🔁 Appel parallèle : on récupère les infos du jeu + l'utilisateur connecté + Récupération des infos du créateur du challenge
+			const [gameInfo, userInfo, creatorChallengeInfos] = await Promise.all([
+				getGameInfos(challenge?.game_by),
+				getUserInfo(user_id),
+				getUserInfo(challenge?.created_by)
+			]);
+			//console.log('onMount Game info récupéré :', gameInfo);
+			//console.log('onMount User info récupéré :', userInfo);
 			if (creatorChallengeInfos) {
 				challengeCreator = {
 					id: creatorChallengeInfos.id,
@@ -133,7 +85,6 @@
 					avatar: creatorChallengeInfos.avatar
 				};
 			}
-
 			// Si user connecté, on récupère ses infos pour la participation
 			if (user_id) {
 				const userInfo = await getUserInfo(user_id);
@@ -144,16 +95,12 @@
 					};
 				}
 			}
-			// Mise à jour participations
-			participations = participationsList;
 		} catch (err) {
 			// ❌ Gestion des erreurs en cas d’échec de récupération
 			console.error('Erreur récupération challenge :', err);
-			error = 'Impossible de charger les données';
+			toast.error('Impossible de charger les données de la page', {description :'Veuillez réessayer plus tard.'});
 		}
 	});
-
-	
 
 	const handleSubmitParticipation = async (e) => {
 		console.log('handleSubmitParticipation called');
@@ -210,65 +157,52 @@
 </script>
 
 <svelte:head>
-	<title>{challenge.title} | GamerChallenges</title>
+	<title>{challenge?.title ?? 'Challenge'} | GamerChallenges</title>
 </svelte:head>
 
 <section class="intro">
 	<!-- Game infos -->
-	<!-- <section class="game-info">
-		<div class="game-info__bloc">
-			<img class="game-info__image" src={`${game.image}`} alt={game.title} />
-		</div>
+	{#if game}
+		<a href={`/games/${game.id}`} class="game-info" aria-label={`Voir le jeu ${game.title}`}>
+			<div class="game-info__bloc">
+				<img class="game-info__image" src={game.image} alt={game.title} />
+			</div>
 
-		<div class="game-info__bloc">
-			<p>Challenge pour le jeu</p>
-			<p class="game-info__title">"{game.title}"</p>
-		</div>
-	</section> -->
-
-	<a href={`/games/${game.id}`} class="game-info" aria-label={`Voir le jeu ${game.title}`}>
-		<div class="game-info__bloc">
-			<img class="game-info__image" src={game.image} alt={game.title} />
-		</div>
-
-		<div class="game-info__bloc">
-			<p>Challenge pour le jeu</p>
-			<p class="game-info__title">"{game.title}"</p>
-		</div>
-	</a>
+			<div class="game-info__bloc">
+				<p>Challenge pour le jeu</p>
+				<p class="game-info__title">"{game.title}"</p>
+			</div>
+		</a>
+	{/if}
 
 	<!-- Challenge details -->
-
 	{#if challenge && challengeCreator}
 		<section class="challenge-details" aria-labelledby="challenge-details">
 			<div class="challenge-details__content">
-				{#if challenge.id}
-					{console.log('✅ challenge est prêt', challenge)}
-					<LikeItem classCSS="btn-from-challenge-page" {challenge} />
-				{:else}
-					<p>Chargement des Likes...</p>
-				{/if}
-				<h1 class="challenge-details__title">{challenge.title}</h1>
-				<p class="challenge-details__description">Objectif : {challenge.description}</p>
-				<p class="challenge-details__rules">Règle : {challenge.rules}</p>
-				<div class="challenge_created-by">
-					<p>Challenge créé par</p>
-					<div class="challenge__user-avatar avatar" aria-hidden="true">
-						<img
-							src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
-							alt="Avatar"
-							class="avatar-image"
-						/>
-					</div>	
-					<p class="challenge__user-name">{challengeCreator.pseudo}</p>
-				</div>
-				<button class="btn btn--primary" onclick={openModal}>
-					Participer au défi maintenant
-				</button>
-				{#if challenge.id}
-					{console.log('✅ challenge est prêt', challenge)}
-				{:else}
-					<p>Chargement des challenges</p>
+				{#if challenge?.id}
+					<h1 class="challenge-details__title">Défi : {challenge.title}</h1>
+					<p class="challenge-details__description">Objectif : {challenge.description}</p>
+					<p class="challenge-details__rules">Règle : {challenge.rules}</p>
+
+					<div class="sub-content__container">
+						<div class="challenge_created-by">
+							<p>Challenge créé par</p>
+							<div class="challenge__user-avatar avatar" aria-hidden="true">
+								<img
+									src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
+									alt="Avatar"
+									class="avatar-image"
+								/>
+							</div>
+							<p class="challenge__user-name">{challengeCreator.pseudo}</p>
+						</div>
+			
+						<button class="btn btn--primary" onclick={openModal}>
+							Participer au défi maintenant
+						</button>
+
+						<LikeItem classCSS="btn-from-challenge-page" {challenge} />
+					</div>
 				{/if}
 			</div>
 		</section>
@@ -279,7 +213,7 @@
 
 <!-- Participations Section -->
 <section class="catalog" aria-labelledby="catalog-title">
-	{#if participations.length > 0}
+	{#if participations?.length > 0}
 		<p class="catalog-intro-text">
 			Déjà
 			<span>{participations.length}</span>
@@ -298,16 +232,16 @@
 	{:else}
 		<p>Aucune participation pour ce challenge pour le moment.</p>
 	{/if}
-
-	<!-- <div class="load-more-container">
+    {#if participations.length > 4}
+	<div class="load-more-container">
 		<button class="btn secundary" id="load-more">
 			Voir plus de participations
 		</button>
-	</div> -->
+	</div>
+	{/if}
 </section>
 
 <!-- Participation Creation Form -->
-
 <Modal isOpen={showModal} close={() => (showModal = false)}>
 	<h2>Participer au challenge</h2>
 
@@ -351,44 +285,18 @@
 </Modal>
 
 <style>
-	.hero-section {
-		text-align: center;
-		margin-bottom: 3rem;
-	}
-	.hero-section h1 {
-		font-size: 3rem;
-		font-weight: 700;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin-bottom: 1rem;
-	}
-	.hero-subtitle {
-		font-size: 1rem;
-		margin: 0 auto;
-		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
 	.intro {
 		display: flex;
 		flex-direction: column;
 
 		border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 	}
-	/* .game-info {
+	.sub-content__container {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: center;
-		gap: 1em;
-		padding: 1em;
-
-		background: linear-gradient(to bottom, #0c0e0f 0%, #8b1e1e 100%);
-	} */
+		justify-content: space-evenly;
+	}
 
 	a.game-info {
 		display: flex;
@@ -425,6 +333,15 @@
 		border-radius: 5%;
 		object-fit: cover;
 		max-height: 100px;
+	}
+	@media (max-width: 480px) {
+		.sub-content__container {
+			flex-direction: column;
+			gap: 1em;
+		}
+		.btn {
+			width: 100%;
+		}
 	}
 
 	/* Pour les écrans ≥ 768px (tablettes et plus) */

@@ -19,7 +19,7 @@
 		console.log('🔘 Bouton cliqué');
 		console.log('participation', participation);
 		console.log(participation.id, 'ID de la participation');
-		console.log('CLASSCSS', classCSS);
+		console.log('CLASSCSS', classCSS);&
         */
 		if (!isAuthenticated()) {
 			toast.warning('Veuillez vous connecter pour liker ce contenue');
@@ -39,7 +39,7 @@
 			//console.log('FRONT likedNow', likedNow);
 		} catch (err) {
 			console.error('❌ Erreur lors du like :', err.message);
-			alert('Oups.. Il y a eu un problème de notre côté lors du like');
+			toast.error('Oups.. Il y a eu un problème de notre côté lors du like');
 		}
 	};
 

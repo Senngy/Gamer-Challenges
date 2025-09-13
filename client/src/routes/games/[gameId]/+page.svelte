@@ -98,11 +98,11 @@
 			return;
 		}
 		created_by = user_id;
-		console.log('handleSubmitChallenge title:', title);
-		console.log('handleSubmitChallengedescription:', description);
-		console.log('handleSubmitChallenge rules:', rules);
-		console.log('handleSubmitChallenge created_by:', created_by);
-		console.log('handleSubmitChallenge game_by:', game_by);
+		//console.log('handleSubmitChallenge title:', title);
+		//console.log('handleSubmitChallengedescription:', description);
+		//console.log('handleSubmitChallenge rules:', rules);
+		//console.log('handleSubmitChallenge created_by:', created_by);
+		//console.log('handleSubmitChallenge game_by:', game_by);
 
 		try {
 			const challengeCreated = await challengeCreation(

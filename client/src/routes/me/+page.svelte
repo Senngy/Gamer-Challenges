@@ -1,11 +1,11 @@
 <script>
-	/// IMPORT
-	// Svelte natif
+	// Svelte
 	import { onMount } from 'svelte';
 	import { get } from 'svelte/store';
 	import { goto } from '$app/navigation'; // Pour la navigation
 
-	import { toast } from "svelte-sonner";
+	// Librairies
+	import { toast } from 'svelte-sonner';
 
 	// Components
 	import GlassContainer from '$lib/components/ui/GlassContainer.svelte';
@@ -19,18 +19,13 @@
 	import { logout, getCurrentUser } from '$lib/services/auth.service.js'; // Fonction de déconnexion
 	import { authStore, clearAuth, setAuth, getAuth } from '$lib/store/authStore.svelte.js'; // Importation du store d'authentification
 	import { uploadAvatar } from '$lib/services/user.service.js';
+	import { on } from 'svelte/events';
 
 	/// JS
 	const API_URL = import.meta.env.VITE_API_URL;
 
 	let { data } = $props();
 	const { userInfos } = data;
-
-	// met à jour l’authentification de l’utilisateur en temps réel.
-	$effect(() => {
-		getAuth();
-		getUserInfos();
-	});
 
 	let user = $state({
 		id: '',
@@ -48,34 +43,43 @@
 		{ title: ' ', status: ' ' }
 	]);
 
+		// met à jour l’authentification de l’utilisateur en temps réel.
+	$effect(() => {
+		getAuth();
+		if (!authStore.token) goto('/'); // Redirection si pas connecté
+	});
+
+	onMount(() => {
+		// Récupération initiale des infos utilisateur
+		getUserInfos();
+	});
+	// Récupération des infos utilisateur
+	// Pour effectuer l'appel API dans le +page.server il faudrait utiliser des cookies HTTP only
+	// cela requiert une refonte totale de l'authentification actuelle
+	// Pour l'instant on utilise le token stocké dans le localStorage (moins sécurisé)
 	const getUserInfos = async () => {
 		// Fonction pour récupérer les informations de l'utilisateur
 		// Vérifie si l'utilisateur est authentifié
-		console.log('getUserInfos');
+		//console.log('getUserInfos');
 		if (!authStore.token) {
-			
 			console.warn('Utilisateur non connecté. Redirection...');
 			goto('/'); // ou une autre page publique
 			return;
 		}
-		console.log('getUserInfos2');
 		try {
 			const userInfos = await getCurrentUser(); // Appel de la fonction pour obtenir les infos utilisateur
-			console.log('Données utilisateur récupérées :', userInfos);
+			//console.log('Données utilisateur récupérées :', userInfos);
 			if (!userInfos) {
 				throw new Error('Réponse inattendue : pas de userInfos');
 			}
-			console.log('User Infos:', userInfos);
 			const { id, pseudo, email, avatar, challenge_created } = userInfos;
 			user.id = id;
 			user.pseudo = pseudo;
 			user.email = email;
 			user.avatar = avatar;
-			challenges = challenge_created?.length ? challenge_created : [];
-			console.log('user:', user);
 			challenges = challenge_created?.length
 				? challenge_created // existe donc associé a challenges
-				: ['Aucun challenge créé']; // n'éxiste pas
+				: [{ title: 'Aucun challenge créé', status: '' }]; // n'éxiste pas et tableau d'objet car format
 		} catch (error) {
 			console.error('Erreur lors de la récupération des informations utilisateur :', error);
 		}
@@ -85,22 +89,22 @@
 		// Fonction de déconnexion
 		// Logique de déconnexion ici
 		try {
-			const logout = await logout(); // Appel de la fonction de déconnexion
-			if (logout.success) {
-				console.log('Logout successful:', logout.message);
+			const isLogout = await logout(); // Appel de la fonction de déconnexion
+			if (isLogout.success) {
+				//console.log('Logout successful:', isLogout.message);
+				toast.info('Déconnexion réussie ! À bientôt !');
 			} else {
-				console.warn('Logout response:', logout.message);
+				console.warn('Logout response:', isLogout?.message ?? 'Pas de message reçu');
+				toast.warning('Déconnexion partielle. Veuillez réessayer.');
 			}
 		} catch (error) {
-			console.error('Erreur lors de la déconnexion :', error);
+			console.error('Erreur lors de la déconnexion:', error);
+			toast.error('Erreur lors de la déconnexion. Veuillez réessayer.');
+		} finally {
+			clearAuth(); // Nettoyage local du store et du token, toujours exécuté
+			goto('/'); // Redirection après le nettoyage
+			//console.log('Déconnexion locale effectuée.');
 		}
-		clearAuth(); // Nettoyage du store d'authentification
-		// Destruction du token d'authentification dans le back
-		toast.info('Déconnexion réussie ! À bientôt !');
-		console.log('Déconnexion réussie');
-		goto('/'); // Redirection vers la page d'accueil ou de connexion
-		// Nettoyer le localStorage
-		// Mettre à jour le store d'authentification
 	}
 
 	let label = 'Photo de profil / Avatar';
@@ -113,7 +117,6 @@
 
 	async function handleFileChange(event) {
 		// Fonction pour gérer le changement de fichier pour l'avatar
-
 		if (isUploading) return;
 		const file = event.target.files[0];
 		// 1. Vérification de l'existence
@@ -121,39 +124,31 @@
 			uploadStatus = ' Aucun fichier sélectionné.';
 			return;
 		}
-
 		// 2. Vérification du type
 		if (!file.type.startsWith('image/')) {
 			uploadStatus = ' Format de fichier invalide (image requise).';
 			return;
 		}
-
 		// 3. Vérification de la taille
 		const maxSizeMB = 2;
 		if (file.size > maxSizeMB * 1024 * 1024) {
 			uploadStatus = ` Taille maximale dépassée (${maxSizeMB} Mo).`;
 			return;
 		}
-
 		// 4. Aperçu (preview) local
 		const reader = new FileReader();
 		reader.onload = () => {
 			previewUrl = reader.result;
 		};
 		reader.readAsDataURL(file);
-
 		// 5. Upload vers le backend
 		try {
 			isUploading = true;
 			uploadStatus = 'Téléchargement en cours...';
-			console.log('FRONT handleUpload userId', user.id);
-			console.log('FRONT handleUpload file', file);
 			const result = await uploadAvatar(user.id, file); // Appel au backend
-			console.log("Résultat de l'upload :", result);
-
+			//console.log("Résultat de l'upload :", result);
 			if (result.success) {
 				uploadStatus = 'Avatar mis à jour avec succès !';
-
 				// Recharge les infos utilisateur (pour rafraîchir l'avatar stocké côté backend)
 				await getUserInfos();
 			} else {
@@ -173,25 +168,12 @@
 	function open(modal) {
 		// Ouvre la popup
 		activeModal = modal;
-		console.log('Which popup is active:', activeModal);
+		//console.log('Which popup is active:', activeModal);
 	}
 	function close() {
+		// Ferme la popup active
 		activeModal = null;
-	} // Ferme la popup active
-
-	function redirect(url) {
-		// Redirige vers une autre page
-		goto(url);
-		window.location.href = url;
 	}
-	/*
-	onMount(() => {
-		getAuth();
-		getUserInfos();
-		 // Appel de la fonction pour récupérer les infos utilisateur au chargement du composant
-		console.log('onMount User : ', user)
-	});
-	*/
 </script>
 
 <svelte:head>
@@ -214,7 +196,7 @@
 		<p class="hero-subtitle">Gérez vos informations et consultez vos défis gaming</p>
 	</div>
 	<div class="user__content">
-		<AuthContainer title="Mes informations personnelles">
+		<GlassContainer title="Mes informations personnelles">
 			<div class="user-info">
 				<div class="avatar">
 					<label for="avatar">Avatar :</label>
@@ -278,7 +260,6 @@
 						<!-- Popup de modification de mot de passe -->
 						<ModifyPasswordPopUp
 							on:submit={(data) => {
-								console.log('Nouveau mot de passe :', data.newPassword);
 								close();
 							}}
 							on:close:{close}
@@ -287,7 +268,6 @@
 						<!-- Popup de modification de pseudo -->
 						<ModifyPseudoPopUp
 							on:submit={(data) => {
-								console.log('Nouveau pseudo :', data.newPseudo);
 								close();
 							}}
 							on:close={close}
@@ -295,9 +275,9 @@
 					{/if}
 				</ProfilePopUp>
 			{/if}
-		</AuthContainer>
+		</GlassContainer>
 
-		<AuthContainer title="Mes challenges">
+		<GlassContainer title="Mes challenges">
 			<!--Challenges de l'utilisateur-->
 
 			{#if !user.id || challenges.length === 0}
@@ -313,14 +293,13 @@
 					{/each}
 				</ul>
 			{/if}
-		</AuthContainer>
+		</GlassContainer>
 	</div>
 	<!-- Bouton de déconnexion -->
 	<Btn
 		variant="logout"
 		on:click={() => {
 			cleanLogout();
-			toast.info('Déconnexion réussie ! À bientôt !');
 		}}>Se déconnecter</Btn
 	>
 </div>

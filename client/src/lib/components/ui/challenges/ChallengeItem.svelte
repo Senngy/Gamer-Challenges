@@ -39,7 +39,7 @@
 		on:click={() => dispatch('click')}
 	>
 		<div class="challenge__participation-count">
-			{challenge?.participations ?? 0} participations
+			{challenge?.participations?.length ?? 0} participations
 		</div>
 	</div>
 	<div class="challenge__content">
@@ -107,5 +107,14 @@
 		-webkit-line-clamp: 1; /* nombre de lignes max */
 		line-clamp: 1; /* futur standard */
 	}
-	
+	.challenge__participation-count {
+		border-radius: var(--general-border-radius);
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+		font-family: 'Orbitron', sans-serif;
+		color: white;
+		text-shadow: rgb(0, 0, 0) 1px 1px 2px;
+	}
 </style>

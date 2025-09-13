@@ -3,8 +3,8 @@
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
-	const { leadersByChallenge, leadersByParticipation } = $props();
-	let mode = $state('challenge'); // ← 'challenge' ou 'participation'
+	let { leadersByChallenge, leadersByParticipation } = $props();
+	let mode = $state('participations'); // ← 'challenge' ou 'participation'
 	function switchMode(m) {
 		mode = m;
 	}

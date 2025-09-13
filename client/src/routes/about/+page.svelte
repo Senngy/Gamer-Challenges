@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <!-- Statistics Section -->
+  <!-- Statistics Section 
   <section class="stats-section">
     <h2>Notre impact en chiffres</h2>
     <div class="stats-grid">
@@ -140,6 +140,7 @@
       </div>
     </div>
   </section>
+  -->
 
   <!-- Mission Section -->
   <section class="mission-section">

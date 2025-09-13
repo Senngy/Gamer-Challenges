@@ -1,6 +1,6 @@
 // auth.service.js
 import api from '../api.js'; // Importe la fonction api pour faire les requêtes HTTP
-import { validateLoginData, sanitizeLoginData } from '../verification/validation.form.login.js';
+import { validateLoginData, sanitizeLoginData } from '../utils/validation.form.login.js';
 import { authStore } from '$lib/store/authStore.svelte.js';
 
 export const login = async (credentials) => {
@@ -57,7 +57,7 @@ export const getCurrentUser = async () => {
   console.log("SERVICE getCurrentUser authstore.token",authStore.token)
   try {
     const user = await api('/auth/me', "GET", null, true); // Appel API pour récupérer les infos utilisateur
-    console.log('getCurrentUser user:', user); // Affiche les infos récupérées
+    //console.log('getCurrentUser user:', user); // Affiche les infos récupérées
     return user; // Retourne l'utilisateur
   } catch (error) {
     console.error('getCurrentUser failed:', error); // Affiche l'erreur
@@ -69,7 +69,7 @@ export const getCurrentUser = async () => {
 export async function updatePseudo(newPseudo) {
   try {
     const response = await api('/auth/me/pseudo', "PATCH", {newPseudo}, true); // Envoie le nouveau pseudo à l'API
-    console.log('Update pseudo auth.service.js successful:', response); // Affiche la réponse
+   // console.log('Update pseudo auth.service.js successful:', response); // Affiche la réponse
     return; // Pas de retour spécifique
   } catch (error) {
     console.error('Update pseudo failed:', error); // Affiche l'erreur
@@ -81,7 +81,7 @@ export async function updatePseudo(newPseudo) {
 export async function updatePassword(currentPassword, newPassword) {
   try {
     const response = await api('/auth/me/password', "PATCH", { currentPassword, newPassword }, true); // Envoie ancien et nouveau mot de passe à l'API
-    console.log('Update password auth.service.js successful:', response); // Affiche la réponse
+   // console.log('Update password auth.service.js successful:', response); // Affiche la réponse
     return; // Pas de retour spécifique
   } catch (error) {
     console.error('Update password auth.service.js failed:', error); // Affiche l'erreur
@@ -92,22 +92,13 @@ export async function updatePassword(currentPassword, newPassword) {
 // Fonction pour déconnecter l'utilisateur
 export const logout = async () => {
   try {
-    const token = localStorage.getItem('token'); // Récupère le token stocké localement
-    
-    if (token) {
-      // Appel à l'API de déconnexion
-      await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, { // Envoie la requête de logout à l’API
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
-    }
-    console.log('Déconnexion API réussie'); // Affiche succès
+    const response = await api('/auth/logout', 'POST', null, true);
+    // Si on arrive ici, c’est que la requête a été OK (200)
+    return { success: true, message: 'Déconnexion réussie côté API' };
   } catch (error) {
-    console.error('Erreur lors de l\'appel API de déconnexion:', error); // Affiche l’erreur de logout
-    // On continue même si l'API échoue, car on veut nettoyer le localStorage
+    console.error('Erreur côté API pour la déconnexion:', error); // Affiche l’erreur de logout
+    // On renvoie un objet pour cleanLogout
+     return { success: false, message: error.message || 'Erreur lors de la déconnexion' };
   }
 };
 

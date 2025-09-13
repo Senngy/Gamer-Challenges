@@ -21,7 +21,7 @@ export async function getGameInfos(game_id) {
     try {
       //  console.log('game SERVICE game_id:', game_id)
         const game = await api(`/games/${game_id}`, "GET")
-     //   console.log('game SERVICE response:', game)
+      //console.log('game SERVICE response:', game)
         return game;
     } catch(error) {
         console.error('Error fetching search results:', error);

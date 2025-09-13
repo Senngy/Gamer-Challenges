@@ -17,6 +17,21 @@ export async function getChallenge(challengeId) {
   }
 }
 
+export async function getChallengesByGameId(gameId) {
+  if (!gameId) {
+    throw new Error('SERVICE Game ID is required');
+  }
+
+  try {
+    const challenges = await api(`/games/${gameId}/challenges`, "GET");
+    // console.debug(`[getChallengesByGameId] Challenges retrieved for game ID ${gameId}:`, challenges);
+    return challenges;
+  } catch (error) {
+    console.error(`SERVICE [getChallengesByGameId] Failed to fetch challenges for game ID ${gameId}:`, error);
+    throw error;
+  }
+}
+
 // Fonction de création d'un challenge
 export async function challengeCreation(title, description, rules, created_by, game_by) {
   try {

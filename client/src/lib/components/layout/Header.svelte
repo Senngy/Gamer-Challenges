@@ -1,30 +1,24 @@
 <script>
-	import { authStore, getAuth, isAuthenticated, clearAuth } from '$lib/store/authStore.svelte';
-	import { getUserById } from '$lib/services/user.service';
-	import Btn from '$lib/components/ui/challenges/Btn.svelte';
-	import { goto } from '$app/navigation';
-	import { logout } from '$lib/services/auth.service.js';
+	//Svelte
 	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+
+	// Components 
+	import Btn from '$lib/components/ui/challenges/Btn.svelte';
+
+	// Stores
+	import { authStore, getAuth, isAuthenticated, clearAuth } from '$lib/store/authStore.svelte';
+
+	// Services
 	import { searchGames } from '$lib/services/game.service.js';
+	import { getUserById } from '$lib/services/user.service';
+	import { logout } from '$lib/services/auth.service.js';
+
 	let userInfo = $state({});
 	let userInfoJSON = null;
 	let userAvatar = null;
 	let searchQuery = $state('');
 	let searchResults = $state([]);
-
-	// onMount(async () => {
-	// 	try {
-	// 		userInfoJSON = localStorage.getItem('user');
-	// 		userInfo = JSON.parse(userInfoJSON);
-	// 		//console.log("userInfo", userInfo);
-	// 		const user = await getUserById(userInfo.id);
-	// 		// console.log("Utilisateur récupéré :", user);
-	// 		userAvatar = user.avatar;
-	// 		// console.log("Avatar récupéré :", userAvatar);
-	// 	} catch (error) {
-	// 		console.error("Erreur lors de la récupération de l'avatar :", error);
-	// 	}
-	// });
 
 	onMount(async () => {
 		try {
@@ -55,8 +49,7 @@
 	});
 
 	$effect(() => {
-		//
-		getAuth(); //
+		getAuth(); 
 	});
 
 	$effect(async () => {
@@ -78,27 +71,6 @@
 		searchResults;
 	};
 
-	async function cleanLogout() {
-		// Fonction de déconnexion
-		// Logique de déconnexion ici
-		try {
-			await logout(); // Appel de la fonction de déconnexion
-			clearAuth(); // Nettoyage du store d'authentification
-			// Destruction du token d'authentification dans le back
-			console.log('Déconnexion réussie');
-			alert('Déconnexion !');
-		} catch (error) {
-			console.error('Erreur lors de la déconnexion :', error);
-		}
-		// Nettoyer le localStorage
-		// Mettre à jour le store d'authentificationé
-	}
-	function redirect(url) {
-		// Redirige vers une autre page
-		goto(url);
-		//console.log("redirect", url)
-		// window.location.reload();  // force le reload complet après la redirection SPA
-	}
 	function redirectSearch(url) {
 		searchQuery = '';
 		searchResults = [];

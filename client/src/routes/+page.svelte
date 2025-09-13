@@ -1,24 +1,28 @@
 <script>
+	// Svelte
 	import { onMount } from 'svelte';
-	import CatalogItem from '$lib/components/ui/games/CatalogItem.svelte';
 	import { fade } from 'svelte/transition';
+
+	// Components
+	import CatalogItem from '$lib/components/ui/games/CatalogItem.svelte';
 	import LeaderBoard from '$lib/components/LeaderBoard/LeaderBoard.svelte';
 
-	let { data } = $props();
-	const { randomGames, topGames, leadersByChallenge, leadersByParticipation } = data;
+	let { data } = $props(); // Récupération des données passées par load() dans +page.server.js
+	let { randomGames, topGames, leadersByChallenge, leadersByParticipation } = data;
 
 	let slideIndex = $state(0); // Index en state pour effectuer le changement de slide
-	let visibleCount = $state(4);
+	let visibleCount = $state(4); // Nombre de jeux visibles dans le catalogue valeur initiale = 4
 
+	// Fonction pour tronquer le texte à un certain nombre de mots et filtrer les balises HTML
 	function truncateWords(text = '', max = 40) {
 		const words = text.replace(/<[^>]*>/g, '').split(/\s+/);
 		return words.slice(0, max).join(' ') + (words.length > max ? '…' : '');
 	}
 
+	// Fonctions pour naviguer pour leslider
 	function next() {
 		if (topGames?.length) slideIndex = (slideIndex + 1) % topGames.length;
 	}
-
 	function prev() {
 		if (topGames?.length) slideIndex = (slideIndex - 1 + topGames.length) % topGames.length;
 	}
