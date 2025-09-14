@@ -38,7 +38,6 @@ export const dbConfig = {
     },
     dialectOptions: {
       ssl: {
-        require: true,
         rejectUnauthorized: false,
       },
     },
