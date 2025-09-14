@@ -10,16 +10,25 @@ import { errorHandler } from "./middlewares/common.middleware.js";
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
-const URL_CLIENT = process.env.URL_CLIENT || 'http://localhost:5173'; // URL du client frontend (Vite dev server)
+const URL_CLIENT = process.env.URL_CLIENT; // URL du client frontend (Vite dev server)
 
 const app = express(); // Création de l'application Express
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const corsOptions = { // Configuration CORS pour autoriser les requêtes depuis le client
-  origin: `${URL_CLIENT}`, // URL du client frontend (Vite dev server)
-  credentials: true, // Autorise l'envoi de cookies et headers d'authentification
+const allowedOrigins = [URL_CLIENT, 'http://localhost:5173', 'http://localhost:4173//', ];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Autoriser les requêtes sans origin (Postman, serveur-to-serveur)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
 };
 
 app.use(cors(corsOptions)); // Application du middleware CORS avec options

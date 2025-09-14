@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
-	// Components 
+	// Components
 	import Btn from '$lib/components/ui/challenges/Btn.svelte';
 
 	// Stores
@@ -49,11 +49,15 @@
 	});
 
 	$effect(() => {
-		getAuth(); 
+		getAuth();
 	});
 
 	$effect(async () => {
-		onSearch();
+		if (searchQuery.trim() !== '') {
+			onSearch();
+		} else {
+			searchResults = [];
+		}
 	});
 	const onSearch = async () => {
 		if (searchQuery.trim() === '') {
@@ -65,7 +69,7 @@
 			const results = await searchGames(searchQuery);
 			searchResults = results;
 		} catch (error) {
-			console.error('Erreur lors de la recherche :', error);
+			console.error('CLIENT Erreur lors de la recherche :', error);
 			searchResults = [];
 		}
 		searchResults;
@@ -103,7 +107,11 @@
 				{#each searchResults as game}
 					<li class="result-game">
 						<a href={`/games/${game.id}`} class="result-media" role="button">
-							<span class="result-cover" role="button" style={`background-image: url(${game.image})`}></span>
+							<span
+								class="result-cover"
+								role="button"
+								style={`background-image: url(${game.image})`}
+							></span>
 						</a>
 						<button
 							type="button"
