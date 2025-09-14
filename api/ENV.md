@@ -1,5 +1,0 @@
-DB_USER=gamer_challenges
-DB_PASSWORD=gamerchallenges
-DB_NAME=gamer_challenges_db
-DB_HOST=localhost
-DB_PORT=5432

@@ -1,3 +1,5 @@
+// app.js Fichier principal de l'application Express
+
 import "dotenv/config"; // Charge les variables d'environnement depuis le fichier .env
 import cors from "cors"; // Middleware pour gérer les requêtes cross-origin
 import express from "express"; // Framework web pour Node.js
@@ -6,7 +8,9 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
 
-const PORT = process.env.PORT || 3000; // Port du serveur (variable d'environnement ou 3000 par défaut)
+const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
+const URL_CLIENT = process.env.URL_CLIENT || 'http://localhost:5173'; // URL du client frontend (Vite dev server)
 
 const app = express(); // Création de l'application Express
 
@@ -14,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const corsOptions = { // Configuration CORS pour autoriser les requêtes depuis le client
-  origin: 'http://localhost:5173', // URL du client frontend (Vite dev server)
+  origin: `${URL_CLIENT}`, // URL du client frontend (Vite dev server)
   credentials: true, // Autorise l'envoi de cookies et headers d'authentification
 };
 
@@ -35,5 +39,5 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => { // Démarrage du serveur sur le port spécifié
-  console.log(`Server is running on port at http://localhost:${PORT}`); // Message de confirmation
+  console.log(`Server is running on port at ${BASE_URL}`); // Message de confirmation
 });

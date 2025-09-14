@@ -9,6 +9,7 @@ import { Sequelize } from "sequelize";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import fs from "fs/promises";
+import supabase from "../server/supabaseClient.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -89,7 +90,6 @@ export const getTopUsersByParticipationLikes = async (req, res) => {
       group: ["User.id", "User.pseudo"],
       order: [[Sequelize.literal(`"totalParticipationLikes"`), "DESC"]],
       limit: 10,
-      
     });
 
     return res.status(200).json(result);
@@ -105,31 +105,52 @@ export const updateAvatar = async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "Aucune image reçue" });
   }
+  let newAvatarUrl;
   const newAvatarPath = `/uploads/avatars/${req.file.filename}`;
   try {
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ error: "Utilisateur introuvable" });
     }
-    // Supprimer l'ancien fichier s'il existe
-    if (user.avatar) {
-      console.log("user.avatar:", user.avatar);
-      const oldPath = path.join(__dirname, "..", user.avatar);
-      console.log("Old avatar path:", oldPath);
+    if (process.env.NODE_ENV === "production") {
+      // ---------------- PROD (Supabase) ----------------
+      const uniqueName = `avatars/${Date.now()}-${req.file.originalname}`;
 
-      try {
-        await fs.access(oldPath); // vérifie que le fichier existe
-        await fs.unlink(oldPath);
-        console.log("Old avatar deleted");
-      } catch (err) {
-        console.error("Error deleting old avatar:", err);
-      }
+      const { data, error } = await supabase.storage
+        .from("gc-uploads")
+        .upload(uniqueName, req.file.buffer, {
+          contentType: req.file.mimetype,
+        });
+
+      if (error) throw error;
+
+      newAvatarUrl = supabase.storage
+        .from("gc-uploads")
+        .getPublicUrl(uniqueName).data.publicUrl;
     } else {
-      console.log("Old avatar file does not exist");
+      // ---------------- DEV (local) ----------------
+      newAvatarUrl = `${req.protocol}://${req.get("host")}${newAvatarPath}`;
+
+      // Supprimer l'ancien fichier s'il existe
+      if (user.avatar) {
+        console.log("user.avatar:", user.avatar);
+        const oldPath = path.join(__dirname, "..", user.avatar);
+        console.log("Ancien chemin de l'avatar:", oldPath);
+
+        try {
+          await fs.access(oldPath); // vérifie que le fichier existe
+          await fs.unlink(oldPath);
+          console.log("Ancien avatar supprimé:", oldPath);
+        } catch (err) {
+          console.error("Erreur lors de la suppression de l'ancien avatar:", err);
+        }
+      } else {
+        console.log("Ancien avatar inexistant");
+      }
     }
 
     // Mise à jour du champ avatar
-    user.avatar = newAvatarPath;
+    user.avatar = newAvatarUrl;
     await user.save();
 
     return res.json({ success: true, avatar: newAvatarPath });
