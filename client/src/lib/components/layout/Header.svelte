@@ -86,7 +86,9 @@
 
 <header class="header" aria-label="En-tête principal du site Gamer Challenge">
 	<!-- Logo du site -->
-	<a href="/" class="header__logo" aria-label="Retour à l’accueil (logo Gamer Challenge)">GC</a>
+	<a href="/" class="header__logo" aria-label="Retour à l’accueil (logo Gamer Challenge)">
+		<img src="/images/logos/Gamer-challenge-logo-only.png" alt="Gamer Challenge Logo" class="logo-image">
+	</a>
 
 	<!-- Barre de recherche -->
 	<div class="header__search-bar" aria-label="Barre de recherche de jeux">
@@ -205,3 +207,6 @@
 		</div>
 	</nav>
 </header>
+<style>
+	
+</style>

@@ -153,7 +153,7 @@ export const updateAvatar = async (req, res) => {
     user.avatar = newAvatarUrl;
     await user.save();
 
-    return res.json({ success: true, avatar: newAvatarPath });
+    return res.json({ success: true, avatar: newAvatarUrl});
   } catch (error) {
     console.error("Erreur upload avatar:", error);
     return res.status(500).json({ error: "Erreur serveur" });

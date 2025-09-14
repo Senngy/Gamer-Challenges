@@ -3,10 +3,7 @@
 	<div class="footer__brand">
 		<div>
 			<div class="footer__logo" aria-hidden="true">
-				GC
-				<!--
-      <img src="./images/logos/Gamer-challenge-logo1.png" alt="logo gamer challenge" />
-      -->
+                <img src="/images/logos/Gamer-challenge-logo-only4.png" alt="logo gamer challenge" />
 			</div>
 			<div class="footer__info">
 				<h2 class="footer__title">Gamer Challenge</h2>

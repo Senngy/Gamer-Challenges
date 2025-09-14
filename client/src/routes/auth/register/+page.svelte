@@ -7,6 +7,9 @@
 	import Btn from '$lib/components/ui/Btn.svelte';
 	import GlassContainer from '$lib/components/ui/GlassContainer.svelte';
 
+	// Librairies
+	import { toast } from 'svelte-sonner';
+
 	// Services
 	import { register } from '$lib/services/auth.service.js';
 	
@@ -57,7 +60,7 @@
 
 			// Succès : on efface l'erreur et redirige
 			error = '';
-			alert('Inscription réussie ! Vous allez être redirigé vers la page de connexion...');
+			toast.success('Inscription réussie ! Redirection vers la page de connexion...');
 			goto('/auth/login');
 		} catch (e) {
 			// Erreur serveur

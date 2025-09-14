@@ -17,7 +17,7 @@
 =========================== */
 body {
 	font-family: 'Inter', sans-serif;
-	background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%) ;
+	background: linear-gradient(135deg, #330000 0%, #0c0e0f 100%);
 	color: var(--text-color);
 	min-height: 100vh;
 	height: 100%;
@@ -91,8 +91,8 @@ h3 {
 .header__logo {
 	font-weight: bold;
 	font-size: 18px;
-	padding: 10px;
-	background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+	/*background: linear-gradient(45deg, #ff6b6b, #ff8e8e);*/
+	
 	border-radius: 50%;
 	width: 50px;
 	height: 50px;
@@ -100,6 +100,12 @@ h3 {
 	align-items: center;
 	justify-content: center;
 	color: #eee;
+}
+.logo-image {
+	height: 100%;
+	width: 100%;
+	object-fit: cover;
+	max-width: 80px;
 }
 .header__search-bar {
 	flex: 1;
@@ -634,7 +640,7 @@ h3 {
 	backdrop-filter: blur(10px);
 	-webkit-backdrop-filter: blur(10px);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-	color:var(--text-color) ;
+	color: var(--text-color);
 	padding: 4px 12px;
 	border-radius: var(--general-border-radius);
 	font-size: 11px;
@@ -1013,7 +1019,8 @@ span.catalog__game__title {
 	height: 50px;
 	align-items: center;
 	justify-content: center;
-	background: linear-gradient(135deg, #d82f2f 0%, #3a0a6b 100%);
+	/*background: linear-gradient(135deg, #d82f2f 0%, #3a0a6b 100%);*/
+	background-color: #0c0e0f;
 	color: #ffffff;
 	font-weight: bold;
 	font-size: 1.6em;
@@ -1024,10 +1031,11 @@ span.catalog__game__title {
 	margin-bottom: 0.5rem;
 }
 .footer__logo img {
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	object-fit: cover;
 	z-index: 5;
+	min-width: 50px;
 }
 
 .footer__copyright {

@@ -224,6 +224,7 @@
 		justify-content: space-between;
 		gap: 1rem;
 	}
+	/*
 	.footer__logo {
 		width: 60px;
 		height: 60px;
@@ -237,6 +238,7 @@
 		color: white;
 		box-shadow: 0 4px 15px rgba(209, 44, 44, 0.3);
 	}
+		*/
 
 	.footer__title {
 		font-size: 1.5rem;
