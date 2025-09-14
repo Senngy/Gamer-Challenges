@@ -17,7 +17,7 @@ const app = express(); // Création de l'application Express
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const allowedOrigins = [URL_CLIENT, 'http://localhost:5173', 'http://localhost:4173//', ];
+const allowedOrigins = [URL_CLIENT, 'http://localhost:5173', 'http://localhost:4173', ];
 
 const corsOptions = {
   origin: function (origin, callback) {
