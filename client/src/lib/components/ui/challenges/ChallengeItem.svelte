@@ -6,6 +6,12 @@
 	const { challenge } = $props();
 	const dispatch = createEventDispatcher();
 	const API_URL = import.meta.env.VITE_API_URL;
+	
+	function getAvatarUrl(user) {
+		if (!user?.avatar) return 'https://via.placeholder.com/100';
+		return import.meta.env.MODE === 'production' ? user.avatar : `${API_URL}${user.avatar}`;
+	}
+
 	let challengeCreator = $state({
 		pseudo: '',
 		avatar: ''
@@ -49,7 +55,7 @@
 			<p>Challenge créé par</p>
 			<div class="leaderboard__player-avatar avatar" aria-hidden="true">
 				<img
-					src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
+					src={`${getAvatarUrl(challengeCreator)}` || 'https://via.placeholder.com/100'}
 					alt="Avatar"
 					class="avatar-image"
 				/>

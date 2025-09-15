@@ -23,6 +23,10 @@
 
 	/// JS
 	const API_URL = import.meta.env.VITE_API_URL;
+	function getAvatarUrl(user) {
+		if (!user?.avatar) return 'https://via.placeholder.com/100';
+		return import.meta.env.MODE === 'production' ? user.avatar : `${API_URL}${user.avatar}`;
+	}
 
 	let { data } = $props();
 	const { userInfos } = data;
@@ -43,7 +47,7 @@
 		{ title: ' ', status: ' ' }
 	]);
 
-		// met à jour l’authentification de l’utilisateur en temps réel.
+	// met à jour l’authentification de l’utilisateur en temps réel.
 	$effect(() => {
 		getAuth();
 		if (!authStore.token) goto('/'); // Redirection si pas connecté
@@ -202,7 +206,7 @@
 					<label for="avatar">Avatar :</label>
 					<div class="avatar-container">
 						<img
-							src={`${API_URL}${user.avatar}` || 'https://via.placeholder.com/100'}
+							src={getAvatarUrl(user)}
 							alt="Avatar"
 							class="avatar-image"
 						/>

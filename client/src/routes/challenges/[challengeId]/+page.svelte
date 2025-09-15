@@ -27,6 +27,13 @@
 	let { challengeId, challenge, game } = data; // Récupération des données passées par le routeur SvelteKit
 	let participations = $state(data.participations ?? []); // Déclaration avec state pour permettre la réactivité lors de l'ajout d'une participation
 	const API_URL = import.meta.env.VITE_API_URL;
+
+	function getAvatarUrl(user) {
+		if (!user?.avatar) return 'https://via.placeholder.com/100';
+		return import.meta.env.MODE === 'production' ? user.avatar : `${API_URL}${user.avatar}`;
+	}
+
+
 	const challenge_id = challengeId;
 
 	let participationCreator = $state({
@@ -189,7 +196,7 @@
 							<p>Challenge créé par</p>
 							<div class="challenge__user-avatar avatar" aria-hidden="true">
 								<img
-									src={`${API_URL}${challengeCreator.avatar}` || 'https://via.placeholder.com/100'}
+									src={`${getAvatarUrl(challengeCreator)}` || 'https://via.placeholder.com/100'}
 									alt="Avatar"
 									class="avatar-image"
 								/>

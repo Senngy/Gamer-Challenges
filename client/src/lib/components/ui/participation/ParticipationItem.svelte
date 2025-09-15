@@ -5,6 +5,11 @@
 	import { getUserById } from '$lib/services/user.service.js';
     const API_URL = import.meta.env.VITE_API_URL;
 
+	function getAvatarUrl(user) {
+		if (!user?.avatar) return 'https://via.placeholder.com/100';
+		return import.meta.env.MODE === 'production' ? user.avatar : `${API_URL}${user.avatar}`;
+	}
+
 	const { participation } = $props();
 	console.log('Lien media :', participation.media_link);
 	console.log('user avatar :', participation.user.avatar);
@@ -58,7 +63,7 @@
 		<div class="participation__created-by">
 			<div class="participation__user-avatar" aria-hidden="true">
 				<img
-					src={`${API_URL}${participationCreator.avatar}` || 'https://via.placeholder.com/100'}
+					src={`${getAvatarUrl(participationCreator)}` || 'https://via.placeholder.com/100'}
 					alt="Avatar"
 					class="avatar-image"
 				/>

@@ -10,8 +10,8 @@ export async function load() {
             throw error(404, 'Page Server | Catalogue de jeux introuvable');
 		}
 		return { games };
-	} catch (error) {
-		console.error('Page Server | Erreur chargement jeux :', error);
+	} catch (err) {
+		console.error('Page Server | Erreur chargement jeux :', err);
 		// ✅ Déclenche la page d'erreur SvelteKit
 		throw error(500, 'Échec du chargement des données');
 	}

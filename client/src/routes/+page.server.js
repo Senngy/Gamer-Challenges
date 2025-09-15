@@ -5,33 +5,38 @@ import { getTopByChallengeLikes, getTopByParticipationLikes } from '$lib/service
 const API_URL = import.meta.env.VITE_API_URL;
 
 function addAvatarUrl(user) {
+	// En prod → Supabase renvoie déjà l'URL complète
+	if (import.meta.env.MODE === 'production') {
+		return {
+			...user,
+			avatar: user.avatar
+		};
+	}
+
+	// En dev → on préfixe avec API_URL
 	return {
 		...user,
-		avatar: user.avatar ? `${API_URL}${user.avatar}` : null
+		avatar: `${API_URL}${user.avatar}`
 	};
 }
 
 export async function load() {
-
-    try {
-        const [randomGames, topGames] = await Promise.all([
-			getRandomGames(),
-			getTopGames()
-		]);
-        const [rawLeadersByChallenge, rawLeadersByParticipation] = await Promise.all([
+	try {
+		const [randomGames, topGames] = await Promise.all([getRandomGames(), getTopGames()]);
+		const [rawLeadersByChallenge, rawLeadersByParticipation] = await Promise.all([
 			getTopByChallengeLikes(),
-            getTopByParticipationLikes()
+			getTopByParticipationLikes()
 		]);
 
-        const leadersByChallenge = rawLeadersByChallenge.map(addAvatarUrl);
+		const leadersByChallenge = rawLeadersByChallenge.map(addAvatarUrl);
 		const leadersByParticipation = rawLeadersByParticipation.map(addAvatarUrl);
-        return {
-            randomGames,
-            topGames,
-            leadersByChallenge,
-            leadersByParticipation
-        };
-	} catch (error) {
+		return {
+			randomGames,
+			topGames,
+			leadersByChallenge,
+			leadersByParticipation
+		};
+	} catch (err) {
 		console.error('Erreur chargement jeux :', error);
 
 		// ✅ Déclenche la page d'erreur SvelteKit
