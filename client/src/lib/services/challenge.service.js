@@ -111,3 +111,18 @@ export async function toggleLike(challengeId) {
     throw error;
   }
 }
+
+// Fonction pour vérifier si l'utilisateur a liké le challenge  
+export async function checkIfLiked(challengeId) {
+  if (!challengeId) {
+    throw new Error('SERVICE Challenge ID is required');
+  }
+  try {
+    const status = await api(`/challenges/${challengeId}/likes/status`, "GET", null, true); // Authentification requise
+    //console.debug(`[checkIfLiked] Like status retrieved:`, status);
+    return status;
+  } catch (error) {
+    console.error(`SERVICE [checkIfLiked] Failed to fetch like status for challenge ID ${challengeId}:`, error);
+    throw error;
+  }  
+}

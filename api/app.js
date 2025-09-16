@@ -48,5 +48,6 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => { // Démarrage du serveur sur le port spécifié
-  console.log(`Server is running on port at ${BASE_URL}`); // Message de confirmation
+  console.log('Connected to DB 🗄️:', process.env.DB_HOST, process.env.DB_NAME);
+  console.log(`Server 🖥️ is running on port at ${BASE_URL}`); // Message de confirmation
 });

@@ -99,3 +99,18 @@ export async function toggleLike(participationId) {
     throw error;
   }
 }
+
+// Fonction pour verifier si l'utilisateur a liké un challenge
+export async function checkIfLiked(participationId) {
+  if (!participationId) {
+    throw new Error('SERVICE participation ID is required');
+  }
+  try {
+    const status = await api(`/participations/${participationId}/likes/status`, 'GET', null, true);
+    //console.log('SERVICE checkIfUserLiked response:', res);
+     return status;
+  } catch (error) {
+    console.error('SERVICE [checkIfLiked] Erreur echec de la récupération du status:', error);  
+  }
+  throw new Error('Unable to check like status');
+}

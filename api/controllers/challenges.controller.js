@@ -295,6 +295,11 @@ export const deleteLike = async (req, res) => {
     await Challenge.decrement("challenge_likes", {
       where: { id: challengeId },
     });
+    const updatedChallenge = await Challenge.findByPk(challengeId);
+    console.log(
+      `Challenge ${challengeId} décrémenté. Nouveau total de likes :`,
+      updatedChallenge.challenge_likes
+    );
 
     return res.status(200).json({ message: "Like enlevé avec succès." });
   } catch (err) {
@@ -306,8 +311,8 @@ export const deleteLike = async (req, res) => {
 export const checkIfLiked = async (req, res) => {
   const userId = req.user_id;
   const challengeId = parseInt(req.params.id, 10);
-  console.log(`Challenge ID: ${challengeId}`); // Doit afficher l'ID du challenge
-  console.log(`User ID: ${userId}`); // Doit afficher l'ID de l'user qui a liké le challenge
+  //console.log(`CheckIfLiked Challenge ID: ${challengeId}`); // Doit afficher l'ID du challenge obtenu via l'URL
+ // console.log(`CheckIfLiked User ID: ${userId}`); // Doit afficher l'ID de l'user qui a liké le challenge obtenu via le token
 
   if (!userId || isNaN(challengeId)) {
     return res.status(400).json({ error: "Paramètres invalides." });
