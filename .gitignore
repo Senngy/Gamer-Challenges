@@ -11,6 +11,7 @@ logs/
 # Environment files
 .env
 .env.prod
+.env.local
 
 # Build outputs
 dist/
