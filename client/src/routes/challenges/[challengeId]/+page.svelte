@@ -341,7 +341,8 @@
 		object-fit: cover;
 		max-height: 100px;
 	}
-	@media (max-width: 480px) {
+	
+	@media (max-width: 480.9px) {
 		.sub-content__container {
 			flex-direction: column;
 			gap: 1em;
@@ -350,7 +351,13 @@
 			width: 100%;
 		}
 	}
-
+@media (min-width: 481px) and (max-width: 767.9px) {
+		.sub-content__container {
+			flex-direction: column;
+			gap: 1em;
+		}
+		
+	}
 	/* Pour les écrans ≥ 768px (tablettes et plus) */
 	@media (min-width: 768px) {
 		.intro {
@@ -362,6 +369,10 @@
 		.game-info__bloc {
 			align-items: center;
 			text-align: center;
+		}
+		.sub-content__container {
+			flex-direction: row;
+			gap: 1em;
 		}
 	}
 

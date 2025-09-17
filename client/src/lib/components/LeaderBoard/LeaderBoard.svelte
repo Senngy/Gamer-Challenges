@@ -90,7 +90,6 @@
 				</div>
 				<div class="leaderboard__player-level" aria-label={`${i + 1}e place`}>
 					{i === 0 ? '🏆' : i === 1 ? '🥈' : '🥉'}
-					{i + 1}
 				</div>
 			</div>
 
