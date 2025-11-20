@@ -11,35 +11,26 @@ import { fr } from 'date-fns/locale';      // si besoin, sinon le parsing foncti
 
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
-    console.log("REQ BODY :", req.body);
-    
     const emailFromRequest = req.body.email;
     const passwordFromRequest = req.body.password;
-    console.log("emailFromRequest :", emailFromRequest);
-    console.log("passwordFromRequest :", passwordFromRequest);
-
     try {
         const user = await User.findOne({ where: { email: emailFromRequest } }); // Récupération de l'utilisateur par email
-
         if (user) {
             // Vérification du mot de passe
             if (scrypt.compare(passwordFromRequest, user.password)) { // Si le mot de passe correspond
-                // Création du token JWT
-                
+                // Création du token JWT             
                 const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET, { expiresIn: '2h'  });
-
-
                 // Renvoi du token et des informations de l'utilisateur
                 return res.status(StatusCodes.OK).json({
                     message: "check token : Login réussi",
                     token: token, // Envoi du token
-                    user: { id: user.id, email: user.email, pseudo: user.pseudo } // Envoi des informations de l'utilisateur   
+                    user: { id: user.id, email: user.email, pseudo: user.pseudo }  
                 });
             } else { // Si le mot de passe ne correspond pas echec authentification
                 return res.status(StatusCodes.BAD_REQUEST).json({ error: "email et/ou mot de passe incorrect" });   
             }
-        } else {
-            return res.status(StatusCodes.BAD_REQUEST).json({ error: "email et/ou mot de passe incorrect" }); // Si l'utilisateur n'existe pas
+        } else { // Si l'utilisateur n'existe pas
+            return res.status(StatusCodes.BAD_REQUEST).json({ error: "email et/ou mot de passe incorrect" }); 
         }    
     } catch (error) {
         console.error("Erreur dans login auth api:", error); // Ajoute ce log

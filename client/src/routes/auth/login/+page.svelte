@@ -30,8 +30,7 @@
 		// Reset des erreurs
 		errors = {};
 		generalError = '';
-		// Validation côté client
-		const validation = validateLoginData(email, password);
+		const validation = validateLoginData(email, password); // Validation côté client
 		if (!validation.isValid) {
 			errors = validation.errors;
 			return;
@@ -43,17 +42,13 @@
 			const { token, user } = await login(sanitizedCredentials); // Appel de la fonction de connexion avec données nettoyées
 			console.log('Utilisateur connecté:', user); // Affichage de l'utilisateur connecté dans la console
 			setAuth(user, token); // Enregistrer l'utilisateur et le token dans le store
-
 			// Redirection vers la page d'accueil après une connexion réussie
-			toast.success('Connexion réussie !', {
-				description: `Bienvenue, ${user.pseudo}!`
-			});
+			toast.success('Connexion réussie !', { description: `Bienvenue, ${user.pseudo}!`});
 			// window.location.href = '/';
 			goto('/');
 		} catch (error) {
 			console.error('Erreur de connexion:', error);
-			// Gestion des différents types d'erreurs
-			if (error.validationErrors) {
+			if (error.validationErrors) { // Gestion des différents types d'erreurs
 				errors = error.validationErrors; // Erreurs spécifiques aux champs
 			} else if (error.message) {
 				// Erreurs de l'API (mot de passe incorrect, utilisateur non trouvé, etc.)
@@ -66,7 +61,6 @@
 				}
 			} else {
 				generalError = error.message;
-				// generalError = "Une erreur inattendue s'est produite. Veuillez réessayer.";
 			}
 		} finally {
 			isLoading = false;
@@ -90,13 +84,10 @@
 
 <GlassContainer title="Connexion" classCSS="log-container">
 	<!-- Affichage des erreurs générales -->
-
 	<p class="hero-subtitle">Connectez-vous pour accéder à vos défis gaming</p>
-
 	{#if generalError}
 		<div class="error general-error">{generalError}</div>
 	{/if}
-
 	<AuthForm onSubmit={handleSubmitLogin}>
 		<!-- Champ Email avec validation -->
 		<div class="input-group">
@@ -115,7 +106,6 @@
 				<span class="error-message">{errors.email}</span>
 			{/if}
 		</div>
-
 		<!-- Champ Mot de passe avec validation -->
 		<div class="input-group">
 			<Input
@@ -135,12 +125,10 @@
 				<span class="error-message">{errors.password}</span>
 			{/if}
 		</div>
-
 		<Btn disabled={isLoading}>
 			{isLoading ? 'Connexion...' : 'Se connecter'}
 		</Btn>
 	</AuthForm>
-
 	<div class="no-account">
 		<span>Pas encore de compte ?</span>
 		<a href="/auth/register">Rejoindre la communauté</a>

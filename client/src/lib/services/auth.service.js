@@ -15,17 +15,12 @@ export const login = async (credentials) => {
       error.validationErrors = validation.errors;
       throw error;
     }
-    
     // Nettoyage des données
     const sanitizedCredentials = sanitizeLoginData(email, password);
-    
     const { token, user } = await api('/auth/login', "POST", sanitizedCredentials);
-    console.log('Login auth.service.js successful credentials:', sanitizedCredentials);
-    console.log('Login auth.service.js successful token:', token);
-    console.log('Login auth.service.js successful user:', user);
     return { token, user };
   } catch (error) {
-    //console.error('Service Login échoué:', error);
+    console.error('Service Login échoué:', error);
     throw error;
   }
 };

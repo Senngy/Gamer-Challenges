@@ -4,7 +4,7 @@ export default async function api(endpoint, method = "GET", body = null, useAuth
 
   const isFormData = body instanceof FormData;
 
-  // 👉 Ajoute le token uniquement si useAuth est true
+  // Ajoute le token uniquement si useAuth est true
   if (useAuth) {
     const token = localStorage.getItem("token");
     if (token) {

@@ -5,7 +5,6 @@ import { fr } from 'date-fns/locale'; // pour le format français
 
 
 export class User extends Model { } 
-
 // Déclaration du modèle User
 // Le modèle "User" représente les utilisateurs de l'application
 // Il contient des informations telles que le pseudo, l'email, le mot de passe,

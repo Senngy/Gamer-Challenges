@@ -154,7 +154,7 @@
 	</AuthForm>
 	<div class="already-account">
 		<span>Vous avez déjà un compte ?</span>
-		<a href="/auth/login">Cliquez ici</a>
+		<a href="/auth/login">Connectez-vous</a>
 	</div>
 </GlassContainer>
 

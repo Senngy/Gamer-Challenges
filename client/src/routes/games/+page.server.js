@@ -6,13 +6,12 @@ export async function load() {
 	try {
 		const games = await getRandomGames();
 		if (!games) {
-			// return { games: [] };
             throw error(404, 'Page Server | Catalogue de jeux introuvable');
 		}
 		return { games };
 	} catch (err) {
 		console.error('Page Server | Erreur chargement jeux :', err);
-		// ✅ Déclenche la page d'erreur SvelteKit
+		// Déclenche la page d'erreur SvelteKit
 		throw error(500, 'Échec du chargement des données');
 	}
 }

@@ -4,12 +4,12 @@ import { login, register, me, logout, modifyPassword, modifyPseudo, deleteAccoun
 
 const router = express.Router();   
 
-router.get('/me', authenticate, me); // Get the current user PRIVATE
-router.post('/login', validateUserLogin, login); // Login a user
-router.post('/register', validateUserCreation, register); // Register a new user (signup dans le cahier des charges)
-router.post('/logout', authenticate, logout); // Logout a user PRIVATE
-router.patch('/me/password', authenticate, validateUserUpdatePassword, modifyPassword); // Update the current user PRIVATE
-router.patch('/me/pseudo', authenticate, validateUserUpdatePseudo, modifyPseudo); // Update the current user pseudo PRIVATE
-router.delete('/me', authenticate, deleteAccount); // Delete the current user PRIVATE
+router.get('/me', authenticate, me); // Récupérer l'utilisateur actuel (PRIVATE)
+router.post('/login', validateUserLogin, login); // Connecter un utilisateur
+router.post('/register', validateUserCreation, register); // Enregistrer un nouvel utilisateur 
+router.post('/logout', authenticate, logout); // Déconnecter un utilisateur (PRIVATE)
+router.patch('/me/password', authenticate, validateUserUpdatePassword, modifyPassword); // MAJ du MDP de l'utilisateur actuel (PRIVATE)
+router.patch('/me/pseudo', authenticate, validateUserUpdatePseudo, modifyPseudo); // Mettre à jour le pseudo de l'utilisateur actuel (PRIVATE)
+router.delete('/me', authenticate, deleteAccount); // Supprimer l'utilisateur actuel (PRIVATE)
 
 export default router;

@@ -1,13 +1,12 @@
 <script>
-  export let id = '';
+  let { id = '', type = 'text', label = '', value, placeholder = '', name = '', disabled = false } = $props();
+  /*export let id = '';
   export let type = 'text';
   export let label = '';
   export let value;
   export let placeholder = '';
   export let name = '';
-  export let disabled = false;
-    // Pour debug :
-  console.log('Input disabled prop =', disabled);
+  export let disabled = false;*/
 </script>
 
 <div>
