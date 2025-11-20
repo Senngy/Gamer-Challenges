@@ -29,3 +29,9 @@ build/
 
 # Doc files
 DOC/
+
+# Swagger output
+swagger-output.json
+
+# Lock json
+package-lock.json

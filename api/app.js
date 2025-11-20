@@ -7,6 +7,10 @@ import mainRouter from "./routes/main.routes.js"; // Routeur principal contenant
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
+import swaggerUi from "swagger-ui-express";
+import fs from "fs";
+
+const swaggerFile = JSON.parse(fs.readFileSync("./swagger-output.json", "utf8"));
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
@@ -38,6 +42,11 @@ app.use(express.json()); // Middleware pour parser le JSON des requêtes
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/", mainRouter); // Toutes les routes API sont préfixées par "/"
+
+// Swagger Docs
+// Swagger UI — affiche swagger-output.json généré par swagger-autogen
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 
 // Gestion 404
 app.use((req, res, next) => {
