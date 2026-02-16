@@ -4,10 +4,10 @@
 
 ## 🚀 Objectifs
 
-- Offrir un espace communautaire pour lancer et relever des défis gamers.
+- Créer un espace communautaire pour lancer et relever des défis gamers.
 - Valoriser l'implication des joueurs avec des classements dynamiques.
-- Proposer une interface simple, moderne et responsive.
-- Permettre l'upload d'avatars et la gestion des utilisateurs.
+- Proposer une interface moderne, responsive et mobile-first
+- Gestion des utilisateurs, avatars et interactions (likes, participation).
 
 ---
 
@@ -15,15 +15,20 @@
 
 ### Frontend
 - **SvelteKit**
-- TailwindCSS
+- TailwindCSS / CSS natif
 - Fetch API
 - Vite
 
 ### Backend
 - **Node.js** + **Express**
-- PostgreSQL (via Sequelize ORM)
+- PostgreSQL via Sequelize ORM
 - JWT pour l'authentification
 - Multer pour l'upload d'images
+- Joi pour validation des données
+
+### Déploiement
+- Vercel (frontend)
+- Railway (backend)
 
 ---
 
@@ -94,16 +99,15 @@ Certaines routes API nécessitent un token valide dans le header. Gérer ici dan
 Authorization: Bearer <token>
 ```
 
-#### 📸 Uploads
+## Améliorations en cours
 
-Les avatars sont stockés côté backend dans :
-api/uploads/avatars
+- Passage JWT vers httpOnly cookies + refresh tokens
 
-L’upload est géré avec :
+- Dockerisation backend + frontend
 
-multer côté backend
+- CI/CD avec tests automatisés
 
-FormData côté client
+- Logging structuré et monitoring
 
 ## 👥 Équipe
 
