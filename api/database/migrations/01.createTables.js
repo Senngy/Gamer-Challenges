@@ -3,11 +3,19 @@ import { sequelize } from "../models/index.js"
 // Le sequelize a "conscience" des différents modèles
 
 console.log("🗑️ Suppression des tables existantes..."); // Notamment pour relancer le script plusieurs fois si on veut faire un reset:db
-await sequelize.drop();
+// await sequelize.drop();
 
-console.log("🚧 Définition des tables..."); // Synchroniser le modèle séquelize avec la BDD, ie, RE-CREER la table à partir du modèle Sequelize
-await sequelize.sync();
+try {
+  console.log("🚧 Synchronisation des tables...");
+  
+  await sequelize.sync({ force: true });
 
+  console.log("✅ Tables créées avec succès !");
+  process.exit(0);
+} catch (error) {
+  console.error("❌ Erreur lors de la création :", error);
+  process.exit(1);
+}
 
 // Vérifie la migration en affichant la structure de la db
 console.log("🗃️ Structure de la base de données : ", 

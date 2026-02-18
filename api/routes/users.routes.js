@@ -8,96 +8,125 @@ import { authenticate } from '../middlewares/auth.middleware.js'
 const router = express.Router();
 
 /**
- * Returns a complete list of all registered users in the system with their basic information
- *
- * @summary Get all users
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of user objects containing:
- * - id: User unique identifier
- * - username: User's username
- * - email: User's email address
- * - avatar: User's avatar URL
- * - created_at: User account creation date
- * @param req
- * @param res
+ * @swagger
+ * /users:
+ *   get:
+ *     summary: Get all users
+ *     description: Returns a list of registered users with basic information.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: List of users
  */
 router.get('/', getAll)
 
 /**
- * Returns a paginated list of users ranked by the number of likes received on their created challenges
- *
- * @summary Get top users by challenge likes
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of top users with:
- * - id: User unique identifier
- * - username: User's username
- * - avatar: User's avatar URL
- * - challengeLikesCount: Total likes received on created challenges
- * - ranking: User's position in the ranking
- * @param req
- * @param queries
+ * @swagger
+ * /users/topUsersByChallengeLikes:
+ *   get:
+ *     summary: Get top users by challenge likes
+ *     description: Returns users ranked by likes received on their created challenges.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Top users by challenge likes
  */
 router.get('/topUsersByChallengeLikes', getTopUsersByChallengeLikes)
 
 /**
- * Returns a paginated list of users ranked by the number of likes received on their participations
- *
- * @summary Get top users by participation likes
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of top users with:
- * - id: User unique identifier
- * - username: User's username
- * - avatar: User's avatar URL
- * - participationLikesCount: Total likes received on participations
- * - ranking: User's position in the ranking
- * @param req
- * @param queries
+ * @swagger
+ * /users/topUsersByParticipationLikes:
+ *   get:
+ *     summary: Get top users by participation likes
+ *     description: Returns users ranked by likes received on their participations.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: Top users by participation likes
  */
 router.get('/topUsersByParticipationLikes', getTopUsersByParticipationLikes)
 
 /**
- * Returns detailed information about a specific user including stats:
- * - Created challenges count
- * - Participations count
- * - Total likes received
- *
- * @summary Get user details by ID
- * @security Optional JWT token for authenticated requests
- *
- * @returns {object} User object containing:
- * - id: User unique identifier
- * - username: User's username
- * - email: User's email address
- * - avatar: User's avatar URL
- * - bio: User's biography
- * - challengesCount: Number of created challenges
- * - participationsCount: Number of participations
- * - totalLikesCount: Total likes received
- * - created_at: User account creation date
- * - updated_at: User profile last update date
- * @param req - Express request with user ID in params
- * @param res - Express response object
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get user details by ID
+ *     description: Returns detailed information and stats for a user.
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: User details
+ *       404:
+ *         description: User not found
  */
 router.get('/:id', getById)
 
 /**
- * Allows authenticated users to upload or update their profile avatar image
- *
- * @summary Upload user avatar
- * @security JWT token required - User must be authenticated
- *
- * @returns {object} Updated user object with:
- * - id: User unique identifier
- * - username: User's username
- * - avatar: New avatar URL
- * - avatarUploadedAt: Timestamp of avatar upload
- * - message: Success message confirming avatar update
- * @param req - Express request with user ID in params and multipart form-data file
- * @param res - Express response object
- * @param next - Express next middleware function
+ * @swagger
+ * /users/{id}/avatar:
+ *   post:
+ *     summary: Upload user avatar
+ *     description: Allows authenticated user to upload or update their profile avatar image.
+ *     tags:
+ *       - Users
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: User ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Avatar updated
+ *       401:
+ *         description: Unauthorized
  */
 router.post('/:id/avatar', authenticate, upload.single('avatar'), updateAvatar)
 

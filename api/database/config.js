@@ -31,13 +31,15 @@ export const dbConfig = {
       updatedAt: "updated_at",
     },
     pool: {
-      max: 10,
-      min: 2,
-      acquire: 30000,
+      max: 5,
+      min: 0,
       idle: 10000,
+      acquire: 60000,
+      evict: 1000,
     },
     dialectOptions: {
       ssl: {
+        require: true,
         rejectUnauthorized: false,
       },
     },

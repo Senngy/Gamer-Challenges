@@ -8,80 +8,130 @@ import { validateUserCreationParticipation } from '../middlewares/participation.
 const router = express.Router();
 
 /**
- * @summary Create a participation
- * @description Allows authenticated user to participate in a challenge by submitting their entry/proof
- *
- * @security JWT token required - User must be authenticated
- *
- * @returns {object} Created participation object containing:
- * - id: Participation unique identifier
- * - user: Participating user information
- * - challenge: Challenge information
- * - submissionContent: User's submission content
- * - status: Participation status (typically "pending")
- * - likesCount: 0 (new participation)
- * - created_at: Participation creation timestamp
- * @param req - Express request with participation data in body (challengeId, submissionContent)
- * @param res - Express response object
- * @param next - Express next middleware function
+ * @swagger
+ * /participations:
+ *   post:
+ *     summary: Create a participation
+ *     description: Allows an authenticated user to submit a participation for a challenge.
+ *     tags:
+ *       - Participations
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - challengeId
+ *               - submissionContent
+ *             properties:
+ *               challengeId:
+ *                 type: integer
+ *               submissionContent:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Participation created
+ *       400:
+ *         description: Validation error
  */
 router.post('/', authenticate, validateUserCreationParticipation, addParticipation)
 
 /**
- * @summary Get participation likes
- * @description Returns the list of users who liked this participation and the total likes count. Public endpoint.
- *
- * @security Optional JWT token for authenticated requests
- *
- * @returns {object} Likes information containing:
- * - likesCount: Total number of likes
- * - likes: Array of user objects who liked the participation (id, username, avatar)
- * @param req - Express request with participation ID in params
- * @param res - Express response object
+ * @swagger
+ * /participations/{id}/likes:
+ *   get:
+ *     summary: Get participation likes
+ *     description: Returns list of users who liked the participation and total likes count.
+ *     tags:
+ *       - Participations
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Participation ID
+ *     responses:
+ *       200:
+ *         description: Likes information
  */
 router.get('/:id/likes', getLikes)
 
 /**
- * @summary Add like to participation
- * @description Allows authenticated user to like a participation. Prevents duplicate likes from same user.
- *
- * @security JWT token required - User must be authenticated
- *
- * @returns {object} Updated participation likes information containing:
- * - likesCount: New total likes count
- * - message: Success message
- * - liked: true
- * @param req - Express request with participation ID in params
- * @param res - Express response object
+ * @swagger
+ * /participations/{id}/likes:
+ *   post:
+ *     summary: Add like to participation
+ *     description: Authenticated user likes a participation. Prevents duplicates.
+ *     tags:
+ *       - Participations
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Participation ID
+ *     responses:
+ *       200:
+ *         description: Like added
+ *       401:
+ *         description: Unauthorized
  */
 router.post('/:id/likes', authenticate, addLike)
 
 /**
- * @summary Remove like from participation
- * @description Allows authenticated user to remove their like from a participation
- *
- * @security JWT token required - User must be authenticated
- *
- * @returns {object} Updated participation likes information containing:
- * - likesCount: New total likes count
- * - message: Success message
- * - liked: false
- * @param req - Express request with participation ID in params
- * @param res - Express response object
+ * @swagger
+ * /participations/{id}/likes:
+ *   delete:
+ *     summary: Remove like from participation
+ *     description: Authenticated user removes their like.
+ *     tags:
+ *       - Participations
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Participation ID
+ *     responses:
+ *       200:
+ *         description: Like removed
+ *       401:
+ *         description: Unauthorized
  */
 router.delete('/:id/likes', authenticate, deleteLike)
 
 /**
- * @summary Check if user liked participation
- * @description Checks whether the authenticated user has liked this participation
- *
- * @security JWT token required - User must be authenticated
- *
- * @returns {object} Like status information containing:
- * - isLiked: Boolean indicating if user liked the participation
- * - likesCount: Total likes count for the participation
- * @param req - Express request with participation ID in params
- * @param res - Express response object
+ * @swagger
+ * /participations/{id}/likes/status:
+ *   get:
+ *     summary: Check if user liked participation
+ *     description: Returns whether authenticated user has liked this participation and total likes count.
+ *     tags:
+ *       - Participations
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Participation ID
+ *     responses:
+ *       200:
+ *         description: Like status
+ *       401:
+ *         description: Unauthorized
  */
 router.get('/:id/likes/status', authenticate, checkIfLiked)
 export default router;

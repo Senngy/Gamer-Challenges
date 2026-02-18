@@ -5,116 +5,188 @@ import { getAll, getById, getChallengesByGameId, getTopGames, getRandomGames, se
 const router = express.Router();
 
 /**
- * Returns a complete list of all available games in the database with pagination support
- *
- * @summary Get all games
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of game objects containing:
- * - id: Game unique identifier
- * - name: Game title
- * - description: Game description
- * - genre: Game genre
- * - releaseDate: Game release date
- * - coverImage: Game cover image URL
- * - challengesCount: Number of challenges created for this game
- * @param req
- * @param queries - Optional pagination parameters (page, limit)
+ * @swagger
+ * /games:
+ *   get:
+ *     summary: Get all games
+ *     description: Returns a paginated list of all games.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number for pagination
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Number of items per page
+ *     responses:
+ *       200:
+ *         description: A list of games
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   genre:
+ *                     type: string
+ *                   releaseDate:
+ *                     type: string
+ *                   coverImage:
+ *                     type: string
+ *                   challengesCount:
+ *                     type: integer
  */
 router.get('/', getAll)
 
 /**
- * Searches and returns games matching the provided search query with fuzzy matching support
- *
- * @summary Search games by name
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of game objects matching the search criteria containing:
- * - id: Game unique identifier
- * - name: Game title
- * - description: Game description
- * - genre: Game genre
- * - coverImage: Game cover image URL
- * - relevanceScore: Search result relevance score
- * @param req
- * @param queries - Required search parameter (q, searchTerm)
+ * @swagger
+ * /games/search:
+ *   get:
+ *     summary: Search games by name
+ *     description: Search games using a query string (fuzzy matching).
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: query
+ *         name: q
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Search query or term
+ *     responses:
+ *       200:
+ *         description: Search results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   genre:
+ *                     type: string
+ *                   coverImage:
+ *                     type: string
+ *                   relevanceScore:
+ *                     type: number
  */
 router.get('/search', searchGames)
 
 /**
- * Returns the most popular games ranked by number of associated challenges and participations
- *
- * @summary Get top games
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of top games containing:
- * - id: Game unique identifier
- * - name: Game title
- * - coverImage: Game cover image URL
- * - challengesCount: Number of challenges for this game
- * - participationsCount: Total participations across all challenges
- * - ranking: Game position in the ranking
- * @param req
- * @param queries - Optional limit parameter
+ * @swagger
+ * /games/top:
+ *   get:
+ *     summary: Get top games
+ *     description: Returns the most popular games ranked by challenges and participations.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *         description: Max number of top games to return
+ *     responses:
+ *       200:
+ *         description: List of top games
  */
 router.get('/top', getTopGames)
 
+
 /**
- * Returns a list of randomly selected games for discovery purposes
- *
- * @summary Get random games
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of random game objects containing:
- * - id: Game unique identifier
- * - name: Game title
- * - description: Game description
- * - genre: Game genre
- * - coverImage: Game cover image URL
- * @param req
- * @param queries - Optional limit parameter
+ * @swagger
+ * /games/random:
+ *   get:
+ *     summary: Get random games
+ *     description: Returns a list of randomly selected games for discovery.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *         description: Number of random games to return
+ *     responses:
+ *       200:
+ *         description: Random games list
  */
 router.get('/random', getRandomGames)
 
+
 /**
- * Returns detailed information about a specific game including all associated metadata
- *
- * @summary Get game details by ID
- * @security Optional JWT token for authenticated requests
- *
- * @returns {object} Game object containing:
- * - id: Game unique identifier
- * - name: Game title
- * - description: Game description
- * - genre: Game genre
- * - releaseDate: Game release date
- * - coverImage: Game cover image URL
- * - publisher: Game publisher
- * - challengesCount: Number of challenges
- * - participationsCount: Total participations
- * - created_at: Game entry creation date
- * @param req - Express request with game ID in params
- * @param res - Express response object
+ * @swagger
+ * /games/{id}:
+ *   get:
+ *     summary: Get game details by ID
+ *     description: Returns detailed information about a single game.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Game ID
+ *     responses:
+ *       200:
+ *         description: Game details
+ *       404:
+ *         description: Game not found
  */
 router.get('/:id', getById)
 
 /**
- * Returns all challenges created for a specific game with pagination support
- *
- * @summary Get challenges for a specific game
- * @security Optional JWT token for authenticated requests
- *
- * @returns {Array<object>} Array of challenge objects containing:
- * - id: Challenge unique identifier
- * - title: Challenge title
- * - description: Challenge description
- * - difficulty: Challenge difficulty level
- * - creator: Creator user information
- * - participationsCount: Number of participations
- * - likesCount: Number of likes
- * - created_at: Challenge creation date
- * @param req - Express request with game ID in params
- * @param queries - Optional pagination parameters (page, limit)
+ * @swagger
+ * /games/{id}/challenges:
+ *   get:
+ *     summary: Get challenges for a specific game
+ *     description: Returns challenges created for the given game ID with pagination.
+ *     tags:
+ *       - Games
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Game ID
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *           default: 10
+ *     responses:
+ *       200:
+ *         description: List of challenges for the game
  */
 router.get('/:id/challenges', getChallengesByGameId)
 

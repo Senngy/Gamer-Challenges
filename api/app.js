@@ -7,10 +7,7 @@ import mainRouter from "./routes/main.routes.js"; // Routeur principal contenant
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
-import swaggerUi from "swagger-ui-express";
-import fs from "fs";
-
-const swaggerFile = JSON.parse(fs.readFileSync("./swagger-output.json", "utf8"));
+import { setupSwagger } from "./swagger.js";
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
@@ -21,7 +18,7 @@ const app = express(); // Création de l'application Express
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const allowedOrigins = [URL_CLIENT, 'http://localhost:5173', 'http://localhost:4173', ];
+const allowedOrigins = [URL_CLIENT, 'http://localhost:5173', 'http://localhost:4173', `http://localhost:${PORT}`]; // Origines autorisées pour les requêtes CORS];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -37,16 +34,18 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Application du middleware CORS avec options
 app.use(express.json()); // Middleware pour parser le JSON des requêtes
-
+app.use((req, res, next) => {
+  console.log("[LOG] Body:", req.body);
+  console.log("[LOG] Route:", req.path);
+  next();
+});
 // Sert le dossier public/uploads en statique pour que les images soient accessibles via URL
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/", mainRouter); // Toutes les routes API sont préfixées par "/"
 
-// Swagger Docs
-// Swagger UI — affiche swagger-output.json généré par swagger-autogen
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
-
+// Swagger UI
+setupSwagger(app);
 
 // Gestion 404
 app.use((req, res, next) => {

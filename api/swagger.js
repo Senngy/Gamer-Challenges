@@ -1,26 +1,37 @@
 // swagger.js
-import swaggerAutogen from "swagger-autogen";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
-const doc = {
-  info: {
-    title: "Gamer Challenges API",
-    description: "Documentation auto-générée de l'API",
-  },
-  host: "localhost:3000",
-  schemes: ["http"],
-  securityDefinitions: {
-    bearerAuth: {
-      type: "apiKey",
-      name: "Authorization",
-      in: "header",
-      description: "JWT token. Exemple : 'Bearer <votre_token>'",
+const PORT = process.env.PORT || 3000;
+
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Gamer Challenges API",
+      version: "1.0.0",
+      description: "Documentation de l'API Gamer Challenges",
+    },
+    servers: [
+      { url: `http://localhost:${PORT}`, description: "Serveur local" },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Entrer le token JWT avec 'Bearer <token>'",
+        },
+      },
     },
   },
+  apis: ["./routes/*.routes.js"], // Chemin vers tes fichiers de routes avec JSDoc
 };
 
-const outputFile = "./swagger-output.json"; // fichier généré
-const endpointsFiles = ["./app.js"]; // point d'entrée à scanner
+const swaggerSpec = swaggerJSDoc(options);
 
-swaggerAutogen()(outputFile, endpointsFiles, doc).then(() => {
-  console.log("Swagger file generated ✅");
-});
+export function setupSwagger(app) {
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  console.log(`Swagger UI available at http://localhost:${PORT}/docs`);
+}

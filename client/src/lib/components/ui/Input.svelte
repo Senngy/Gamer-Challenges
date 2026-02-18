@@ -1,12 +1,12 @@
 <script>
-  let { id = '', type = 'text', label = '', value, placeholder = '', name = '', disabled = false } = $props();
-  /*export let id = '';
+  //let { id = '', type = 'text', label = '', value, placeholder = '', name = '', disabled = false } = $props();
+  export let id = '';
   export let type = 'text';
   export let label = '';
   export let value;
   export let placeholder = '';
   export let name = '';
-  export let disabled = false;*/
+  export let disabled = false;
 </script>
 
 <div>

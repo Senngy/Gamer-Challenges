@@ -95,6 +95,7 @@ export function validateUserCreation(req, res, next) {
 */
 
 export function validateUserLogin(req, res, next) {
+     console.log("Body reçu par Joi:", req.body);
     const loginUserSchema = Joi.object({
         email: Joi.string()
             .email({ tlds: { allow: false } })

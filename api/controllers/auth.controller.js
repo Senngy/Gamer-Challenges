@@ -11,6 +11,8 @@ import { fr } from 'date-fns/locale';      // si besoin, sinon le parsing foncti
 
 
 export async function login(req, res) { // Fonction pour gérer la connexion des utilisateurs
+    console.log("Body reçu par Joi:", req.body);
+
     const emailFromRequest = req.body.email;
     const passwordFromRequest = req.body.password;
     try {
