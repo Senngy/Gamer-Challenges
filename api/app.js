@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
 import { setupSwagger } from "./swagger.js";
 import { sequelize } from "./database/connection.js"; // Import de la connexion à la base de données Sequelize
-import supabase, { testSupabaseBucket } from './src/lib/server/supabaseClient.js'
+import { testSupabaseBucket } from './server/supabaseClient.js'
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
