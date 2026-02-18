@@ -119,7 +119,7 @@
 	let uploadStatus = $state(''); // Pour afficher les messages de feedback
 	let isUploading = $state(false);
 
-	async function handleFileChange(event) {
+	async function handleUploadAvatar(event) {
 		// Fonction pour gérer le changement de fichier pour l'avatar
 		if (isUploading) return;
 		const file = event.target.files[0];
@@ -134,9 +134,15 @@
 			return;
 		}
 		// 3. Vérification de la taille
-		const maxSizeMB = 2;
+		const maxSizeMB = 1;
 		if (file.size > maxSizeMB * 1024 * 1024) {
 			uploadStatus = ` Taille maximale dépassée (${maxSizeMB} Mo).`;
+			return;
+		}
+		// Vérifier que user.id est défini
+		if (!user.id) {
+			console.error('handleUploadAvatar: user.id undefined !');
+			uploadStatus = "Impossible de mettre à jour l'avatar : utilisateur non identifié.";
 			return;
 		}
 		// 4. Aperçu (preview) local
@@ -205,11 +211,7 @@
 				<div class="avatar">
 					<label for="avatar">Avatar :</label>
 					<div class="avatar-container">
-						<img
-							src={getAvatarUrl(user)}
-							alt="Avatar"
-							class="avatar-image"
-						/>
+						<img src={getAvatarUrl(user)} alt="Avatar" class="avatar-image" />
 					</div>
 					<div class="container">
 						{#if isUploading}
@@ -223,7 +225,7 @@
 							id="avatar-upload"
 							type="file"
 							accept="image/*"
-							on:change={handleFileChange}
+							on:change={handleUploadAvatar}
 							hidden
 						/>
 					</div>
