@@ -1,4 +1,4 @@
-// src/lib/server/database/connection.js
+// api/database/connection.js
 import dotenv from 'dotenv';
 dotenv.config();
 

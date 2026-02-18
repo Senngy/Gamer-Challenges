@@ -8,6 +8,7 @@ import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
 import { setupSwagger } from "./swagger.js";
+import { sequelize } from "./database/connection.js"; // Import de la connexion à la base de données Sequelize
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
@@ -55,7 +56,16 @@ app.use((req, res, next) => {
 // Gestion globale des erreurs
 app.use(errorHandler);
 
-app.listen(PORT, () => { // Démarrage du serveur sur le port spécifié
-  console.log('Connected to DB 🗄️:', process.env.DB_HOST, process.env.DB_NAME);
-  console.log(`Server 🖥️ is running on port at ${BASE_URL}`); // Message de confirmation
-});
+sequelize.authenticate()
+  .then(() => {
+    console.log("✅ DB CONNECTED");
+
+    app.listen(PORT, () => {
+      console.log('Connected to DB 🗄️:', process.env.DB_HOST, process.env.DB_NAME);
+      console.log(`Server 🖥️ is running on port at ${BASE_URL}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ DB ERROR:", err);
+  });
+
