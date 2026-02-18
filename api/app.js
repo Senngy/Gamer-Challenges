@@ -59,7 +59,7 @@ sequelize.authenticate()
     // 🔹 Test du bucket Supabase avant de lancer le serveur
     const bucketOk = await testSupabaseBucket();
     if (!bucketOk) {
-      console.warn("⚠️ Check SUPABASE_SERVICE_KEY and bucket 'gc-uploads'.");
+      console.warn("⚠️ Check SUPABASE_SERVICE_KEY, SUPABASE_URL and bucket SUPABASE_BUCKET_AVATARS.");
     }
 
     app.listen(PORT, () => {
