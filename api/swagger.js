@@ -3,6 +3,7 @@ import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
 const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`;
 
 const options = {
   definition: {
@@ -13,7 +14,7 @@ const options = {
       description: "Documentation de l'API Gamer Challenges",
     },
     servers: [
-      { url: `http://localhost:${PORT}`, description: "Serveur local" },
+      { url: BASE_URL, description: "Serveur API actuel" },
     ],
     components: {
       securitySchemes: {
@@ -33,5 +34,5 @@ const swaggerSpec = swaggerJSDoc(options);
 
 export function setupSwagger(app) {
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  console.log(`Swagger UI available at http://localhost:${PORT}/docs`);
+  console.log(`Swagger UI available at ${BASE_URL}/docs`);
 }

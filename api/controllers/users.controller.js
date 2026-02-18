@@ -14,6 +14,8 @@ import supabase from "../server/supabaseClient.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+const AVATAR_BUCKET = process.env.SUPABASE_BUCKET_AVATARS;
+
 export async function getAll(req, res) {
   const users = await User.findAll();
   if (!users || users.length === 0) {
@@ -114,10 +116,10 @@ export const updateAvatar = async (req, res) => {
     }
     if (process.env.NODE_ENV === "production") {
       // ---------------- PROD (Supabase) ----------------
-      const uniqueName = `avatars/${Date.now()}-${req.file.originalname}`;
+      const uniqueName = `${AVATAR_BUCKET}/${Date.now()}-${req.file.originalname}`;
 
       const { data, error } = await supabase.storage
-        .from("gc-uploads")
+        .from(AVATAR_BUCKET)
         .upload(uniqueName, req.file.buffer, {
           contentType: req.file.mimetype,
         });
@@ -125,7 +127,7 @@ export const updateAvatar = async (req, res) => {
       if (error) throw error;
 
       newAvatarUrl = supabase.storage
-        .from("gc-uploads")
+        .from(AVATAR_BUCKET)
         .getPublicUrl(uniqueName).data.publicUrl;
     } else {
       // ---------------- DEV (local) ----------------

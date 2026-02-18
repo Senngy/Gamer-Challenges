@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { errorHandler } from "./middlewares/common.middleware.js";
 import { setupSwagger } from "./swagger.js";
 import { sequelize } from "./database/connection.js"; // Import de la connexion à la base de données Sequelize
+import supabase, { testSupabaseBucket } from './src/lib/server/supabaseClient.js'
 
 const PORT = process.env.PORT || 3000;
 const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // Port du serveur (variable d'environnement ou 3000 par défaut)
@@ -35,11 +36,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions)); // Application du middleware CORS avec options
 app.use(express.json()); // Middleware pour parser le JSON des requêtes
-app.use((req, res, next) => {
-  console.log("[LOG] Body:", req.body);
-  console.log("[LOG] Route:", req.path);
-  next();
-});
 // Sert le dossier public/uploads en statique pour que les images soient accessibles via URL
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -57,8 +53,14 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 sequelize.authenticate()
-  .then(() => {
+  .then(async () => {
     console.log("✅ DB CONNECTED");
+
+    // 🔹 Test du bucket Supabase avant de lancer le serveur
+    const bucketOk = await testSupabaseBucket();
+    if (!bucketOk) {
+      console.warn("⚠️ Check SUPABASE_SERVICE_KEY and bucket 'gc-uploads'.");
+    }
 
     app.listen(PORT, () => {
       console.log('Connected to DB 🗄️:', process.env.DB_HOST, process.env.DB_NAME);
