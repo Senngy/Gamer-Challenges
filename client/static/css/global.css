@@ -1003,6 +1003,8 @@ span.catalog__game__title {
 	display: grid;
 	grid-template-columns: 1fr;
 	font-family: system-ui, sans-serif;
+	position: relative;
+	bottom: 0;
 }
 
 /* Bloc Logo + Infos */

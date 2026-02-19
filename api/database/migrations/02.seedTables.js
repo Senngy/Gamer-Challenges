@@ -36,7 +36,7 @@ const user3 = await User.create({
 
 
 // 🎮 Création des jeux
-await importRAWGGames(40);
+await importRAWGGames();
 console.log('🎮 Création des jeux...');
 
 /*
